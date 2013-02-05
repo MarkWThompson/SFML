@@ -7,10 +7,13 @@ StartScreen::StartScreen()
 	Init();
 }
 
-StartScreen::StartScreen(sf::RenderWindow &renderWindow, std::string ipFontPath, float fontSize, int boxWidth)
+StartScreen::StartScreen(sf::RenderWindow &renderWindow, ClientRouter &inputClientRouter, ClientTransmitter &inputClientTransmitter, ClientReceiver &inputClientReceiver, ClientConnector &inputClientConnector, std::string ipFontPath, float fontSize, int boxWidth)
 {
 	ipInput = new TextInputBox(260.0f, 240.0f, boxWidth, fontSize, ipFontPath);
-
+	this->clientTransmitter = &inputClientTransmitter;
+	this->clientReceiver = &inputClientReceiver;
+	this->clientConnector = &inputClientConnector;
+	this->clientRouter = &inputClientRouter;
 	Init();
 }
 
@@ -24,22 +27,48 @@ void StartScreen::Init()
 
 	startScreen.SetPosition(0.0f, 0.0f);
 	isConnecting = false;
+	//mainly used because keyboards are cunts and send messages too quickly
+	canConnect = true;
+	listenForApproval = false;
+
 }
 
 StartScreen::~StartScreen()
 {
 }
 
+bool StartScreen::IsConnected()
+{
+	return isConnected;
+}
+
 void StartScreen::Update(sf::Event events, const sf::Input &input)
 {
 	ipInput->Update(events);
-	if((input.IsKeyDown(sf::Key::Return)) && (isConnecting == false))
+	if((input.IsKeyDown(sf::Key::Return)) && (canConnect == true))
 	{
-		isConnecting = true;
+		canConnect = false;
+
+		// Send connection request
+		ConnectionRequestPacket packetToSend;
+		packetToSend.PackData(0, packetToSend);
+		clientTransmitter->SendUDP(sharedConstants.GetClientTransmitPort(), GetAndEraseIP(), packetToSend);
+		listenForApproval = true;
+	}
+	if(listenForApproval == true)
+	{
+		clientReceiver->ReceiveUDP(sharedConstants.GetClientReceivePort(),*clientRouter,true);
+		listenForApproval = false;
+		if(clientConnector->isConnected == true)
+		{
+			isConnected = true;
+		}
+
 	}
 	if(input.IsKeyDown(sf::Key::Return) == false)
 	{
-		isConnecting = false;
+		//Dont delete or we connect too much when we hit enter
+		canConnect = true;
 	}
 }
 

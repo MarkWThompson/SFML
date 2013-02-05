@@ -77,16 +77,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\PacketTypes.cpp" />
     <ClCompile Include="..\SharedConstants.cpp" />
-    <ClCompile Include="ClientConnector.cpp" />
+    <ClCompile Include="ConnectionHandler.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ServerReceiver.cpp" />
     <ClCompile Include="ServerRouter.cpp" />
     <ClCompile Include="ServerTransmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\PacketTypes.h" />
     <ClInclude Include="..\SharedConstants.h" />
-    <ClInclude Include="ClientConnector.h" />
+    <ClInclude Include="ConnectionHandler.h" />
     <ClInclude Include="ServerReceiver.h" />
     <ClInclude Include="ServerRouter.h" />
     <ClInclude Include="ServerTransmitter.h" />

@@ -3,7 +3,7 @@
 #include "ServerTransmitter.h"
 #include "ServerReceiver.h"
 #include "ServerRouter.h"
-#include "ClientConnector.h"
+#include "ConnectionHandler.h"
 #include "..\SharedConstants.h"
 
 int main()
@@ -14,14 +14,14 @@ int main()
 	ServerRouter* serverRouter;
 
 	// Modules
-	ClientConnector* clientConnector = new ClientConnector(serverTransmitter);
+	ConnectionHandler* connectionHandler = new ConnectionHandler(serverTransmitter);
 
 	std::cout << "Loading Skynet 2.0" << std::endl;
 
 	std::cout << "..." << std::endl;
 
 	// Update router with modules
-	serverRouter = new ServerRouter(*clientConnector);
+	serverRouter = new ServerRouter(*connectionHandler);
 
 	std::cout << "Skynet 2.0 initialised, awaiting connections... " << std::endl;
 

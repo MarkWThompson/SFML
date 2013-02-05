@@ -5,9 +5,9 @@ ServerRouter::ServerRouter()
 {
 }
 
-ServerRouter::ServerRouter(ClientConnector &clientConnector)
+ServerRouter::ServerRouter(ConnectionHandler &connectionHandler)
 {
-	this->clientConnector = &clientConnector;
+	this->connectionHandler = &connectionHandler;
 }
 
 ServerRouter::~ServerRouter()
@@ -24,9 +24,10 @@ void ServerRouter::RouteData(sf::Packet packetToRoute, sf::IPAddress connectionA
 
 	if(routingTag == sharedConstants.CONNECT_MODULE)
 	{
+
 		// ClientController can receive
-		// 1. Connection Packets, Uint8 formatTag, string connectionMessage
-		clientConnector->ReceiveData(packetToRoute, connectionAddress, port);
+		// 1. Connection Packets, Uint8 packetType, string connectionMessage
+		connectionHandler->ReceiveData(packetToRoute, connectionAddress, port);
 	}
 	else if(routingTag == sharedConstants.GAME_MODULE)
 	{
