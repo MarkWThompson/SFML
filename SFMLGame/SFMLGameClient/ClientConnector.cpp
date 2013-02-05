@@ -12,7 +12,7 @@ ClientConnector::~ClientConnector()
 
 void ClientConnector::ReceiveData(sf::Packet receivedPacket, sf::IPAddress connectionAddress, unsigned int port)
 {
-	//A connectionResponse packet , Uint8 formatTag, std::string responseString
+	//A connectionResponse packet , Uint8 formatTag, std::string responseString, Uint8 playerNumber
 	//PACKET MUST HAVE A FORMATTAG AS THE FIRST ENTRY, TO FACILITATE MULTIPLE PACKET TYPES
 	sf::Uint8 formatTag;
 	receivedPacket >> formatTag;

@@ -1,9 +1,10 @@
 #include "SharedConstants.h"
 
+
 // Define messages
-const std::string SharedConstants::requestMessage = "Requesting connection";
-const std::string SharedConstants::acceptMessage = "Connection accepted";
-const std::string SharedConstants::rejectMessage = "Connection rejected";
+const std::string SharedConstants::requestMessage = "Requesting Connection";
+const std::string SharedConstants::acceptMessage = "Connection Accepted";
+const std::string SharedConstants::rejectMessage = "Connection Rejected";
 
 // Define port numbers
 const unsigned short SharedConstants::serverReceivePort = 4567;

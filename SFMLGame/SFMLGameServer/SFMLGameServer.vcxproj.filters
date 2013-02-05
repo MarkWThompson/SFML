@@ -42,8 +42,11 @@
     <ClCompile Include="..\SharedConstants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClientConnector.cpp">
+    <ClCompile Include="ConnectionHandler.cpp">
       <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PacketTypes.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,8 +62,11 @@
     <ClInclude Include="..\SharedConstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ClientConnector.h">
+    <ClInclude Include="ConnectionHandler.h">
       <Filter>Header Files\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PacketTypes.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

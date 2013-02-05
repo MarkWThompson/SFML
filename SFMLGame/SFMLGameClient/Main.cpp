@@ -5,6 +5,7 @@
 #include <SFML/Network.hpp>
 #include "GameManager.h"
 
+
 int main()
 {
 	static const int WINDOW_WIDTH = 1280;

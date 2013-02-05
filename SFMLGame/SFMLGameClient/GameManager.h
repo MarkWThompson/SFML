@@ -4,6 +4,7 @@
 #include "ClientTransmitter.h"
 #include "ClientReceiver.h"
 #include "ClientConnector.h"
+#include "..\PacketTypes.h"
 
 class GameManager
 {
@@ -23,9 +24,9 @@ private:
 	bool listenForApproval;
 	bool canConnect;
 
-	ClientTransmitter clientTransmitter;
-	ClientReceiver clientReceiver;
+	ClientTransmitter* clientTransmitter;
+	ClientReceiver* clientReceiver;
 	ClientRouter* clientRouter;
-	ClientConnector clientConnector;
+	ClientConnector* clientConnector;
 
 };
