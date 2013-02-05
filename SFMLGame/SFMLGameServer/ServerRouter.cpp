@@ -26,7 +26,7 @@ void ServerRouter::RouteData(sf::Packet packetToRoute, sf::IPAddress connectionA
 	{
 
 		// ClientController can receive
-		// 1. Connection Packets, Uint8 formatTag, string connectionMessage
+		// 1. Connection Packets, Uint8 packetType, string connectionMessage
 		connectionHandler->ReceiveData(packetToRoute, connectionAddress, port);
 	}
 	else if(routingTag == sharedConstants.GAME_MODULE)

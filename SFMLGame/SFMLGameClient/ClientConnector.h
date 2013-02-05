@@ -2,9 +2,9 @@
 
 #include <SFML\Network.hpp>
 #include <iostream>
+#include "..\PacketTypes.h"
 
-// Client connector can take
-// A connectionResponse packet , Uint8 formatTag, std::string responseString
+
 class ClientConnector
 {
 public:
@@ -15,4 +15,5 @@ public:
 	sf::IPAddress serverIP;
 	unsigned short port;
 	bool isConnected;
+	int playerID; //Received in response packet from server
 };

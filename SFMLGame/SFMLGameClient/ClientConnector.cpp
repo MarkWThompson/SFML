@@ -14,11 +14,11 @@ void ClientConnector::ReceiveData(sf::Packet receivedPacket, sf::IPAddress conne
 {
 	//A connectionResponse packet , Uint8 formatTag, std::string responseString, Uint8 playerNumber
 	//PACKET MUST HAVE A FORMATTAG AS THE FIRST ENTRY, TO FACILITATE MULTIPLE PACKET TYPES
-	sf::Uint8 formatTag;
-	receivedPacket >> formatTag;
+	sf::Uint8 packetType;
+	receivedPacket >> packetType;
 
 	// The format tag as a magic number will probably need to be discussed
-	if(formatTag == 0) // Connection responses
+	if(packetType == CONNECTION_RESPONSE_PACKET) // Connection responses
 	{
 		std::string requestResponse;
 		receivedPacket >> requestResponse;
@@ -27,9 +27,14 @@ void ClientConnector::ReceiveData(sf::Packet receivedPacket, sf::IPAddress conne
 		{
 			std::cout << std::endl << "Connection approved by server : " + connectionAddress.ToString() << std::endl;
 
+			//unpack this players number
+			receivedPacket >> playerID;
+
 			serverIP = connectionAddress;
 			port = port;
 			isConnected = true;
+
+			std::cout << "Player ID : " << playerID;
 		}
 		else if(requestResponse == sharedConstants.GetRejectMessage())
 		{

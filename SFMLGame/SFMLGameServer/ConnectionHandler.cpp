@@ -1,6 +1,6 @@
 #include "ConnectionHandler.h"
 #include "..\SharedConstants.h"
-// FormatTag = 0 is a ConnectionPacket, Uint8 formatTag, string connectionMessage
+
 
 ConnectionHandler::ConnectionHandler()
 {
@@ -31,7 +31,7 @@ void ConnectionHandler::ValidateConnection(sf::IPAddress connectionAddress, unsi
 		playerIPs.push_back(connectionAddress);
 		// Send approval response
 		ConnectionResponsePacket responsePacket;
-		responsePacket.PackData(0,sharedConstants.GetAcceptMessage(),responsePacket);
+		responsePacket.PackData(0,sharedConstants.GetAcceptMessage(),numPlayers,responsePacket);
 
 		sf::Sleep(0.1f);
 		serverTransmitter->SendUDP(sharedConstants.GetServerTransmitPort(), connectionAddress, responsePacket);
@@ -42,7 +42,7 @@ void ConnectionHandler::ValidateConnection(sf::IPAddress connectionAddress, unsi
 		//send deinal message
 
 		ConnectionResponsePacket responsePacket;
-		responsePacket.PackData(0,sharedConstants.GetRejectMessage(),responsePacket);
+		responsePacket.PackData(0,sharedConstants.GetRejectMessage(),-1,responsePacket);
 
 		sf::Sleep(0.1f);
 		serverTransmitter->SendUDP(sharedConstants.GetServerTransmitPort(), connectionAddress, responsePacket);

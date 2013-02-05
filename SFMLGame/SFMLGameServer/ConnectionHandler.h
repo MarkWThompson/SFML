@@ -4,7 +4,6 @@
 #include "..\PacketTypes.h"
 #include <iostream>
 
-//FormatTag = 0 is a ConnectionPacket, Uint8 formatTag, string connectionMessage
 
 class ConnectionHandler
 {

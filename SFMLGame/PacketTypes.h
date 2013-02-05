@@ -16,11 +16,11 @@ public:
 	void PackData(sf::Uint8 inputRoutingTag, sf::Packet &packetInstance);
 };
 
-//Connection Response Protocol, Uint8 routingTag, int packetType, std::string responseMessage
+//Connection Response Protocol, Uint8 routingTag, int packetType, std::string responseMessage, int playerID
 class ConnectionResponsePacket : public sf::Packet
 {
 public:
 	ConnectionResponsePacket(void);
-	void PackData(sf::Uint8 inputRoutingTag, std::string inputResponseMessage, sf::Packet &packetInstance);
+	void PackData(sf::Uint8 inputRoutingTag, std::string inputResponseMessage, int playerID, sf::Packet &packetInstance);
 };
 
