@@ -24,3 +24,12 @@ void ConnectionResponsePacket::PackData(sf::Uint8 inputRoutingTag, std::string i
 }
 
 
+ConnectionValidityPacket::ConnectionValidityPacket(void)
+{
+}
+void ConnectionValidityPacket::PackData(sf::Uint8 inputRoutingTag, int playerID, int stateIteration, bool connectionActive, sf::Packet &packetInstance)
+{
+	//Pack a packet, that's fun to say. PackaPacketPackaPacketPackaPacket Hey!
+	
+	packetInstance << inputRoutingTag << static_cast<sf::Uint8>(CONNECTION_VALIDITY_PACKET) << playerID << stateIteration << connectionActive;
+}
