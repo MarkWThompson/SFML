@@ -42,5 +42,4 @@ private:
 	static const std::string requestMessage;
 	static const std::string acceptMessage;
 	static const std::string rejectMessage;
-
 };

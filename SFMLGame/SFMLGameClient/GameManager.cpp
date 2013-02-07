@@ -16,16 +16,29 @@ GameManager::GameManager(sf::RenderWindow &renderWindow)
 	//mainly used because keyboards are cunts and send messages too quickly
 	canConnect = true;
 
-	startScreen = new StartScreen(renderWindow,"impact.ttf", 50.0f, 680); // The string probably needs to be a constant somewhere not in shared constants though
-
-	clientRouter = new ClientRouter(clientConnector);
+	clientTransmitter = new ClientTransmitter();
+	clientReceiver = new ClientReceiver();
+	clientConnector = new ClientConnector();
+	clientRouter = new ClientRouter(*clientConnector);
 	listenForApproval = false;
+
+	startScreen = new StartScreen(renderWindow, *clientRouter, *clientTransmitter, *clientReceiver, *clientConnector, "impact.ttf", 50.0f, 680); // The string probably needs to be a constant somewhere not in shared constants though
+
 }
 
 GameManager::~GameManager()
 {
 	startScreen = NULL;
 	delete startScreen;
+
+	clientTransmitter = NULL;
+	delete clientTransmitter;
+
+	clientReceiver = NULL;
+	delete clientReceiver;
+
+	clientConnector = NULL;
+	delete clientConnector;
 
 	clientRouter = NULL;
 	delete clientRouter;
@@ -37,41 +50,22 @@ void GameManager::Update(sf::Event events, const sf::Input &input)
 	{
 		// This should probably be put somewhere else - requires the FSM
 		startScreen->Update(events, input);
-
-		if((input.IsKeyDown(sf::Key::Return)) && (canConnect == true))
-		{
-			canConnect = false;
-
-			// Send connection request
-			sf::Packet packetToSend;
-			sf::Uint8 routingTagToSend = 0; // Need to talk about magic number packing / unpacking
-			sf::Uint8 formatTagToSend = 0;
-
-			packetToSend << routingTagToSend << formatTagToSend << sharedConstants.GetRequestMessage(); // Pack a connection packet, routing tag (To connector), format tag, (contains a connection packet), string data, (connection message) This should probably have its own function
-			clientTransmitter.SendUDP(sharedConstants.GetClientTransmitPort(), startScreen->GetAndEraseIP(), packetToSend);
-			listenForApproval = true;
-		}
-		if(listenForApproval == true)
-		{
-			clientReceiver.ReceiveUDP(sharedConstants.GetClientReceivePort(),*clientRouter,true);
-			listenForApproval = false;
-			if(clientConnector.isConnected == true)
-			{
-				isOnGame = true;
-				isOnStartScreen = false;
-			}
-
-		}
-		if(input.IsKeyDown(sf::Key::Return) == false)
-		{
-			//Dont delete or we connect too much when we hit enter
-			canConnect = true;
-		}
-
 	}
 	else if(isOnGame == true)
 	{
 		
+	}
+
+	//Update the Temporary states til the super duper FSM is implement(still think these else ifs are fine, theres only gonna be like 3-4 states, tops)
+	if(startScreen->IsConnected() == false)
+	{
+		isOnStartScreen = true;
+		isOnGame = false;
+	}
+	else if(startScreen->IsConnected() == true)
+	{
+		isOnStartScreen = false;
+		isOnGame = true;
 	}
 
 	
