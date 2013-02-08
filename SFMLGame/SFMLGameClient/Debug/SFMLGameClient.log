@@ -1,3 +1,1 @@
-﻿  Main.cpp
-LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  SFMLGameClient.vcxproj -> C:\Users\Mark\Desktop\SFMLGame\Debug\SFMLGameClient.exe
+﻿

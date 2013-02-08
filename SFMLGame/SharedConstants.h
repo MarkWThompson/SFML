@@ -25,7 +25,7 @@ public:
 	enum ModuleID { CONNECT_MODULE, GAME_MODULE, CHAT_MODULE };
 
 	/** Contains all of the client game states - might be useful for server to know. */
-	enum StateID { UNDEFINED_SCREEN, START_SCREEN, GAME_SCREEN };
+	enum StateID { UNDEFINED_STATE, START_STATE, GAME_STATE };
 
 private:
 	SharedConstants();

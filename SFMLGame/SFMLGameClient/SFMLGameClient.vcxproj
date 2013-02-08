@@ -85,7 +85,7 @@
     <ClCompile Include="ClientTransmitter.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="StartScreen.cpp" />
+    <ClCompile Include="StartState.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="TextInputBox.cpp" />
   </ItemGroup>
@@ -97,7 +97,7 @@
     <ClInclude Include="ClientRouter.h" />
     <ClInclude Include="ClientTransmitter.h" />
     <ClInclude Include="GameManager.h" />
-    <ClInclude Include="StartScreen.h" />
+    <ClInclude Include="StartState.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="TextInputBox.h" />
   </ItemGroup>

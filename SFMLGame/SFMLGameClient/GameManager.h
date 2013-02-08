@@ -1,6 +1,6 @@
 #pragma once
 
-#include "StartScreen.h"
+#include "StartState.h"
 #include "ClientTransmitter.h"
 #include "ClientReceiver.h"
 #include "ClientConnector.h"
@@ -14,7 +14,7 @@ public:
 	GameManager();
 	~GameManager();
 
-	StartScreen* startScreen;
+	StartState* startScreen;
 
 	void SwitchState(SharedConstants::StateID stateID);
 	void Update(sf::Event events, const sf::Input &input);

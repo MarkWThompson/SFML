@@ -2,8 +2,12 @@
 
 State::State()
 {
-	ID = targetID = SharedConstants::UNDEFINED_SCREEN;
-	loaded = false;
+	ID = targetID = SharedConstants::UNDEFINED_STATE;
+}
+
+State::State(SharedConstants::StateID ID)
+{
+	this->ID = targetID = ID;
 }
 
 State::~State()

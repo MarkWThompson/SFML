@@ -39,13 +39,13 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\SharedConstants.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConnectionHandler.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
     <ClCompile Include="..\PacketTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedConstants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,13 +59,13 @@
     <ClInclude Include="ServerTransmitter.h">
       <Filter>Header Files\PIPES</Filter>
     </ClInclude>
-    <ClInclude Include="..\SharedConstants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ConnectionHandler.h">
       <Filter>Header Files\Modules</Filter>
     </ClInclude>
     <ClInclude Include="..\PacketTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SharedConstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

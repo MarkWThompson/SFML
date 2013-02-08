@@ -9,6 +9,9 @@ class State
 		/** Default constructor initialises properties. */
 		State();
 
+		/** Constructor intended to set the inital ID. */
+		State(SharedConstants::StateID ID);
+
 		/** Base destructor. */
 		virtual ~State();
 
@@ -25,7 +28,7 @@ class State
 		 */
 		virtual bool Load() = 0;
 
-		/** Returns the target variable. */
+		/** Returns the targetID variable. */
 		SharedConstants::StateID GetTarget();
 		
 		/** Returns true if targetID differs from ID, otherwise returns false. */
@@ -37,8 +40,5 @@ class State
 
 		/** The unique ID of the desired state to switch to. */
 		SharedConstants::StateID targetID;
-
-		/** Determines if the content of the state has been loaded properly. */
-		bool loaded;
 
 };

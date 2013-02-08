@@ -9,7 +9,7 @@ GameManager::GameManager()
 	clientConnector = new ClientConnector();
 	clientRouter = new ClientRouter(*clientConnector);
 
-	SwitchState(SharedConstants::START_SCREEN);
+	SwitchState(SharedConstants::START_STATE);
 }
 
 GameManager::~GameManager()
@@ -55,18 +55,18 @@ void GameManager::SwitchState(SharedConstants::StateID stateID)
 
 	switch(stateID)
 	{
-		case SharedConstants::START_SCREEN:
-			curState = new StartScreen(*clientRouter, *clientTransmitter, *clientReceiver, *clientConnector, "impact.ttf", 50.0f, 680); // The string probably needs to be a constant somewhere not in shared constants though
+		case SharedConstants::START_STATE:
+			curState = new StartState(*clientRouter, *clientTransmitter, *clientReceiver, *clientConnector, "impact.ttf", 50.0f, 680); // The string probably needs to be a constant somewhere not in shared constants though
 			break;
 
-		case SharedConstants::GAME_SCREEN:
-			// curState = new GameScreen();
+		case SharedConstants::GAME_STATE:
+			// curState = new GameState();
 			break;
 	}
 
 	if(curState->Load() == false)
 	{
-		OutputDebugString("Failed to load state");
+		std::cout << "Failed to load state with ID : " << stateID << std::endl;
 	}
 }
 

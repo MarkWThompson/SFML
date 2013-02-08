@@ -31,7 +31,7 @@ void ClientConnector::ReceiveData(sf::Packet receivedPacket, sf::IPAddress conne
 			receivedPacket >> playerID;
 
 			serverIP = connectionAddress;
-			port = port;
+			this->port = port;
 			isConnected = true;
 
 			std::cout << "Player ID : " << playerID;
@@ -41,7 +41,7 @@ void ClientConnector::ReceiveData(sf::Packet receivedPacket, sf::IPAddress conne
 			std::cout << std::endl << "Connection denied by server : " + connectionAddress.ToString() << std::endl;
 
 			serverIP = connectionAddress;
-			port = port;
+			this->port = port;
 			isConnected = false;
 		}
 	}
