@@ -31,6 +31,12 @@
     <Filter Include="Header Files\Modules">
       <UniqueIdentifier>{bf337a02-cebc-4ba0-a3f6-b390692107c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Base">
+      <UniqueIdentifier>{d7598af7-6898-4267-ac0a-888e2b04fb70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Base">
+      <UniqueIdentifier>{47c3d25b-a139-4da0-91fa-fe22331ebaa5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameManager.cpp">
@@ -63,6 +69,9 @@
     <ClCompile Include="..\PacketTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Source Files\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -91,6 +100,9 @@
     </ClInclude>
     <ClInclude Include="..\PacketTypes.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Header Files\Base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

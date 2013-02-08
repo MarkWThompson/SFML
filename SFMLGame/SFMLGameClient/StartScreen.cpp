@@ -3,38 +3,50 @@
 StartScreen::StartScreen()
 {
 	ipInput = new TextInputBox(260, 240, 700, 50, "Impact.ttf");
-
-	Init();
 }
 
-StartScreen::StartScreen(sf::RenderWindow &renderWindow, ClientRouter &inputClientRouter, ClientTransmitter &inputClientTransmitter, ClientReceiver &inputClientReceiver, ClientConnector &inputClientConnector, std::string ipFontPath, float fontSize, int boxWidth)
+StartScreen::StartScreen(ClientRouter &clientRouter, ClientTransmitter &clientTransmitter, ClientReceiver &clientReceiver, ClientConnector &clientConnector, std::string ipFontPath, float fontSize, int boxWidth)
 {
 	ipInput = new TextInputBox(260.0f, 240.0f, boxWidth, fontSize, ipFontPath);
-	this->clientTransmitter = &inputClientTransmitter;
-	this->clientReceiver = &inputClientReceiver;
-	this->clientConnector = &inputClientConnector;
-	this->clientRouter = &inputClientRouter;
-	Init();
+	this->clientTransmitter = &clientTransmitter;
+	this->clientReceiver = &clientReceiver;
+	this->clientConnector = &clientConnector;
+	this->clientRouter = &clientRouter;
 }
 
-void StartScreen::Init()
+bool StartScreen::Load()
 {
 	// Load in the image
 	if(startScreenImage.LoadFromFile("StartScreen.png"))
 	{
 		startScreen.SetImage(startScreenImage);
 	}
+	else
+	{
+		return false;
+	}
 
 	startScreen.SetPosition(0.0f, 0.0f);
 	isConnecting = false;
-	//mainly used because keyboards are cunts and send messages too quickly
+
+	// Mainly used because keyboards are cunts and send messages too quickly
 	canConnect = true;
 	listenForApproval = false;
 
+	return true;
 }
 
 StartScreen::~StartScreen()
 {
+	delete clientTransmitter;
+	delete clientReceiver;
+	delete clientConnector;
+	delete clientRouter;
+
+	clientTransmitter = NULL;
+	clientReceiver = NULL;
+	clientConnector = NULL;
+	clientRouter = NULL;
 }
 
 bool StartScreen::IsConnected()
@@ -67,7 +79,7 @@ void StartScreen::Update(sf::Event events, const sf::Input &input)
 	}
 	if(input.IsKeyDown(sf::Key::Return) == false)
 	{
-		//Dont delete or we connect too much when we hit enter
+		// Dont delete or we connect too much when we hit enter
 		canConnect = true;
 	}
 }

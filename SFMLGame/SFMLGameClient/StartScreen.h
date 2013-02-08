@@ -9,16 +9,17 @@
 #include "TextInputBox.h"
 #include <iostream>
 #include "..\PacketTypes.h"
+#include "State.h"
 
-class StartScreen
+class StartScreen : public State
 {
 public:
 	StartScreen();
-	StartScreen(sf::RenderWindow &renderWindow, ClientRouter &inputClientRouter, ClientTransmitter &inputClientTransmitter, ClientReceiver &inputClientReceiver, ClientConnector &inputClientConnector, std::string ipFontPath, float fontSize, int boxWidth);
+	StartScreen(ClientRouter &inputClientRouter, ClientTransmitter &inputClientTransmitter, ClientReceiver &inputClientReceiver, ClientConnector &inputClientConnector, std::string ipFontPath, float fontSize, int boxWidth);
 	~StartScreen();
 
-	void Init();
-	void Update(sf::Event events,const sf::Input &input);
+	bool Load();
+	void Update(sf::Event events, const sf::Input &input);
 	void Draw(sf::RenderWindow &renderWindow);
 	sf::IPAddress GetAndEraseIP();
 

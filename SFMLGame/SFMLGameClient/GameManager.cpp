@@ -1,84 +1,79 @@
 #include "GameManager.h"
-#include "../SharedConstants.h"
-
-/* I'll make this class into an FSM, but for now I'll leave as is. */
 
 GameManager::GameManager()
 {
-}
-
-GameManager::GameManager(sf::RenderWindow &renderWindow)
-{
-	//Set state machine bools
-	isOnStartScreen = true;
-	isOnGame = false;
-
-	//mainly used because keyboards are cunts and send messages too quickly
-	canConnect = true;
+	curState = NULL;
 
 	clientTransmitter = new ClientTransmitter();
 	clientReceiver = new ClientReceiver();
 	clientConnector = new ClientConnector();
 	clientRouter = new ClientRouter(*clientConnector);
-	listenForApproval = false;
 
-	startScreen = new StartScreen(renderWindow, *clientRouter, *clientTransmitter, *clientReceiver, *clientConnector, "impact.ttf", 50.0f, 680); // The string probably needs to be a constant somewhere not in shared constants though
-
+	SwitchState(SharedConstants::START_SCREEN);
 }
 
 GameManager::~GameManager()
 {
-	startScreen = NULL;
 	delete startScreen;
-
-	clientTransmitter = NULL;
+	startScreen = NULL;
+	
 	delete clientTransmitter;
-
-	clientReceiver = NULL;
+	clientTransmitter = NULL;
+	
 	delete clientReceiver;
-
-	clientConnector = NULL;
+	clientReceiver = NULL;
+	
 	delete clientConnector;
-
-	clientRouter = NULL;
+	clientConnector = NULL;
+	
 	delete clientRouter;
+	clientRouter = NULL;
 }
 
 void GameManager::Update(sf::Event events, const sf::Input &input)
 {
-	if(isOnStartScreen == true)
+	if(curState != NULL)
 	{
-		// This should probably be put somewhere else - requires the FSM
-		startScreen->Update(events, input);
+		// Switch the state if a signal has been given from the current state
+		if(curState->Switch())
+		{
+			SwitchState(curState->GetTarget());
+		}
+
+		curState->Update(events, input);
 	}
-	else if(isOnGame == true)
+}
+
+void GameManager::SwitchState(SharedConstants::StateID stateID)
+{
+	// Delete previous state, if set
+	if(curState != NULL)
 	{
-		
+		delete curState;
+		curState = NULL;
 	}
 
-	//Update the Temporary states til the super duper FSM is implement(still think these else ifs are fine, theres only gonna be like 3-4 states, tops)
-	if(startScreen->IsConnected() == false)
+	switch(stateID)
 	{
-		isOnStartScreen = true;
-		isOnGame = false;
-	}
-	else if(startScreen->IsConnected() == true)
-	{
-		isOnStartScreen = false;
-		isOnGame = true;
+		case SharedConstants::START_SCREEN:
+			curState = new StartScreen(*clientRouter, *clientTransmitter, *clientReceiver, *clientConnector, "impact.ttf", 50.0f, 680); // The string probably needs to be a constant somewhere not in shared constants though
+			break;
+
+		case SharedConstants::GAME_SCREEN:
+			// curState = new GameScreen();
+			break;
 	}
 
-	
+	if(curState->Load() == false)
+	{
+		OutputDebugString("Failed to load state");
+	}
 }
 
 void GameManager::Draw(sf::RenderWindow &renderWindow)
 {
-	if(isOnStartScreen == true)
+	if(curState != NULL)
 	{
-		startScreen->Draw(renderWindow);
-	}
-	else if(isOnGame == true)
-	{
-		
+		curState->Draw(renderWindow);
 	}
 }

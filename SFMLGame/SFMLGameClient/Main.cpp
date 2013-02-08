@@ -5,7 +5,6 @@
 #include <SFML/Network.hpp>
 #include "GameManager.h"
 
-
 int main()
 {
 	static const int WINDOW_WIDTH = 1280;
@@ -17,7 +16,7 @@ int main()
     // Get a reference to the input manager associated to our window, and store it for later use
     const sf::Input& input = app.GetInput();
 
-	GameManager* gameManager = new GameManager(app);
+	GameManager* gameManager = new GameManager();
 
     // Start main loop
     while (app.IsOpened())
