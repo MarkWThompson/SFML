@@ -1,17 +1,23 @@
 #pragma once
+
 #include <SFML\Network.hpp>
 #include "ConnectionHandler.h"
+#include "GameLogic.h"
 
 class ServerRouter
 {
 public:
-	ServerRouter();
-	ServerRouter(ConnectionHandler &connectionHandler); // Parameter should most likely be a vector containing all modules
+	/** Constructor - module initialiser. */
+	ServerRouter(ConnectionHandler &connectionHandler, GameLogic &gameLogic);
+	
+	/** Default destructor. */
 	~ServerRouter();
+
+	/** Sends packet to target module based on routingTag. */
 	void RouteData(sf::Packet packetToRoute, sf::IPAddress connectionAddress, unsigned int port);
 
 private:
-	ConnectionHandler* connectionHandler; //routingTag = 0;
-
+	// Modules
+	ConnectionHandler* connectionHandler;
+	GameLogic* gameLogic;
 };
-

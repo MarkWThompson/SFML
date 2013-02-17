@@ -1,13 +1,9 @@
 #include "State.h"
 
-State::State()
-{
-	ID = targetID = SharedConstants::UNDEFINED_STATE;
-}
-
 State::State(SharedConstants::StateID ID)
 {
 	this->ID = targetID = ID;
+	canReceive = false;
 }
 
 State::~State()
@@ -29,4 +25,9 @@ bool State::Switch()
 	{
 		return false;
 	}
+}
+
+bool State::CanReceive()
+{
+	return canReceive;
 }

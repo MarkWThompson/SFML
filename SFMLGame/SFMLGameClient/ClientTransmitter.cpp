@@ -17,10 +17,10 @@ void ClientTransmitter::SendUDP(unsigned short port, sf::IPAddress targetAddress
 	else
 	{
 		// Create a UDP socket for communicating with server
-		sf::SocketUDP send;
+		sf::SocketUDP sender;
 
 		// Send a message to the server
-		if (send.Send(sendPacket, targetAddress, port) != sf::Socket::Done)
+		if (sender.Send(sendPacket, targetAddress, port) != sf::Socket::Done)
 		{
 			return;
 		}
@@ -28,6 +28,6 @@ void ClientTransmitter::SendUDP(unsigned short port, sf::IPAddress targetAddress
 		std::cout << std::endl << "Message sent to server : " << targetAddress.ToString() << " on port " << port << std::endl;
 
 		// Close the socket
-		send.Close();
+		sender.Close();
 	}
 }

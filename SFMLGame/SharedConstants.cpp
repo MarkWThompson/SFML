@@ -2,15 +2,18 @@
 
 
 // Define messages
-const std::string SharedConstants::requestMessage = "Requesting Connection";
-const std::string SharedConstants::acceptMessage = "Connection Accepted";
-const std::string SharedConstants::rejectMessage = "Connection Rejected";
+const std::string SharedConstants::REQUEST_MESSAGE = "Requesting Connection";
+const std::string SharedConstants::ACCEPT_MESSAGE = "Connection Accepted";
+const std::string SharedConstants::REJECT_MESSAGE = "Connection Rejected";
 
 // Define port numbers
-const unsigned short SharedConstants::serverReceivePort = 4567;
-const unsigned short SharedConstants::serverTransmitPort = 3242;
-const unsigned short SharedConstants::clientReceivePort = 3242;
-const unsigned short SharedConstants::clientTransmitPort = 4567;
+const unsigned short SharedConstants::SERVER_RECEIVE_PORT = 4567;
+const unsigned short SharedConstants::SERVER_TRANSMIT_PORT = 3242;
+const unsigned short SharedConstants::CLIENT_RECEIVE_PORT = 3242;
+const unsigned short SharedConstants::CLIENT_TRANSMIT_PORT = 4567;
+
+// Define timeStep
+const float SharedConstants::TIME_STEP = 33.3f / 1000.0f; //this is 33.2 seconds / 1000, or 16.6ms, or 30fps. Far too high to be honest. This is the amount of time the gameLogic update function waits before executing again.
 
 SharedConstants::SharedConstants()
 {
@@ -25,35 +28,40 @@ SharedConstants& SharedConstants::GetInstance()
 
 const unsigned short SharedConstants::GetServerReceivePort()
 {
-	return serverReceivePort;
+	return SERVER_RECEIVE_PORT;
 }
 
 const unsigned short SharedConstants::GetServerTransmitPort()
 {
-	return serverTransmitPort;
+	return SERVER_TRANSMIT_PORT;
 }
 
 const unsigned short SharedConstants::GetClientReceivePort()
 {
-	return clientReceivePort;
+	return CLIENT_RECEIVE_PORT;
 }
 
 const unsigned short SharedConstants::GetClientTransmitPort()
 {
-	return clientTransmitPort;
+	return CLIENT_TRANSMIT_PORT;
 }
 
 const std::string SharedConstants::GetRequestMessage()
 {
-	return requestMessage;
+	return REQUEST_MESSAGE;
 }
 
 const std::string SharedConstants::GetAcceptMessage()
 {
-	return acceptMessage;
+	return ACCEPT_MESSAGE;
 }
 
 const std::string SharedConstants::GetRejectMessage()
 {
-	return rejectMessage;
+	return REJECT_MESSAGE;
+}
+
+const float SharedConstants::GetTimeStep()
+{
+	return TIME_STEP;
 }

@@ -1,12 +1,13 @@
-#include <iostream>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
+#include <iostream>
 #include "GameManager.h"
 
 int main()
 {
+	// Window dimensions
 	static const int WINDOW_WIDTH = 1280;
 	static const int WINDOW_HEIGHT = 720;
 
@@ -19,29 +20,29 @@ int main()
 	GameManager* gameManager = new GameManager();
 
     // Start main loop
-    while (app.IsOpened())
+    while(app.IsOpened())
     {
         // Process events
         sf::Event events;
-        while (app.GetEvent(events))
+        while(app.GetEvent(events))
         {
             // Close window : exit
-            if (events.Type == sf::Event::Closed)
+            if(events.Type == sf::Event::Closed)
 			{
                 app.Close();
 			}
 
             // Escape key : exit
-            if ((events.Type == sf::Event::KeyPressed) && (events.Key.Code == sf::Key::Escape))
+            if((events.Type == sf::Event::KeyPressed) && (events.Key.Code == sf::Key::Escape))
 			{
                 app.Close();
 			}
-
-			// Update fsm with events and input
-			gameManager->Update(events, input);
         }
 
-		// Clear the screen (fill it with black color)
+		// Update fsm with events and input
+		gameManager->Update(events, input);
+
+		// Clear the screen
         app.Clear();
 
 		// Draw any items from game manager

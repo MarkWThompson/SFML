@@ -25,12 +25,6 @@
     <Filter Include="Source Files\States">
       <UniqueIdentifier>{26b1225a-22a5-4335-81a2-6a0d89d766d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Modules">
-      <UniqueIdentifier>{9ef72d3b-e93a-46c4-befd-107b3417a507}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Modules">
-      <UniqueIdentifier>{bf337a02-cebc-4ba0-a3f6-b390692107c5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Base">
       <UniqueIdentifier>{d7598af7-6898-4267-ac0a-888e2b04fb70}</UniqueIdentifier>
     </Filter>
@@ -48,17 +42,11 @@
     <ClCompile Include="ClientReceiver.cpp">
       <Filter>Source Files\PIPES</Filter>
     </ClCompile>
-    <ClCompile Include="ClientRouter.cpp">
-      <Filter>Source Files\PIPES</Filter>
-    </ClCompile>
     <ClCompile Include="ClientTransmitter.cpp">
       <Filter>Source Files\PIPES</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ClientConnector.cpp">
-      <Filter>Source Files\Modules</Filter>
     </ClCompile>
     <ClCompile Include="State.cpp">
       <Filter>Source Files\Base</Filter>
@@ -72,6 +60,9 @@
     <ClCompile Include="StartState.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -83,14 +74,8 @@
     <ClInclude Include="ClientReceiver.h">
       <Filter>Header Files\PIPES</Filter>
     </ClInclude>
-    <ClInclude Include="ClientRouter.h">
-      <Filter>Header Files\PIPES</Filter>
-    </ClInclude>
     <ClInclude Include="ClientTransmitter.h">
       <Filter>Header Files\PIPES</Filter>
-    </ClInclude>
-    <ClInclude Include="ClientConnector.h">
-      <Filter>Header Files\Modules</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
       <Filter>Header Files\Base</Filter>
@@ -102,6 +87,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StartState.h">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
       <Filter>Header Files\States</Filter>
     </ClInclude>
   </ItemGroup>

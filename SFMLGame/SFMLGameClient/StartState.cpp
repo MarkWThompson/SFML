@@ -1,19 +1,18 @@
 #include "StartState.h"
 
-StartState::StartState() 
+StartState::StartState(ClientTransmitter* clientTransmitter, std::string ipFontPath, float fontSize, int boxWidth)
 	: State(SharedConstants::START_STATE)
 {
-	ipInput = new TextInputBox(260, 240, 700, 50, "Impact.ttf");
-}
+	this->clientTransmitter = clientTransmitter;
 
-StartState::StartState(ClientRouter &clientRouter, ClientTransmitter &clientTransmitter, ClientReceiver &clientReceiver, ClientConnector &clientConnector, std::string ipFontPath, float fontSize, int boxWidth)
-	: State(SharedConstants::START_STATE)
-{
+	// Create new text box
 	ipInput = new TextInputBox(260.0f, 240.0f, boxWidth, fontSize, ipFontPath);
-	this->clientTransmitter = &clientTransmitter;
-	this->clientReceiver = &clientReceiver;
-	this->clientConnector = &clientConnector;
-	this->clientRouter = &clientRouter;
+
+	// Set unset flags
+	isConnecting = false;
+	canConnect = true;
+	listenForApproval = false;
+	canReceive = true;
 }
 
 bool StartState::Load()
@@ -29,26 +28,13 @@ bool StartState::Load()
 	}
 
 	startScreen.SetPosition(0.0f, 0.0f);
-	isConnecting = false;
-
-	// Mainly used because keyboards are cunts and send messages too quickly
-	canConnect = true;
-	listenForApproval = false;
 
 	return true;
 }
 
 StartState::~StartState()
 {
-	delete clientTransmitter;
-	delete clientReceiver;
-	delete clientConnector;
-	delete clientRouter;
-
 	clientTransmitter = NULL;
-	clientReceiver = NULL;
-	clientConnector = NULL;
-	clientRouter = NULL;
 }
 
 bool StartState::IsConnected()
@@ -59,6 +45,7 @@ bool StartState::IsConnected()
 void StartState::Update(sf::Event events, const sf::Input &input)
 {
 	ipInput->Update(events);
+
 	if((input.IsKeyDown(sf::Key::Return)) && (canConnect == true))
 	{
 		canConnect = false;
@@ -69,20 +56,56 @@ void StartState::Update(sf::Event events, const sf::Input &input)
 		clientTransmitter->SendUDP(sharedConstants.GetClientTransmitPort(), GetAndEraseIP(), packetToSend);
 		listenForApproval = true;
 	}
+
 	if(listenForApproval == true)
 	{
-		clientReceiver->ReceiveUDP(sharedConstants.GetClientReceivePort(),*clientRouter,true);
-		listenForApproval = false;
-		if(clientConnector->isConnected == true)
+		if(isConnected == true)
 		{
-			isConnected = true;
+			targetID = SharedConstants::GAME_STATE;
 		}
-
 	}
+
 	if(input.IsKeyDown(sf::Key::Return) == false)
 	{
 		// Dont delete or we connect too much when we hit enter
 		canConnect = true;
+	}
+}
+
+void StartState::ReceiveData(sf::Packet receivedPacket, sf::IPAddress connectionAddress, unsigned int port)
+{
+	// A connectionResponse packet , Uint8 formatTag, std::string responseString, Uint8 playerNumber
+	// PACKET MUST HAVE A FORMATTAG AS THE FIRST ENTRY, TO FACILITATE MULTIPLE PACKET TYPES
+	sf::Uint8 packetType;
+	receivedPacket >> packetType;
+
+	// The format tag as a magic number will probably need to be discussed
+	if(packetType == CONNECTION_RESPONSE_PACKET) // Connection responses
+	{
+		std::string requestResponse;
+		receivedPacket >> requestResponse;
+
+		if(requestResponse == sharedConstants.GetAcceptMessage())
+		{
+			std::cout << std::endl << "Connection approved by server : " + connectionAddress.ToString() << std::endl;
+
+			// Unpack this players number
+			receivedPacket >> playerID;
+
+			serverIP = connectionAddress;
+			this->serverPort = port;
+			isConnected = true;
+
+			std::cout << "Player ID : " << playerID;
+		}
+		else if(requestResponse == sharedConstants.GetRejectMessage())
+		{
+			std::cout << std::endl << "Connection denied by server : " + connectionAddress.ToString() << std::endl;
+
+			serverIP = connectionAddress;
+			this->serverPort = port;
+			isConnected = false;
+		}
 	}
 }
 

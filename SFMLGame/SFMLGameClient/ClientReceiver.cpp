@@ -1,47 +1,50 @@
 #include "ClientReceiver.h"
 
-ClientReceiver::ClientReceiver()
+ClientReceiver::ClientReceiver(bool isBlocking)
 {
+	if(!receiver.Bind(sharedConstants.GetClientReceivePort()))
+	{
+		std::cout << "ClientReceiver(bool isBlocking) error: failed to bind socket to specified port." << std::endl;
+	}
+
+	if(isBlocking == false)
+	{
+		receiver.SetBlocking(false);
+	}
+	else
+	{
+		receiver.SetBlocking(true);
+	}
 }
 
 ClientReceiver::~ClientReceiver()
 {
+	receiver.Close();
 }
 
-void ClientReceiver::ReceiveUDP(unsigned short port, ClientRouter &networkRouter, bool blocking)
+void ClientReceiver::ReceiveUDP(State* curState)
 {
-    // Create a UDP socket for communicating with clients
-    sf::SocketUDP Receiver;
-
-    // Bind it to the specified port
-    if(!Receiver.Bind(port))
+	if(receiver.IsValid())
 	{
-        return;
-	}
+		if(receiver.Receive(receivedPacket, receiveAddress, receivePort) == sf::Socket::Done)
+		{
+			std::cout << std::endl << "Message receieved from : " + receiveAddress.ToString() << " on port : " << receivePort << std::endl;
+			sf::Uint8 routingTag;
 
-	if(blocking == true)
-	{
-		Receiver.SetBlocking(true);
-	}
-	else if(blocking == false)
-	{
-		Receiver.SetBlocking(false);
-	}
+			// Unpack what type of data it is
+			receivedPacket >> routingTag;
 
-	// Storage for any packets that are received
-	sf::Packet receivePacket;
-	sf::IPAddress receiveAddress;
-	unsigned short receivePort;
+			std::cout << "Packet routing tag: " << (int)routingTag << std::endl;
 
-    if (Receiver.Receive(receivePacket, receiveAddress, receivePort) != sf::Socket::Done)
-	{
-        return;
+			/* This is validation, checks that the packet is right for the state, just in case.
+			 * Probably will be useful in some other capacity.
+			 * The reason the routingTag is still in is basically so packets can be reused both ways, although this validation is nice too.
+			 */
+			if(routingTag == curState->GetTarget())
+			{
+
+				curState->ReceiveData(receivedPacket, receiveAddress, receivePort);
+			}
+		}
 	}
-	
-	std::cout << std::endl << "Message receieved from : " + receiveAddress.ToString() << std::endl;
-	
-	networkRouter.RouteData(receivePacket, receiveAddress, receivePort);
-    
-	// Close the socket
-    Receiver.Close();
 }

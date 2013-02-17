@@ -1,45 +1,37 @@
 #include "ServerReceiver.h"
 
-ServerReceiver::ServerReceiver()
+ServerReceiver::ServerReceiver(bool isBlocking, ServerRouter &serverRouter)
 {
+	this->serverRouter = &serverRouter;
+
+	// Bind it to the specified port
+	if(!receiver.Bind(sharedConstants.GetServerReceivePort()))
+	{
+        std::cout << "ServerReceiver(bool isBlocking, ServerRouter &serverRouter) error: failed to bind socket to specified port." << std::endl;
+	}
+
+	if(isBlocking == true)
+	{
+		receiver.SetBlocking(true);
+	}
+	else
+	{
+		receiver.SetBlocking(false);
+	}
 }
 
 ServerReceiver::~ServerReceiver()
 {
+	receiver.Close();
 }
 
-void ServerReceiver::ReceiveUDP(unsigned short port, ServerRouter &networkRouter, bool blocking)
+void ServerReceiver::ReceiveUDP()
 {
-    // Create a UDP socket for communicating with clients
-    sf::SocketUDP receiver;
-
-    // Bind it to the specified port
-    if (!receiver.Bind(port))
+	if(receiver.IsValid())
 	{
-        return;
+		if(receiver.Receive(receivePacket, receiveAddress, receivePort) == sf::Socket::Done)
+		{
+			serverRouter->RouteData(receivePacket, receiveAddress, receivePort);
+		}
 	}
-
-	if(blocking == true)
-	{
-		receiver.SetBlocking(true);
-	}
-	else if(blocking == false)
-	{
-		receiver.SetBlocking(false);
-	}
-
-	// Storage for received packet data
-	sf::Packet receivePacket;
-	sf::IPAddress receiveAddress;
-	unsigned short receivePort;
-
-    if(receiver.Receive(receivePacket, receiveAddress, receivePort) != sf::Socket::Done)
-	{
-        return;
-	}
-
-	networkRouter.RouteData(receivePacket, receiveAddress, receivePort);
-
-    // Close the socket when we're done
-    receiver.Close();
 }

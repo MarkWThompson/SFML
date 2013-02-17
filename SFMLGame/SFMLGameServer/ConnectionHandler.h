@@ -1,28 +1,35 @@
 #pragma once
+
 #include <SFML\Network.hpp>
+#include <iostream>
 #include "ServerTransmitter.h"
 #include "..\PacketTypes.h"
-#include <iostream>
-
 
 class ConnectionHandler
 {
 public:
-	ConnectionHandler();
+	/** Constructor. */
 	ConnectionHandler(ServerTransmitter &serverTransmitter);
+
+	/** Default destructor. */
 	~ConnectionHandler();
-	void Init();
+
+	/** Listens for packets and processes valid packet content. */
 	void ReceiveData(sf::Packet receivedPacket, sf::IPAddress connectionAddress, unsigned int port);
 
 private:
-	void ValidateConnection(sf::IPAddress connectionAddress, unsigned int port); // Check if connecting player may connect
+	/** Checks if connecting player can connect. */
+	void ValidateConnection(sf::IPAddress connectionAddress, unsigned int port);
+	
+	/** Packet output stream. */
 	ServerTransmitter* serverTransmitter;
 
+	/** A vector of connected player IP addresses. */
 	std::vector<sf::IPAddress> playerIPs;
-	static const int maxPlayers = 8;
+
+	/** The maximum number of players that can join the server. */
+	static const int MAX_NUM_PLAYERS = 8;
+
+	/** Current number of players connected to the server. */
 	int numPlayers;
-
-	//Receive Responders
-	void receiveResponse(ConnectionRequestPacket receivedPacket);
 };
-

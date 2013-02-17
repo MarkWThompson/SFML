@@ -17,9 +17,13 @@ public:
 	const unsigned short GetClientReceivePort();
 	const unsigned short GetClientTransmitPort();
 	
+	// Returns the various connection messages
 	const std::string GetRequestMessage();
 	const std::string GetAcceptMessage();
 	const std::string GetRejectMessage();
+
+	/** Returns the TIME_STEP constant. */
+	const float GetTimeStep();
 
 	/** Contains all of the modules for the routers - could be split into server / client if need be. */
 	enum ModuleID { CONNECT_MODULE, GAME_MODULE, CHAT_MODULE };
@@ -33,13 +37,16 @@ private:
 	void operator=(SharedConstants const&); // Don't implement in .cpp
 
 	// Communication ports
-	static const unsigned short serverReceivePort;
-	static const unsigned short serverTransmitPort;
-	static const unsigned short clientReceivePort;
-	static const unsigned short clientTransmitPort;
+	static const unsigned short SERVER_RECEIVE_PORT;
+	static const unsigned short SERVER_TRANSMIT_PORT;
+	static const unsigned short CLIENT_RECEIVE_PORT;
+	static const unsigned short CLIENT_TRANSMIT_PORT;
 
 	// Connection messages
-	static const std::string requestMessage;
-	static const std::string acceptMessage;
-	static const std::string rejectMessage;
+	static const std::string REQUEST_MESSAGE;
+	static const std::string ACCEPT_MESSAGE;
+	static const std::string REJECT_MESSAGE;
+
+	// TimeStep
+	static const float TIME_STEP;
 };

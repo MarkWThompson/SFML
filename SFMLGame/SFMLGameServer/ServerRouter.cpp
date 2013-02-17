@@ -1,17 +1,19 @@
 #include "ServerRouter.h"
 #include "..\SharedConstants.h"
 
-ServerRouter::ServerRouter()
-{
-}
-
-ServerRouter::ServerRouter(ConnectionHandler &connectionHandler)
+ServerRouter::ServerRouter(ConnectionHandler &connectionHandler, GameLogic &gameLogic)
 {
 	this->connectionHandler = &connectionHandler;
+	this->gameLogic = &gameLogic;
 }
 
 ServerRouter::~ServerRouter()
 {
+	delete gameLogic;
+	gameLogic = NULL;
+
+	delete connectionHandler;
+	connectionHandler = NULL;
 }
 
 //routing the data
@@ -30,10 +32,10 @@ void ServerRouter::RouteData(sf::Packet packetToRoute, sf::IPAddress connectionA
 	}
 	else if(routingTag == sharedConstants.GAME_MODULE)
 	{
-		// game->ReceiveData(packetToRoute, connectionAddress, port);
+		gameLogic->ReceiveData(packetToRoute, connectionAddress, port);
 	}
 	else if(routingTag == sharedConstants.CHAT_MODULE)
 	{
-		// chat->ReceiveData(packetToRoute, connectionAddress, port);
+
 	}
 }

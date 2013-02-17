@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-ConnectionRequestPacket::ConnectionRequestPacket(void)
+ConnectionRequestPacket::ConnectionRequestPacket()
 {
 }
 void ConnectionRequestPacket::PackData(sf::Uint8 inputRoutingTag, sf::Packet &packetInstance)
@@ -13,7 +13,7 @@ void ConnectionRequestPacket::PackData(sf::Uint8 inputRoutingTag, sf::Packet &pa
 }
 
 
-ConnectionResponsePacket::ConnectionResponsePacket(void)
+ConnectionResponsePacket::ConnectionResponsePacket()
 {
 }
 void ConnectionResponsePacket::PackData(sf::Uint8 inputRoutingTag, std::string inputResponseMessage, int playerID, sf::Packet &packetInstance)
@@ -24,7 +24,7 @@ void ConnectionResponsePacket::PackData(sf::Uint8 inputRoutingTag, std::string i
 }
 
 
-ConnectionValidityPacket::ConnectionValidityPacket(void)
+ConnectionValidityPacket::ConnectionValidityPacket()
 {
 }
 void ConnectionValidityPacket::PackData(sf::Uint8 inputRoutingTag, int playerID, int stateIteration, bool connectionActive, sf::Packet &packetInstance)
@@ -32,4 +32,13 @@ void ConnectionValidityPacket::PackData(sf::Uint8 inputRoutingTag, int playerID,
 	//Pack a packet, that's fun to say. PackaPacketPackaPacketPackaPacket Hey!
 	
 	packetInstance << inputRoutingTag << static_cast<sf::Uint8>(CONNECTION_VALIDITY_PACKET) << playerID << stateIteration << connectionActive;
+}
+
+
+PositionPacket::PositionPacket()
+{
+}
+void PositionPacket::PackData(sf::Uint8 routingTag, sf::Int16 xPos, sf::Int16 yPos, sf::Packet &packetInstance)
+{
+	packetInstance << routingTag << static_cast<sf::Uint8>(POSITION_PACKET) << xPos << yPos;
 }

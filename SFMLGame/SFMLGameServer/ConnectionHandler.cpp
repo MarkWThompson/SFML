@@ -1,37 +1,28 @@
 #include "ConnectionHandler.h"
 #include "..\SharedConstants.h"
 
-
-ConnectionHandler::ConnectionHandler()
-{
-	Init();
-}
-
 ConnectionHandler::ConnectionHandler(ServerTransmitter &serverTransmitter)
 {
 	this->serverTransmitter = &serverTransmitter;
-	Init();
+	numPlayers = 0;
 }
 
 ConnectionHandler::~ConnectionHandler()
 {
-}
-
-void ConnectionHandler::Init()
-{
-	numPlayers = 0;
+	delete serverTransmitter;
+	serverTransmitter = NULL;
 }
 
 void ConnectionHandler::ValidateConnection(sf::IPAddress connectionAddress, unsigned int port)
 {
 	// Connection validation either approves or denys a connection. If approved the server sends back a packet containing the approval message
-	if(numPlayers < maxPlayers)
+	if(numPlayers < MAX_NUM_PLAYERS)
 	{
 		numPlayers++;
 		playerIPs.push_back(connectionAddress);
 		// Send approval response
 		ConnectionResponsePacket responsePacket;
-		responsePacket.PackData(sharedConstants.CONNECT_MODULE, sharedConstants.GetAcceptMessage(), numPlayers, responsePacket);
+		responsePacket.PackData(sharedConstants.START_STATE, sharedConstants.GetAcceptMessage(), numPlayers, responsePacket);
 
 		sf::Sleep(0.1f);
 		serverTransmitter->SendUDP(sharedConstants.GetServerTransmitPort(), connectionAddress, responsePacket);
@@ -41,7 +32,7 @@ void ConnectionHandler::ValidateConnection(sf::IPAddress connectionAddress, unsi
 	{
 		// Send deinal message
 		ConnectionResponsePacket responsePacket;
-		responsePacket.PackData(sharedConstants.CONNECT_MODULE, sharedConstants.GetRejectMessage(), -1, responsePacket);
+		responsePacket.PackData(sharedConstants.START_STATE, sharedConstants.GetRejectMessage(), -1, responsePacket);
 
 		sf::Sleep(0.1f);
 		serverTransmitter->SendUDP(sharedConstants.GetServerTransmitPort(), connectionAddress, responsePacket);
@@ -51,7 +42,6 @@ void ConnectionHandler::ValidateConnection(sf::IPAddress connectionAddress, unsi
 
 void ConnectionHandler::ReceiveData(sf::Packet receivedPacket, sf::IPAddress connectionAddress, unsigned int port)
 {
-	
 	sf::Uint8 packetType;
 	receivedPacket >> packetType;
 	
@@ -66,6 +56,4 @@ void ConnectionHandler::ReceiveData(sf::Packet receivedPacket, sf::IPAddress con
 			ValidateConnection(connectionAddress, port);
 		}
 	}
-	
 }
-

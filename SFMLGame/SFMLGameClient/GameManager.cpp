@@ -4,30 +4,26 @@ GameManager::GameManager()
 {
 	curState = NULL;
 
+	// PIPES
 	clientTransmitter = new ClientTransmitter();
-	clientReceiver = new ClientReceiver();
-	clientConnector = new ClientConnector();
-	clientRouter = new ClientRouter(*clientConnector);
-
+	clientReceiver = new ClientReceiver(false);
+	
 	SwitchState(SharedConstants::START_STATE);
 }
 
 GameManager::~GameManager()
 {
-	delete startScreen;
-	startScreen = NULL;
-	
+	// States
+	delete startState;
+	delete gameState;
+	startState = NULL;
+	gameState = NULL;
+
+	// PIPES
 	delete clientTransmitter;
-	clientTransmitter = NULL;
-	
 	delete clientReceiver;
+	clientTransmitter = NULL;
 	clientReceiver = NULL;
-	
-	delete clientConnector;
-	clientConnector = NULL;
-	
-	delete clientRouter;
-	clientRouter = NULL;
 }
 
 void GameManager::Update(sf::Event events, const sf::Input &input)
@@ -42,6 +38,12 @@ void GameManager::Update(sf::Event events, const sf::Input &input)
 
 		curState->Update(events, input);
 	}
+
+	// Will receive data if the state allows it
+	if(curState->CanReceive())
+	{
+		clientReceiver->ReceiveUDP(curState);
+	}
 }
 
 void GameManager::SwitchState(SharedConstants::StateID stateID)
@@ -53,14 +55,18 @@ void GameManager::SwitchState(SharedConstants::StateID stateID)
 		curState = NULL;
 	}
 
+	std::cout << "State switched to: ";
+
 	switch(stateID)
 	{
 		case SharedConstants::START_STATE:
-			curState = new StartState(*clientRouter, *clientTransmitter, *clientReceiver, *clientConnector, "impact.ttf", 50.0f, 680); // The string probably needs to be a constant somewhere not in shared constants though
+			std::cout << "START_STATE." << std::endl;
+			curState = new StartState(clientTransmitter, "impact.ttf", 50.0f, 680); // The string probably needs to be a constant somewhere not in shared constants though
 			break;
 
 		case SharedConstants::GAME_STATE:
-			// curState = new GameState();
+			std::cout << "GAME_STATE." << std::endl;
+			curState = new GameState(clientTransmitter);
 			break;
 	}
 

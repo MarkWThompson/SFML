@@ -1,5 +1,5 @@
-#include <iostream>
 #include <SFML\Network.hpp>
+#include <iostream>
 #include "ServerTransmitter.h"
 #include "ServerReceiver.h"
 #include "ServerRouter.h"
@@ -8,26 +8,23 @@
 
 int main()
 {
-	// PIPES
-	ServerTransmitter serverTransmitter;
-	ServerReceiver serverReceiver;
-	ServerRouter* serverRouter;
-
-	// Modules
-	ConnectionHandler* connectionHandler = new ConnectionHandler(serverTransmitter);
-
 	std::cout << "Loading Skynet 2.0" << std::endl;
+	
+	// This order is quite important
+	ServerTransmitter serverTransmitter;
 
-	std::cout << "..." << std::endl;
+	ConnectionHandler* connectionHandler = new ConnectionHandler(serverTransmitter);
+	GameLogic* gameLogic = new GameLogic(serverTransmitter);
 
-	// Update router with modules
-	serverRouter = new ServerRouter(*connectionHandler);
+	ServerRouter* serverRouter = new ServerRouter(*connectionHandler, *gameLogic);
+	ServerReceiver serverReceiver(false, *serverRouter);
 
-	std::cout << "Skynet 2.0 initialised, awaiting connections... " << std::endl;
+	std::cout << "Skynet 2.0 initialised and now running..." << std::endl;
 
 	while(true)
 	{
-		serverReceiver.ReceiveUDP(sharedConstants.GetServerReceivePort(), *serverRouter, true);
+		serverReceiver.ReceiveUDP();
+		gameLogic->Update();
 	}
 
 	return EXIT_SUCCESS;
