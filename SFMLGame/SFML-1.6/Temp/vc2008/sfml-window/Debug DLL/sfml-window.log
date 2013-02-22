@@ -1,0 +1,13 @@
+﻿  Joystick.cpp
+  VideoModeSupport.cpp
+  Context.cpp
+  Input.cpp
+  VideoMode.cpp
+  Window.cpp
+  WindowImpl.cpp
+  WindowImplWin32.cpp
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(C:\SFML-1.6\build\vc2008\..\..\Temp\vc2008\sfml-window\Debug DLL\sfml-window.dll) does not match the Linker's OutputFile property value (C:\SFML-1.6\lib\vc2008\sfml-window-d.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(sfml-window) does not match the Linker's OutputFile property value (sfml-window-d). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     Creating library C:\SFML-1.6\build\vc2008\..\..\Temp\vc2008\sfml-window\Debug DLL\sfml-window.lib and object C:\SFML-1.6\build\vc2008\..\..\Temp\vc2008\sfml-window\Debug DLL\sfml-window.exp
+     Creating library C:\SFML-1.6\build\vc2008\..\..\Temp\vc2008\sfml-window\Debug DLL\sfml-window.lib and object C:\SFML-1.6\build\vc2008\..\..\Temp\vc2008\sfml-window\Debug DLL\sfml-window.exp
+  sfml-window.vcxproj -> C:\SFML-1.6\build\vc2008\..\..\Temp\vc2008\sfml-window\Debug DLL\sfml-window.dll

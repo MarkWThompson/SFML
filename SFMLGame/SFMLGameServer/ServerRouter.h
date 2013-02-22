@@ -8,7 +8,7 @@ class ServerRouter
 {
 public:
 	/** Constructor - module initialiser. */
-	ServerRouter(ConnectionHandler &connectionHandler, GameLogic &gameLogic);
+	ServerRouter(ConnectionHandler* connectionHandler, GameLogic* gameLogic);
 	
 	/** Default destructor. */
 	~ServerRouter();

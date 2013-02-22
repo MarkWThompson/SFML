@@ -11,6 +11,8 @@ int main()
 	static const int WINDOW_WIDTH = 1280;
 	static const int WINDOW_HEIGHT = 720;
 
+	bool eventFired = false;
+
     // Create the main window, needs to be passed into drea
 	sf::RenderWindow app(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), "SFML Project");
 
@@ -37,10 +39,12 @@ int main()
 			{
                 app.Close();
 			}
+
+			eventFired = true;
         }
 
 		// Update fsm with events and input
-		gameManager->Update(events, input);
+		gameManager->Update(events, eventFired, input);
 
 		// Clear the screen
         app.Clear();
@@ -50,6 +54,8 @@ int main()
 
 		// Draw window
         app.Display();
+
+		eventFired = false;
     }
 
 	// Clean up routine

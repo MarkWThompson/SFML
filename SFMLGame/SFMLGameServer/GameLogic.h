@@ -3,14 +3,15 @@
 #include <SFML\Network.hpp>
 #include <iostream>
 #include "ServerTransmitter.h"
-#include "..\PacketTypes.h"
-#include "..\SharedConstants.h"
+#include "PacketTypes.h"
+#include "SharedConstants.h"
+#include "PlayerNetworkData.h"
 
 class GameLogic
 {
 public:
 	/** Constructor. */
-	GameLogic(ServerTransmitter &serverTransmitter);
+	GameLogic(ServerTransmitter* serverTransmitter, PlayerNetworkData* playerNetworkData);
 
 	/** Default destructor. */
 	~GameLogic();
@@ -25,13 +26,28 @@ private:
 	/** Packet output stream. */
 	ServerTransmitter* serverTransmitter;
 
+	PlayerNetworkData* playerNetworkData;
+
+	sf::Uint32 stateIterator;
+
 	/** Clock used to keep application running at a constant speed. */
 	sf::Clock timeStepClock;
 
 	// Temp test code
-	sf::IPAddress clientIP;
 	int spriteXPos;
 	int spriteYPos;
-	bool travellingRight;
 	int spriteSpeed;
+
+	// Temporary storage for packet data
+	bool wDown;
+	bool aDown;
+	bool sDown;
+	bool dDown;
+	bool spaceDown;
+	bool escDown;
+	bool returnDown;
+	bool lBtnDown;
+	bool rBtnDown;
+	sf::Int16 mouseX;
+	sf::Int16 mouseY;
 };

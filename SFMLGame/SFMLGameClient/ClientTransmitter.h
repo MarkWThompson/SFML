@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Network.hpp>
+#include <SFML\Network.hpp>
 #include <iostream>
 
 class ClientTransmitter
@@ -19,4 +19,7 @@ public:
 	 * @param sendPacket The packet which should be sent.
 	 */
 	void SendUDP(unsigned short port, sf::IPAddress targetAddress, sf::Packet sendPacket);
+
+private:
+	sf::SocketUDP sender;
 };

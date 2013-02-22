@@ -5,8 +5,9 @@
 #include "ClientTransmitter.h"
 #include "ClientReceiver.h"
 #include "State.h"
-#include "..\PacketTypes.h"
-#include "..\SharedConstants.h"
+#include "PacketTypes.h"
+#include "SharedConstants.h"
+#include "ServerNetworkData.h"
 
 class GameManager
 {
@@ -28,12 +29,15 @@ public:
 	void SwitchState(SharedConstants::StateID stateID);
 
 	/** Main loop which updates the current state. */
-	void Update(sf::Event events, const sf::Input &input);
+	void Update(sf::Event events, bool eventFired, const sf::Input &input);
 
 	/** Draws the current state. */
 	void Draw(sf::RenderWindow &renderWindow);
 
 private:
+	//Stores the serverIP and the playerNum;
+	ServerNetworkData* serverNetworkData;
+
 	// I/O packet stream
 	ClientTransmitter* clientTransmitter;
 	ClientReceiver* clientReceiver;

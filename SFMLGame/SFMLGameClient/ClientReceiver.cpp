@@ -4,7 +4,7 @@ ClientReceiver::ClientReceiver(bool isBlocking)
 {
 	if(!receiver.Bind(sharedConstants.GetClientReceivePort()))
 	{
-		std::cout << "ClientReceiver(bool isBlocking) error: failed to bind socket to specified port." << std::endl;
+		std::cout << "ClientReceiver() error: failed to bind socket to specified port." << std::endl;
 	}
 
 	if(isBlocking == false)
@@ -28,13 +28,13 @@ void ClientReceiver::ReceiveUDP(State* curState)
 	{
 		if(receiver.Receive(receivedPacket, receiveAddress, receivePort) == sf::Socket::Done)
 		{
-			std::cout << std::endl << "Message receieved from : " + receiveAddress.ToString() << " on port : " << receivePort << std::endl;
+			//std::cout << std::endl << "Message receieved from : " + receiveAddress.ToString() << " on port : " << receivePort << std::endl;
 			sf::Uint8 routingTag;
 
 			// Unpack what type of data it is
 			receivedPacket >> routingTag;
 
-			std::cout << "Packet routing tag: " << (int)routingTag << std::endl;
+			//std::cout << "Packet routing tag: " << (int)routingTag << std::endl;
 
 			/* This is validation, checks that the packet is right for the state, just in case.
 			 * Probably will be useful in some other capacity.
@@ -42,9 +42,12 @@ void ClientReceiver::ReceiveUDP(State* curState)
 			 */
 			if(routingTag == curState->GetTarget())
 			{
-
 				curState->ReceiveData(receivedPacket, receiveAddress, receivePort);
 			}
 		}
+	}
+	else
+	{
+		std::cout << "ClientReceiver::ReceiveUDP() error: socket invalid." << std::endl;
 	}
 }

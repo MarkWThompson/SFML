@@ -4,6 +4,9 @@
 // Macro for quickly grabbing the singleton instance
 #define sharedConstants SharedConstants::GetInstance()
 
+// For use with IP comparisons and such like
+#define NULL_IP "0.0.0.0"
+
 // Singleton design pattern - global access, created once and safely destroyed
 class SharedConstants
 {
@@ -24,6 +27,12 @@ public:
 
 	/** Returns the TIME_STEP constant. */
 	const float GetTimeStep();
+
+	/** Returns the TIMEOUT constant. */
+	const float GetTimeout();
+
+	/** Returns the TIMEOUT_INDICATION_TIME constant. */
+	const float GetTimeoutIndicationTime();
 
 	/** Contains all of the modules for the routers - could be split into server / client if need be. */
 	enum ModuleID { CONNECT_MODULE, GAME_MODULE, CHAT_MODULE };
@@ -49,4 +58,10 @@ private:
 
 	// TimeStep
 	static const float TIME_STEP;
+
+	// Get the time before disconnecting will occur
+	static const float TIMEOUT;
+
+	// The time before displaying a error icon during game state when not receiving packets from server
+	static const float TIMEOUT_INDICATION_TIME;
 };

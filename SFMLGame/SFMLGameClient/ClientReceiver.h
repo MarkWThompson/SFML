@@ -28,7 +28,7 @@ private:
 	sf::SocketUDP receiver;
 
 	// Received packet storage
-	sf::Packet receivedPacket; ///< Stores the most recently received packet.
-	sf::IPAddress receiveAddress; ///< Stores the address which the most recent packet was sent from.
-	unsigned short receivePort; ///< Stores the port which the most recent packet was sent from.
+	sf::Packet receivedPacket;		///< Stores the most recently received packet.
+	sf::IPAddress receiveAddress;	///< Stores the address which the most recent packet was sent from.
+	unsigned short receivePort;		///< Stores the port which the most recent packet was sent from.
 };

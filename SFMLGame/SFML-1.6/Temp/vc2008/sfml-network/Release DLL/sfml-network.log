@@ -1,0 +1,12 @@
+﻿  SocketHelper.cpp
+  Ftp.cpp
+  Http.cpp
+  IPAddress.cpp
+  Packet.cpp
+  SelectorBase.cpp
+  SocketTCP.cpp
+  SocketUDP.cpp
+..\..\src\SFML\Network\Ftp.cpp(403): warning C4244: 'initializing' : conversion from 'std::streamoff' to 'size_t', possible loss of data
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(C:\SFML-1.6\build\vc2008\..\..\Temp\vc2008\sfml-network\Release DLL\sfml-network.dll) does not match the Linker's OutputFile property value (C:\SFML-1.6\lib\vc2008\sfml-network.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     Creating library C:\SFML-1.6\build\vc2008\..\..\Temp\vc2008\sfml-network\Release DLL\sfml-network.lib and object C:\SFML-1.6\build\vc2008\..\..\Temp\vc2008\sfml-network\Release DLL\sfml-network.exp
+  sfml-network.vcxproj -> C:\SFML-1.6\build\vc2008\..\..\Temp\vc2008\sfml-network\Release DLL\sfml-network.dll

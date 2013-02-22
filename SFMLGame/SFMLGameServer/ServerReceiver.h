@@ -6,7 +6,7 @@ class ServerReceiver
 {
 public:
 	/** Constructor - initialise socket. */
-	ServerReceiver(bool isBlocking, ServerRouter &serverRouter);
+	ServerReceiver(bool isBlocking, ServerRouter* serverRouter);
 
 	/** Default destructor. */
 	~ServerReceiver();

@@ -2,7 +2,7 @@
 
 #include <SFML\Graphics.hpp>
 #include <SFML\Network.hpp>
-#include "..\SharedConstants.h"
+#include "SharedConstants.h"
 
 class State
 {
@@ -14,7 +14,7 @@ public:
 	virtual ~State();
 
 	/** Abstract method intended to act as the main loop of the state.*/
-	virtual void Update(sf::Event events, const sf::Input &input) = 0;
+	virtual void Update(sf::Event events, bool eventFired, const sf::Input &input) = 0;
 
 	/** Abstract method intended to render all objects of the state. */
 	virtual void Draw(sf::RenderWindow &renderWindow) = 0;

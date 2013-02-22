@@ -1,33 +1,37 @@
 #include "ClientTransmitter.h"
+#include "SharedConstants.h"
 
 ClientTransmitter::ClientTransmitter()
 {
+	// Please leave this for now!
+	/*
+	if(!sender.Bind(sharedConstants.GetClientTransmitPort()))
+	{
+		std::cout << "ClientTransmitter() error: failed to bind socket to port." << std::endl;
+	}
+	*/
 }
 
 ClientTransmitter::~ClientTransmitter()
 {
+	sender.Close();
 }
 
 void ClientTransmitter::SendUDP(unsigned short port, sf::IPAddress targetAddress, sf::Packet sendPacket)
 {
 	if(targetAddress.IsValid() == false)
 	{
-		std::cout << "IP Invalid" << std::endl;
+		std::cout << "ClientTransmitter::SendUDP() error: IP invalid." << std::endl;
 	}
 	else
 	{
-		// Create a UDP socket for communicating with server
-		sf::SocketUDP sender;
-
 		// Send a message to the server
-		if (sender.Send(sendPacket, targetAddress, port) != sf::Socket::Done)
+		if(sender.Send(sendPacket, targetAddress, port) != sf::Socket::Done)
 		{
+			std::cout << "ClientTransmitter::SendUDP() error: failed to send packet to target." << std::endl;
 			return;
 		}
 
-		std::cout << std::endl << "Message sent to server : " << targetAddress.ToString() << " on port " << port << std::endl;
-
-		// Close the socket
-		sender.Close();
+		//std::cout << std::endl << "Message sent to server : " << targetAddress.ToString() << " on port " << port << std::endl;
 	}
 }

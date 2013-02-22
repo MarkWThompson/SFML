@@ -5,8 +5,9 @@
 #include "ClientTransmitter.h"
 #include "TextInputBox.h"
 #include <iostream>
-#include "..\PacketTypes.h"
+#include "PacketTypes.h"
 #include "State.h"
+#include "ServerNetworkData.h"
 
 class StartState : public State
 {
@@ -18,7 +19,7 @@ public:
 	 * @param fontSize The fontSize of the text input box.
 	 * @param boxWidth The width of the text input box.
 	 */
-	StartState(ClientTransmitter* clientTransmitter, std::string ipFontPath, float fontSize, int boxWidth);
+	StartState(ClientTransmitter* clientTransmitter, std::string ipFontPath, float fontSize, int boxWidth, ServerNetworkData* serverNetworkData);
 
 	/** Default destructor. */
 	~StartState();
@@ -30,7 +31,7 @@ public:
 	bool Load();
 
 	/** Main loop. */
-	void Update(sf::Event events, const sf::Input &input);
+	void Update(sf::Event events, bool eventFired, const sf::Input &input);
 
 	/** Renders all of the applicable state content. */
 	void Draw(sf::RenderWindow &renderWindow);
@@ -39,7 +40,7 @@ public:
 	void ReceiveData(sf::Packet receivedPacket, sf::IPAddress connectionAddress, unsigned int port);
 
 	/** Returns and then clears the text input box buffer. */
-	sf::IPAddress GetAndEraseIP();
+	sf::IPAddress GetAndEraseInput();
 
 	/** 
 	 * Returns the isConnected variable.
@@ -51,14 +52,25 @@ private:
 	/** Used to transmit packets from this state to the server. */
 	ClientTransmitter *clientTransmitter;
 
+	/** Stores information about the host server. */
+	ServerNetworkData *serverNetworkData;
+
+	/** The number of connection attempts to execute before exiting. */
+	const int CONNECTION_ATTMEPTS;
+
+	/** The time between a connection attempt. */
+	const float CONNETION_TIME_INTERVAL;
+
 	// Storage for received packet data
 	int playerID;
-	sf::IPAddress serverIP;
-	unsigned short serverPort;
 
 	// Background image
 	sf::Image startScreenImage;
 	sf::Sprite startScreen;
+
+	// Connection icon
+	sf::Image connectionImage;
+	sf::Sprite connectionIcon;
 
 	/** Used to listen for user input and store the data typed. */
 	TextInputBox* ipInput;
@@ -74,4 +86,9 @@ private:
 
 	/** Determines if the state has connected to the server. */
 	bool isConnected;
+
+	// Used in the repeating connection attempt
+	int connectionRequestIterator;
+	sf::Clock connectionAttemptIntervalClock;
+	sf::IPAddress candidateServer;
 };

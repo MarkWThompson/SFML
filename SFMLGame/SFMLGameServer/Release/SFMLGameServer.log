@@ -1,1 +1,39 @@
-﻿  SFMLGameServer.vcxproj -> C:\Users\Mark\Desktop\SFMLGame\Release\SFMLGameServer.exe
+﻿Build started 20/02/2013 18:08:47.
+     1>Project "C:\Users\1101100\Downloads\SFML-Mark\SFML-Mark\SFMLGame\SFMLGameServer\SFMLGameServer.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Release\SFMLGameServer.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"..\SFML-1.6\include" /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\PacketTypes.cpp ..\SharedConstants.cpp ConnectionHandler.cpp GameLogic.cpp Main.cpp ServerReceiver.cpp ServerRouter.cpp ServerTransmitter.cpp
+         PacketTypes.cpp
+         SharedConstants.cpp
+         ConnectionHandler.cpp
+     1>ConnectionHandler.cpp(84): warning C4018: '<' : signed/unsigned mismatch
+     1>ConnectionHandler.cpp(126): warning C4018: '<' : signed/unsigned mismatch
+         GameLogic.cpp
+     1>GameLogic.cpp(60): warning C4018: '<' : signed/unsigned mismatch
+         Main.cpp
+         ServerReceiver.cpp
+         ServerRouter.cpp
+         ServerTransmitter.cpp
+       Link:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\1101100\Downloads\SFML-Mark\SFML-Mark\SFMLGame\Release\SFMLGameServer.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"..\SFML-1.6\lib\vc2010" "sfml-system-s.lib" "sfml-window-s.lib" "sfml-graphics-s.lib" "sfml-network-s.lib" "sfml-main.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\SFMLGameServer.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\1101100\Downloads\SFML-Mark\SFML-Mark\SFMLGame\Release\SFMLGameServer.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\1101100\Downloads\SFML-Mark\SFML-Mark\SFMLGame\Release\SFMLGameServer.lib" /MACHINE:X86 Release\PacketTypes.obj
+         Release\SharedConstants.obj
+         Release\ConnectionHandler.obj
+         Release\GameLogic.obj
+         Release\Main.obj
+         Release\ServerReceiver.obj
+         Release\ServerRouter.obj
+         Release\ServerTransmitter.obj
+         Generating code
+         Finished generating code
+         SFMLGameServer.vcxproj -> C:\Users\1101100\Downloads\SFML-Mark\SFML-Mark\SFMLGame\Release\SFMLGameServer.exe
+       Manifest:
+         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\1101100\Downloads\SFML-Mark\SFML-Mark\SFMLGame\Release\SFMLGameServer.exe;#1" /manifest Release\SFMLGameServer.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Release\SFMLGameServer.unsuccessfulbuild".
+         Touching "Release\SFMLGameServer.lastbuildstate".
+     1>Done Building Project "C:\Users\1101100\Downloads\SFML-Mark\SFML-Mark\SFMLGame\SFMLGameServer\SFMLGameServer.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:07.06

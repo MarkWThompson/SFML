@@ -23,7 +23,7 @@ public:
 
 	~TextInputBox();
 
-	void Update(sf::Event events);
+	void Update(sf::Event &events, bool eventFired, const sf::Input &input);
 	void Draw(sf::RenderWindow &renderWindow);
 	void EraseBuffers();
 	sf::Vector2f GetPosition();
@@ -40,7 +40,7 @@ private:
 	void LoadFont(std::string fontPath);
 
 	// Handle the inputting and aligning of text in the input box
-	void HandleLocalTextInput(sf::Event events);
+	void HandleLocalTextInput(sf::Event &events, bool eventFired, const sf::Input &input);
 
 	sf::Font font;
 
@@ -52,4 +52,17 @@ private:
 
 	// The maximum amount of chars in the textBox, set in setup
 	int maxChars;
+
+	bool shouldEnter;
 };
+
+
+
+
+
+
+
+
+
+
+//Your reward is the thought of the smell of cupcakes.

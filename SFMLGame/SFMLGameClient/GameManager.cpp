@@ -1,4 +1,5 @@
 #include "GameManager.h"
+#include "Assets.h"
 
 GameManager::GameManager()
 {
@@ -7,6 +8,9 @@ GameManager::GameManager()
 	// PIPES
 	clientTransmitter = new ClientTransmitter();
 	clientReceiver = new ClientReceiver(false);
+
+	// Network data
+	serverNetworkData = new ServerNetworkData();
 	
 	SwitchState(SharedConstants::START_STATE);
 }
@@ -26,7 +30,7 @@ GameManager::~GameManager()
 	clientReceiver = NULL;
 }
 
-void GameManager::Update(sf::Event events, const sf::Input &input)
+void GameManager::Update(sf::Event events, bool eventFired, const sf::Input &input)
 {
 	if(curState != NULL)
 	{
@@ -36,7 +40,7 @@ void GameManager::Update(sf::Event events, const sf::Input &input)
 			SwitchState(curState->GetTarget());
 		}
 
-		curState->Update(events, input);
+		curState->Update(events, eventFired, input);
 	}
 
 	// Will receive data if the state allows it
@@ -61,12 +65,12 @@ void GameManager::SwitchState(SharedConstants::StateID stateID)
 	{
 		case SharedConstants::START_STATE:
 			std::cout << "START_STATE." << std::endl;
-			curState = new StartState(clientTransmitter, "impact.ttf", 50.0f, 680); // The string probably needs to be a constant somewhere not in shared constants though
+			curState = new StartState(clientTransmitter, ARIAL_FONT_FILE, 50.0f, 470, serverNetworkData);
 			break;
 
 		case SharedConstants::GAME_STATE:
 			std::cout << "GAME_STATE." << std::endl;
-			curState = new GameState(clientTransmitter);
+			curState = new GameState(clientTransmitter, serverNetworkData);
 			break;
 	}
 

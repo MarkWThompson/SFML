@@ -1,10 +1,10 @@
 #include "ServerRouter.h"
-#include "..\SharedConstants.h"
+#include "SharedConstants.h"
 
-ServerRouter::ServerRouter(ConnectionHandler &connectionHandler, GameLogic &gameLogic)
+ServerRouter::ServerRouter(ConnectionHandler* connectionHandler, GameLogic* gameLogic)
 {
-	this->connectionHandler = &connectionHandler;
-	this->gameLogic = &gameLogic;
+	this->connectionHandler = connectionHandler;
+	this->gameLogic = gameLogic;
 }
 
 ServerRouter::~ServerRouter()
@@ -16,13 +16,14 @@ ServerRouter::~ServerRouter()
 	connectionHandler = NULL;
 }
 
-//routing the data
 void ServerRouter::RouteData(sf::Packet packetToRoute, sf::IPAddress connectionAddress, unsigned int port)
 {
 	sf::Uint8 routingTag;
 
 	// Unpack routing tag
 	packetToRoute >> routingTag;
+
+	// std::cout << "Server router sent packet to module with routingTag(" << (int)routingTag << ")." << std::endl;
 
 	if(routingTag == sharedConstants.CONNECT_MODULE)
 	{
@@ -37,5 +38,9 @@ void ServerRouter::RouteData(sf::Packet packetToRoute, sf::IPAddress connectionA
 	else if(routingTag == sharedConstants.CHAT_MODULE)
 	{
 
+	}
+	else
+	{
+		std::cout << "ServerRouter::RouteData() error: Unknown routingTag." << std::endl;
 	}
 }

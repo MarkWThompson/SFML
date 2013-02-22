@@ -13,6 +13,8 @@ TextInputBox::TextInputBox()
 	currentTextDisplay.SetPosition(0, 0);
 
 	rightTextBound = int(currentTextDisplay.GetPosition().x + 100);
+
+	shouldEnter = true;
 }
 
 TextInputBox::TextInputBox(float x, float y, int boxWidth, float fontSize, std::string fontPath, int maxChars, sf::Color colour)
@@ -27,26 +29,27 @@ TextInputBox::TextInputBox(float x, float y, int boxWidth, float fontSize, std::
 	currentTextDisplay.SetPosition(x, y);
 
 	rightTextBound = int(currentTextDisplay.GetPosition().x + boxWidth);
+
+	shouldEnter = true;
 }
 
 TextInputBox::~TextInputBox()
 {
 }
 
-void TextInputBox::Update(sf::Event events)
+void TextInputBox::Update(sf::Event &events, bool eventFired, const sf::Input &input)
 {
-	HandleLocalTextInput(events);
+	HandleLocalTextInput(events,eventFired,input);
 }
 
-void TextInputBox::HandleLocalTextInput(sf::Event events)
+void TextInputBox::HandleLocalTextInput(sf::Event &events, bool eventFired, const sf::Input &input)
 {
-	if (events.Type == sf::Event::TextEntered)
+
+	if((events.Type == sf::Event::TextEntered) && (eventFired == true))
 	{
-		
 		if ((events.Text.Unicode < 128) && (events.Text.Unicode != 8) && (events.Text.Unicode != 13) && (tempBuffer.size() < maxChars))//if the inputted text is in the unicode character set, and isnt delete, and isnt enter, and isnt larger than the limit
 		{
 			//In general the sendBuffer has the entire message, and the tempBuffer has what is being displayed in the typing field. The currentTextDisplay is the actual text object that displays it
-
 			//The buffer that gets send over the network
 			sendBuffer += static_cast<char>(events.Text.Unicode);
 
@@ -96,9 +99,9 @@ void TextInputBox::Draw(sf::RenderWindow &renderWindow)
 
 void TextInputBox::LoadFont(std::string fontPath)
 {
-	if(font.LoadFromFile(fontPath))
+	if(!font.LoadFromFile(fontPath))
 	{
-		std::cout << "TextInputBox font loaded." << std::endl;
+		std::cout << "TextInputBox font was not loaded." << std::endl;
 	}
 }
 

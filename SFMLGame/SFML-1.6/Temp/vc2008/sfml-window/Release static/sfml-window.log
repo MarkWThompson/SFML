@@ -1,0 +1,13 @@
+﻿  Joystick.cpp
+  VideoModeSupport.cpp
+  Context.cpp
+  Input.cpp
+  VideoMode.cpp
+  Window.cpp
+  WindowImpl.cpp
+  WindowImplWin32.cpp
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(1151,5): warning MSB8012: TargetPath(C:\SFML-1.6\build\vc2008\..\..\Temp\vc2008\sfml-window\Release static\sfml-window.lib) does not match the Library's OutputFile property value (C:\SFML-1.6\lib\vc2008\sfml-window-s.lib). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(1153,5): warning MSB8012: TargetName(sfml-window) does not match the Library's OutputFile property value (sfml-window-s). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+winmm.lib(WINMM.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in opengl32.lib(OPENGL32.dll); second definition ignored
+winmm.lib(WINMM.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+  sfml-window.vcxproj -> C:\SFML-1.6\build\vc2008\..\..\Temp\vc2008\sfml-window\Release static\sfml-window.lib

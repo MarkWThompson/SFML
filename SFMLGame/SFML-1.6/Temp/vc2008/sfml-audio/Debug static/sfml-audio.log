@@ -1,0 +1,18 @@
+﻿  stb_vorbis.c
+  AudioDevice.cpp
+  AudioResource.cpp
+  Listener.cpp
+  Music.cpp
+  Sound.cpp
+  SoundBuffer.cpp
+  SoundBufferRecorder.cpp
+  SoundFile.cpp
+  SoundFileDefault.cpp
+  SoundFileOgg.cpp
+  SoundRecorder.cpp
+  SoundStream.cpp
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(1151,5): warning MSB8012: TargetPath(C:\SFML-1.6\build\vc2008\..\..\Temp\vc2008\sfml-audio\Debug static\sfml-audio.lib) does not match the Library's OutputFile property value (C:\SFML-1.6\lib\vc2008\sfml-audio-s-d.lib). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(1153,5): warning MSB8012: TargetName(sfml-audio) does not match the Library's OutputFile property value (sfml-audio-s-d). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+sndfile.lib(libsndfile-1.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in openal32.lib(openal32.dll); second definition ignored
+sndfile.lib(libsndfile-1.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+  sfml-audio.vcxproj -> C:\SFML-1.6\build\vc2008\..\..\Temp\vc2008\sfml-audio\Debug static\sfml-audio.lib
