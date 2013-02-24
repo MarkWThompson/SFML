@@ -21,25 +21,11 @@ void ConnectionHandler::ValidateConnection(sf::IPAddress connectionAddress, unsi
 	// Connection validation either approves or denys a connection. If approved the server sends back a packet containing the approval message
 	if(AddConnectionsToPlayerData(connectionAddress,playerNetworkData,playerAdded))  //if there is space to add, + some validation in this function
 	{
-		// Send approval response
-		ConnectionResponsePacket responsePacket;
-		responsePacket.PackData(sharedConstants.START_STATE, sharedConstants.GetAcceptMessage(), playerAdded, 0, responsePacket);
-		sf::Sleep(0.1f);
-		//reset the players timeOutClock
-		playerNetworkData->playerTimeoutClocks[playerAdded].Reset();
-
-		serverTransmitter->SendUDP(sharedConstants.GetServerTransmitPort(), connectionAddress, responsePacket);
-		std::cout << std::endl << "Accepted connection at : " + connectionAddress.ToString() << std::endl;
+		SendApprovalMessage(connectionAddress,playerAdded,true);
 	}
 	else
 	{
-		// Send deinal message
-		ConnectionResponsePacket responsePacket;
-		responsePacket.PackData(sharedConstants.START_STATE, sharedConstants.GetRejectMessage(), -1, 0, responsePacket);
-
-		sf::Sleep(0.1f);
-		serverTransmitter->SendUDP(sharedConstants.GetServerTransmitPort(), connectionAddress, responsePacket);
-		std::cout << std::endl << "Rejected connection at : " + connectionAddress.ToString()  << std::endl;
+		SendDenialMessage(connectionAddress);
 	}
 }
 
@@ -78,7 +64,6 @@ void ConnectionHandler::ReceiveData(sf::Packet receivedPacket, sf::IPAddress con
 	}
 }
 
-
 bool ConnectionHandler::CheckForDuplicateIPs(sf::IPAddress ipToCheck)
 {
 	for(int i = 0; i < playerNetworkData->playerIPs.size(); i++)
@@ -102,6 +87,7 @@ bool ConnectionHandler::AddConnectionsToPlayerData(sf::IPAddress connectionAddre
 				if(connectionAddress.IsValid())
 				{
 					playerNetworkData->playerIPs[i] = connectionAddress;
+					playerNetworkData->playersActive[i] = true;
 					std::cout << "New player : " << playerNetworkData->playerIPs[i].ToString() << " connected in slot " << i << "." << std::endl;
 					playerAdded = i;
 					return true;
@@ -110,13 +96,7 @@ bool ConnectionHandler::AddConnectionsToPlayerData(sf::IPAddress connectionAddre
 		}
 		else
 		{
-			// Send approval response
-			ConnectionResponsePacket responsePacket;
-			responsePacket.PackData(sharedConstants.START_STATE, sharedConstants.GetAcceptMessage(), i, 0, responsePacket);
-			sf::Sleep(0.1f);
-		
-			serverTransmitter->SendUDP(sharedConstants.GetServerTransmitPort(), connectionAddress, responsePacket);
-			std::cout << std::endl << "Resent connection response packet at : " + connectionAddress.ToString() << std::endl;
+			SendApprovalMessage(connectionAddress,playerAdded,false);
 			break;
 		}
 	}
@@ -131,6 +111,35 @@ void ConnectionHandler::Update()
 	CheckForTimeouts();
 }
 
+
+void ConnectionHandler::SendApprovalMessage(sf::IPAddress &connectionAddress, int &playerAdded, bool shouldResetTimer)
+{
+	// Send approval response
+		ConnectionResponsePacket responsePacket;
+		responsePacket.PackData(sharedConstants.START_STATE, sharedConstants.GetAcceptMessage(), playerAdded, 0, responsePacket);
+		sf::Sleep(0.1f);
+		
+		if(shouldResetTimer == true)
+		{
+			//reset the players timeOutClock
+			playerNetworkData->playerTimeoutClocks[playerAdded].Reset();
+		}
+
+		serverTransmitter->SendUDP(sharedConstants.GetServerTransmitPort(), connectionAddress, responsePacket);
+		std::cout << std::endl << "Sent Approval Packet To : " + connectionAddress.ToString() << std::endl;
+}
+
+void ConnectionHandler::SendDenialMessage(sf::IPAddress &connectionAddress)
+{
+	// Send deinal message
+	ConnectionResponsePacket responsePacket;
+	responsePacket.PackData(sharedConstants.START_STATE, sharedConstants.GetRejectMessage(), -1, 0, responsePacket);
+
+	sf::Sleep(0.1f);
+	serverTransmitter->SendUDP(sharedConstants.GetServerTransmitPort(), connectionAddress, responsePacket);
+	std::cout << std::endl << "Rejected connection at : " + connectionAddress.ToString()  << std::endl;
+}
+
 void ConnectionHandler::CheckForTimeouts()
 {
 	// Check for player timeouts
@@ -139,6 +148,7 @@ void ConnectionHandler::CheckForTimeouts()
 		if((playerNetworkData->playerTimeoutClocks[i].GetElapsedTime() > sharedConstants.GetTimeout()) && (playerNetworkData->playerIPs[i] != NULL_IP))
 		{
 			playerNetworkData->playerIPs[i] = NULL_IP;
+			playerNetworkData->playersActive[i] = false;
 			playerNetworkData->playerStateIterators[i] = 0;
 			playerNetworkData->playerTimeoutClocks[i].Reset();
 			playerNetworkData->numPlayers--;

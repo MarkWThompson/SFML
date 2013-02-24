@@ -23,6 +23,38 @@ public:
 	void ReceiveData(sf::Packet receivedPacket, sf::IPAddress connectionAddress, unsigned int port); // Not used currently, but will be
 
 private:
+	struct PlayerInput
+	{
+		bool wDown;
+		bool aDown;
+		bool sDown;
+		bool dDown;
+		bool spaceDown;
+		bool escDown;
+		bool returnDown;
+		bool lBtnDown;
+		bool rBtnDown;
+		sf::Int16 mouseX;
+		sf::Int16 mouseY;
+
+		PlayerInput::PlayerInput()
+		{
+			bool wDown = false;
+			bool aDown = false;
+			bool sDown = false;
+			bool dDown = false;
+			bool spaceDown = false;
+			bool escDown = false;
+			bool returnDown = false;
+			bool lBtnDown = false;
+			bool rBtnDown = false;
+			sf::Int16 mouseX = 0;
+			sf::Int16 mouseY = 0;
+		}
+	};
+
+	void DoPlayerUpdate(std::vector<PlayerInput> &playerInputs);
+
 	/** Packet output stream. */
 	ServerTransmitter* serverTransmitter;
 
@@ -32,22 +64,12 @@ private:
 
 	/** Clock used to keep application running at a constant speed. */
 	sf::Clock timeStepClock;
+	
+	sf::Vector2f spawnPosition;
+	//Array of the positions of the player sprites, as well as whether they are active or not
+	std::vector<sf::Vector2f> playerPositions;
 
-	// Temp test code
-	int spriteXPos;
-	int spriteYPos;
-	int spriteSpeed;
+	std::vector<PlayerInput> playerInputs;
 
-	// Temporary storage for packet data
-	bool wDown;
-	bool aDown;
-	bool sDown;
-	bool dDown;
-	bool spaceDown;
-	bool escDown;
-	bool returnDown;
-	bool lBtnDown;
-	bool rBtnDown;
-	sf::Int16 mouseX;
-	sf::Int16 mouseY;
+	float playerMoveSpeed;
 };

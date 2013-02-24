@@ -19,9 +19,16 @@ GameState::~GameState()
 bool GameState::Load()
 {
 	// Load the player controlled android sprite
-	if(androidImage.LoadFromFile(ANDROID_IMAGE))
+	if(playerImage.LoadFromFile(MEGAMAN_IMAGE))
 	{
-		androidSprite.SetImage(androidImage);
+		for(int i = 0; i < sharedConstants.GetMaxPlayers(); i++)
+		{
+			sf::Sprite setupSprite;
+			playerSprites.push_back(setupSprite);	//Create an empty pointer vector of 8 sprites
+			playerSprites[i].SetImage(playerImage);
+			// Set no players to be active at the start
+			playersActive.push_back(false);
+		}
 	}
 	else
 	{
@@ -39,7 +46,6 @@ bool GameState::Load()
 	}
 
 	// Set the initial positions of the sprites
-	androidSprite.SetPosition(0.0f, 0.0f);
 	interuptSprite.SetPosition(1200.0f, 30.0f);
 
 	// Will now listen for and receive packets
@@ -68,8 +74,9 @@ void GameState::Update(sf::Event events, bool eventFired, const sf::Input &input
 		sf::Int16 mouseX = input.GetMouseX();
 		sf::Int16 mouseY = input.GetMouseY();
 
+
 		// Pack input data
-		inputPacket.PackData(sharedConstants.GAME_MODULE, wDown, aDown, sDown, dDown, spaceDown, escDown, returnDown, lBtnDown, rBtnDown, mouseX, mouseY, inputPacket);
+		inputPacket.PackData(sharedConstants.GAME_MODULE,serverNetworkData->playerID, true, wDown, aDown, sDown, dDown, spaceDown, escDown, returnDown, lBtnDown, rBtnDown, mouseX, mouseY, inputPacket);
 
 		// This packet goes to the connectionHandler on the server
 		ConnectionValidityPacket validationPacket;
@@ -99,24 +106,42 @@ void GameState::ReceiveData(sf::Packet receivedPacket, sf::IPAddress connectionA
 	sf::Uint8 packetType;
 	receivedPacket >> packetType;
 
-	// Temp stack variables
-	sf::Int16 xPos, yPos;
 
-	if(packetType == POSITION_PACKET)
+	if(packetType == PLAYER_POSITIONS_PACKET)
 	{
-		// Grab coords
-		receivedPacket >> xPos >> yPos;
-		androidSprite.SetPosition(xPos,yPos);
-
-		// Set state iteration variable
-		sf::Uint32 stateIteration;
-		receivedPacket >> stateIteration;
-		stateIterator = stateIteration;
+		UnpackPlayerPositionsPacket(receivedPacket, playersActive, playerSprites, stateIterator);
 	}
 	else
 	{
 		std::cout << "Packet type: UNDEFINED_PACKET" << std::endl;
 	}
+}
+
+void GameState::UnpackPlayerPositionsPacket(sf::Packet &receivedPacket, std::vector<bool> &playersActive, std::vector<sf::Sprite> &playerSprites, sf::Uint32 &stateIterator)
+{
+	sf::Uint8 playerPositionVectorSize;
+	receivedPacket >> playerPositionVectorSize;
+
+	//Grab what players are active
+	for(int i = 0; i < playerPositionVectorSize; i++)
+	{
+		bool isThisOneActive;
+		receivedPacket >> isThisOneActive;
+		playersActive[i] = isThisOneActive;
+	}
+
+	// Grab coords
+	for(int i = 0; i < playerPositionVectorSize; i++)
+	{
+		sf::Vector2f playerPos;
+		receivedPacket >> playerPos;
+		playerSprites[i].SetPosition(playerPos);
+	}
+		
+	// Set state iteration variable
+	sf::Uint32 stateIteration;
+	receivedPacket >> stateIteration;
+	stateIterator = stateIteration;
 }
 
 void GameState::CheckTimeout()
@@ -144,7 +169,15 @@ void GameState::CheckTimeout()
 
 void GameState::Draw(sf::RenderWindow &renderWindow)
 {
-	renderWindow.Draw(androidSprite);
+	//render all the players
+	for(int i = 0; i < sharedConstants.GetMaxPlayers(); i++)
+	{
+		if(playersActive[i])
+		{
+			renderWindow.Draw(playerSprites[i]);
+		}
+	}
+	//renderWindow.Draw(androidSprite);
 
 	if(connectionProblem == true)
 	{

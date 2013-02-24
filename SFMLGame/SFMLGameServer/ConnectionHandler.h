@@ -34,6 +34,10 @@ private:
 	/** Checks that players are still sending validity packets. */
 	void CheckForTimeouts();
 
+	void SendApprovalMessage(sf::IPAddress &connectionAddress, int &playerAdded, bool shouldResetTimer);
+	void SendDenialMessage(sf::IPAddress &connectionAddress);
+	void AddPlayer(int PlayerID);
+
 	/** Packet output stream. */
 	ServerTransmitter* serverTransmitter;
 

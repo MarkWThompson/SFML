@@ -3,6 +3,19 @@
 
 // Pack a packet, that's fun to say. PackaPacketPackaPacketPackaPacket Hey!
 
+
+//Now we can pack vectors and shiz
+sf::Packet& operator <<(sf::Packet& Packet, const sf::Vector2f& inputVector2f)
+{
+    return Packet << inputVector2f.x << inputVector2f.y;
+}
+
+sf::Packet& operator >>(sf::Packet& Packet, sf::Vector2f& outputVector2f)
+{
+    return Packet >> outputVector2f.x >> outputVector2f.y;
+}
+
+
 ConnectionRequestPacket::ConnectionRequestPacket()
 {
 }
@@ -32,20 +45,40 @@ void ConnectionValidityPacket::PackData(sf::Uint8 routingTag, int playerID, sf::
 }
 
 
-PositionPacket::PositionPacket()
+PlayerPositionsPacket::PlayerPositionsPacket()
 {
 }
-void PositionPacket::PackData(sf::Uint8 routingTag, sf::Int16 xPos, sf::Int16 yPos, sf::Uint32 stateIteration, sf::Packet &packetInstance)
+
+//playerNum MUST be the size of the array, the array size should really be the amount of players there are.
+void PlayerPositionsPacket::PackData(sf::Uint8 routingTag, sf::Uint8 playerPosVectorSize, std::vector<bool> playersActive, std::vector<sf::Vector2f> playerPositions,sf::Uint32 stateIteration, sf::Packet &packetInstance)
 {
-	packetInstance << routingTag << static_cast<sf::Uint8>(POSITION_PACKET) << xPos << yPos << stateIteration;
+	packetInstance << routingTag << static_cast<sf::Uint8>(PLAYER_POSITIONS_PACKET);
+	//It really is important that playerPosVector size is the same size as playersActive and playerPositions, this will tell you if its not
+	if((playerPosVectorSize != playersActive.size()) || (playerPosVectorSize != playerPositions.size()))
+	{
+		std::cout << "playerPosVectorSize in PlayerPositionsPacket isn't the correct size!! THIS WILL FUCK SHIZ UP" << std::endl;
+	}
+	packetInstance << playerPosVectorSize;
+
+	for(int i = 0; i < playersActive.size(); i++)
+	{
+		packetInstance << playersActive[i];
+	}
+
+	for(int i = 0; i < playerPositions.size(); i++)
+	{
+		packetInstance << playerPositions[i];
+	}
+	packetInstance << stateIteration;
 }
+
 
 
 PlayerInputPacket::PlayerInputPacket()
 {
 }
-void PlayerInputPacket::PackData(sf::Uint8 routingTag, bool wDown, bool aDown, bool sDown, bool dDown, bool spaceDown, bool escDown, 
+void PlayerInputPacket::PackData(sf::Uint8 routingTag, int playerID, bool playerActive, bool wDown, bool aDown, bool sDown, bool dDown, bool spaceDown, bool escDown, 
 								 bool returnDown, bool lBtnDown, bool rBtnDown, sf::Int16 mouseX, sf::Int16 mouseY, sf::Packet &packetInstance)
 {
-	packetInstance << routingTag << static_cast<sf::Uint8>(PLAYER_INPUT_PACKET) << wDown << aDown << sDown << dDown << spaceDown << escDown << returnDown << lBtnDown << rBtnDown << mouseX << mouseY;
+	packetInstance << routingTag << static_cast<sf::Uint8>(PLAYER_INPUT_PACKET) << playerID << wDown << aDown << sDown << dDown << spaceDown << escDown << returnDown << lBtnDown << rBtnDown << mouseX << mouseY;
 }

@@ -36,6 +36,8 @@ private:
 	/** Checks if the connection to the server has been lost. */
 	void CheckTimeout();
 
+	void UnpackPlayerPositionsPacket(sf::Packet &receivedPacket, std::vector<bool> &playersActive, std::vector<sf::Sprite> &playerSprites, sf::Uint32 &stateIterator);
+
 	/** Determines if the client is experiencing packet loss from server. */
 	bool connectionProblem;
 
@@ -44,8 +46,9 @@ private:
 	ServerNetworkData* serverNetworkData;
 
 	// Game object
-	sf::Image androidImage;
-	sf::Sprite androidSprite;
+	sf::Image playerImage;
+	std::vector<sf::Sprite> playerSprites;
+	std::vector<bool> playersActive;
 
 	// Connection interrupted
 	sf::Image interuptImage;
