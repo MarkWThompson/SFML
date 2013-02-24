@@ -34,6 +34,7 @@ public:
 	/** Draws the current state. */
 	void Draw(sf::RenderWindow &renderWindow);
 
+	void SendDisconnectMessage();
 private:
 	//Stores the serverIP and the playerNum;
 	ServerNetworkData* serverNetworkData;

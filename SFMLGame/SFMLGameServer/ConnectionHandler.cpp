@@ -62,6 +62,21 @@ void ConnectionHandler::ReceiveData(sf::Packet receivedPacket, sf::IPAddress con
 			playerNetworkData->playerTimeoutClocks[playerID].Reset();
 		}
 	}
+
+	if(packetType == DISCONNECTION_PACKET)
+	{
+		int playerID;
+		receivedPacket >> playerID;
+
+		playerNetworkData->playerIPs[playerID] = NULL_IP;
+		playerNetworkData->playersActive[playerID] = false;
+		playerNetworkData->playerStateIterators[playerID] = 0;
+		playerNetworkData->playerTimeoutClocks[playerID].Reset();
+		playerNetworkData->numPlayers--;
+
+		std::cout << "Player ID : " << playerID << " has disconnected" << std::endl;
+		
+	}
 }
 
 bool ConnectionHandler::CheckForDuplicateIPs(sf::IPAddress ipToCheck)

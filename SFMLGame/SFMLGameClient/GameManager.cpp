@@ -87,3 +87,10 @@ void GameManager::Draw(sf::RenderWindow &renderWindow)
 		curState->Draw(renderWindow);
 	}
 }
+
+void GameManager::SendDisconnectMessage()
+{
+	DisconnectionPacket disconnectionPacket;
+	disconnectionPacket.PackData(SharedConstants::CONNECT_MODULE,serverNetworkData->playerID,disconnectionPacket);
+	clientTransmitter->SendUDP(sharedConstants.GetClientTransmitPort(), serverNetworkData->serverIP, disconnectionPacket);
+}

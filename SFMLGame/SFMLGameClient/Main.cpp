@@ -31,12 +31,14 @@ int main()
             // Close window : exit
             if(events.Type == sf::Event::Closed)
 			{
+				gameManager->SendDisconnectMessage();
                 app.Close();
 			}
 
             // Escape key : exit
             if((events.Type == sf::Event::KeyPressed) && (events.Key.Code == sf::Key::Escape))
 			{
+				gameManager->SendDisconnectMessage();
                 app.Close();
 			}
 

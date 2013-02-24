@@ -35,6 +35,13 @@ void ConnectionResponsePacket::PackData(sf::Uint8 routingTag, std::string respon
 	packetInstance << routingTag << static_cast<sf::Uint8>(CONNECTION_RESPONSE_PACKET) << responseMessage << playerID << stateIteration;
 }
 
+DisconnectionPacket::DisconnectionPacket()
+{
+}
+void DisconnectionPacket::PackData(sf::Uint8 routingTag, int playerID, sf::Packet &packetInstance)
+{
+	packetInstance << routingTag << static_cast<sf::Uint8>(DISCONNECTION_PACKET) << playerID;
+}
 
 ConnectionValidityPacket::ConnectionValidityPacket()
 {

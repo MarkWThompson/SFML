@@ -7,6 +7,7 @@
 #define CONNECTION_VALIDITY_PACKET 2
 #define PLAYER_POSITIONS_PACKET 3
 #define PLAYER_INPUT_PACKET 4
+#define DISCONNECTION_PACKET 5
 
 //sf::Packet & operator << (sf::Packet & Packet, sf::Vector2f& inputVector2f);
 sf::Packet & operator >> (sf::Packet & Packet, sf::Vector2f& outputVector2f);
@@ -28,6 +29,13 @@ class ConnectionResponsePacket : public sf::Packet
 public:
 	ConnectionResponsePacket();
 	void PackData(sf::Uint8 routingTag, std::string responseMessage, int playerID, sf::Uint32 stateIterator, sf::Packet &packetInstance);
+};
+
+class DisconnectionPacket : public sf::Packet
+{
+public:
+	DisconnectionPacket();
+	void PackData(sf::Uint8 routingTag, int playerID,sf::Packet &packetInstance);
 };
 
 

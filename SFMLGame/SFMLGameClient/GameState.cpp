@@ -56,6 +56,7 @@ bool GameState::Load()
 
 void GameState::Update(sf::Event events, bool eventFired, const sf::Input &input)
 {
+
 	if(serverNetworkData->serverIP != NULL_IP)
 	{
 		// Create input packet
