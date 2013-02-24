@@ -19,8 +19,6 @@ const float SharedConstants::TIMEOUT = 6.0f;
 
 const float SharedConstants::TIMEOUT_INDICATION_TIME = 5.0f;
 
-//Define the max players
-const int SharedConstants::MAX_PLAYERS = 8;
 
 SharedConstants::SharedConstants()
 {
@@ -81,9 +79,4 @@ const float SharedConstants::GetTimeout()
 const float SharedConstants::GetTimeoutIndicationTime()
 {
 	return TIMEOUT_INDICATION_TIME;
-}
-
-const int SharedConstants::GetMaxPlayers()
-{
-	return MAX_PLAYERS;
 }

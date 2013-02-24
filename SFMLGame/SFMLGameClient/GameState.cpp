@@ -21,7 +21,7 @@ bool GameState::Load()
 	// Load the player controlled android sprite
 	if(playerImage.LoadFromFile(MEGAMAN_IMAGE))
 	{
-		for(int i = 0; i < sharedConstants.GetMaxPlayers(); i++)
+		for(int i = 0; i < serverNetworkData->maxPlayers; i++)
 		{
 			sf::Sprite setupSprite;
 			playerSprites.push_back(setupSprite);	//Create an empty pointer vector of 8 sprites
@@ -61,6 +61,9 @@ void GameState::Update(sf::Event events, bool eventFired, const sf::Input &input
 	{
 		// Create input packet
 		PlayerInputPacket inputPacket;
+
+
+		//Reset these all to false because they sometimes get stuck due to window management and shiz
 
 		// Grab state of keys
 		bool wDown = input.IsKeyDown(sf::Key::W);
@@ -171,7 +174,7 @@ void GameState::CheckTimeout()
 void GameState::Draw(sf::RenderWindow &renderWindow)
 {
 	//render all the players
-	for(int i = 0; i < sharedConstants.GetMaxPlayers(); i++)
+	for(int i = 0; i < serverNetworkData->maxPlayers; i++)
 	{
 		if(playersActive[i])
 		{

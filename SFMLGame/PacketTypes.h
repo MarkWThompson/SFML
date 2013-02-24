@@ -28,7 +28,7 @@ class ConnectionResponsePacket : public sf::Packet
 {
 public:
 	ConnectionResponsePacket();
-	void PackData(sf::Uint8 routingTag, std::string responseMessage, int playerID, sf::Uint32 stateIterator, sf::Packet &packetInstance);
+	void PackData(sf::Uint8 routingTag, std::string responseMessage, int playerID, sf::Uint8 maxPlayers, sf::Uint32 stateIterator, sf::Packet &packetInstance);
 };
 
 class DisconnectionPacket : public sf::Packet

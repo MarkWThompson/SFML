@@ -126,7 +126,11 @@ void StartState::ReceiveData(sf::Packet receivedPacket, sf::IPAddress connection
 			// Unpack this players number
 			receivedPacket >> playerID;
 
+			sf::Uint8 receivedMaxPlayers;
+			receivedPacket >> receivedMaxPlayers;
+
 			// Set server network data
+			serverNetworkData->maxPlayers = receivedMaxPlayers;
 			serverNetworkData->playerID = playerID;
 			serverNetworkData->serverIP = connectionAddress;
 			serverNetworkData->serverPort = port;

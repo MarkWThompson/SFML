@@ -1,13 +1,20 @@
-﻿Build started 24/02/2013 00:51:30.
+﻿Build started 24/02/2013 01:46:16.
      1>Project "C:\Coding\Unity\SFML\SFMLGame\SFMLGameClient\SFMLGameClient.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\SFMLGameClient.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"..\SFML-1.6\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _MBCS /Gm /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt GameManager.cpp GameState.cpp Main.cpp
-         Main.cpp
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"..\SFML-1.6\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _MBCS /Gm /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\PacketTypes.cpp ..\SharedConstants.cpp ClientReceiver.cpp ClientTransmitter.cpp GameManager.cpp GameState.cpp Main.cpp StartState.cpp State.cpp
+         StartState.cpp
          GameState.cpp
-         GameManager.cpp
+         SharedConstants.cpp
          Generating Code...
+         Skipping... (no relevant changes detected)
+         State.cpp
+         Main.cpp
+         GameManager.cpp
+         ClientTransmitter.cpp
+         ClientReceiver.cpp
+         PacketTypes.cpp
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
@@ -35,4 +42,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.30
+Time Elapsed 00:00:02.60

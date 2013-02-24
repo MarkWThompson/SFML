@@ -8,6 +8,7 @@ struct ServerNetworkData
 	sf::IPAddress serverIP;
 	sf::Clock timeoutClock;
 	int playerID;
+	int maxPlayers;
 	unsigned int serverPort;
 
 	void Reset()
@@ -16,6 +17,7 @@ struct ServerNetworkData
 		playerID = -1;
 		serverPort = -1;
 		timeoutClock.Reset();
+		maxPlayers = 1;
 	}
 
 	ServerNetworkData::ServerNetworkData()

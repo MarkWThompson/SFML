@@ -30,9 +30,9 @@ void ConnectionRequestPacket::PackData(sf::Uint8 inputRoutingTag, sf::Packet &pa
 ConnectionResponsePacket::ConnectionResponsePacket()
 {
 }
-void ConnectionResponsePacket::PackData(sf::Uint8 routingTag, std::string responseMessage, int playerID, sf::Uint32 stateIteration, sf::Packet &packetInstance)
+void ConnectionResponsePacket::PackData(sf::Uint8 routingTag, std::string responseMessage, int playerID, sf::Uint8 maxPlayers, sf::Uint32 stateIteration, sf::Packet &packetInstance)
 {
-	packetInstance << routingTag << static_cast<sf::Uint8>(CONNECTION_RESPONSE_PACKET) << responseMessage << playerID << stateIteration;
+	packetInstance << routingTag << static_cast<sf::Uint8>(CONNECTION_RESPONSE_PACKET) << responseMessage << playerID << maxPlayers << stateIteration;
 }
 
 DisconnectionPacket::DisconnectionPacket()

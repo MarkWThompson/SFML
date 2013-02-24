@@ -34,9 +34,6 @@ public:
 	/** Returns the TIMEOUT_INDICATION_TIME constant. */
 	const float GetTimeoutIndicationTime();
 
-	/** Returns the MAX_PLAYERS constants. */
-	const int GetMaxPlayers();
-
 	/** Contains all of the modules for the routers - could be split into server / client if need be. */
 	enum ModuleID { CONNECT_MODULE, GAME_MODULE, CHAT_MODULE };
 
@@ -67,7 +64,5 @@ private:
 
 	// The time before displaying a error icon during game state when not receiving packets from server
 	static const float TIMEOUT_INDICATION_TIME;
-	
-	//max players
-	static const int MAX_PLAYERS;
+
 };
