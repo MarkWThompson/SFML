@@ -1,0 +1,20 @@
+﻿  PacketTypes.cpp
+  Generating Code...
+  Compiling...
+  ServerTransmitter.cpp
+  ServerRouter.cpp
+  ServerReceiver.cpp
+  Server.cpp
+  Projectile.cpp
+  Player.cpp
+  Main.cpp
+  GameLogic.cpp
+  ConnectionHandler.cpp
+  BulletHandler.cpp
+  SharedConstants.cpp
+  Generating Code...
+  Compiling...
+  Object.cpp
+  Level.cpp
+  Generating Code...
+  SFMLGameServer.vcxproj -> C:\Users\Mark\Desktop\SFML Game\SFML Game\Debug\SFMLGameServer.exe
