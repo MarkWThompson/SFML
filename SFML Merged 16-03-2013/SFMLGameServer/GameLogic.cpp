@@ -169,6 +169,13 @@ void GameLogic::UpdatePlayer(PlayerInput &playerInput)
 		bulletVelocity.y = players[playerID].GetProjectileSpeed().y;
 		bulletHandler->SpawnBullet(players[playerID].GetShootPosition(), bulletVelocity, stateIterator);
 	}
+
+
+	//Score test
+	if(playerInput.returnDown)
+	{
+		players[playerID].SetScore(players[playerID].GetScore() + 1);
+	}
 }
 
 void GameLogic::ReceiveData(sf::Packet receivedPacket, sf::IPAddress connectionAddress, unsigned int port)
@@ -200,6 +207,26 @@ void GameLogic::ReceiveData(sf::Packet receivedPacket, sf::IPAddress connectionA
 						>> playerInput.rBtnDown
 						>> playerInput.mouseX
 						>> playerInput.mouseY;
+	}
+	else if(packetType == SCORE_REQUEST_PACKET)
+	{
+		//send the vector of scores back
+		ScoreResponsePacket scoreResponsePacket;
+		std::vector<int> playerScores;
+		for(int i = 0; i < playerNetworkData->MAX_PLAYERS; i++)
+		{
+			if(playerNetworkData->playersActive[i] == true)
+			{
+				playerScores.push_back(players[i].GetScore());
+			}
+			else
+			{
+				playerScores.push_back(0);
+			}
+		}
+
+		scoreResponsePacket.PackData(sharedConstants.GAME_STATE, playerNetworkData->MAX_PLAYERS, playerScores, scoreResponsePacket);
+		serverTransmitter->SendUDP(sharedConstants.GetServerTransmitPort(), connectionAddress, scoreResponsePacket);
 	}
 
 }

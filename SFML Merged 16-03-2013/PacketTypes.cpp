@@ -125,3 +125,26 @@ void ProjectileDeathPacket::PackData(sf::Uint8 routingTag, sf::Uint32 bulletID, 
 {
 	packetInstance << routingTag << static_cast<sf::Uint8>(PROJECTILE_DEATH_PACKET) << bulletID << deathPosition << stateIterator;
 }
+
+ScoreRequestPacket::ScoreRequestPacket()
+{
+}
+
+void ScoreRequestPacket::PackData(sf::Uint8 routingTag, sf::Packet &packetInstance)
+{
+	packetInstance << routingTag << static_cast<sf::Uint8>(SCORE_REQUEST_PACKET);
+}
+
+ScoreResponsePacket::ScoreResponsePacket()
+{
+}
+
+void ScoreResponsePacket::PackData(sf::Uint8 routingTag, sf::Uint8 scoreVectorSize, std::vector<int> scoreVector, sf::Packet &packetInstance)
+{
+	packetInstance << routingTag << static_cast<sf::Uint8>(SCORE_RESPONSE_PACKET) << scoreVectorSize;
+
+	for(size_t i = 0; i < scoreVector.size(); i++)
+	{
+		packetInstance << scoreVector[i];
+	}
+}

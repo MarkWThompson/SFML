@@ -98,6 +98,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PlayerSprite.cpp" />
+    <ClCompile Include="ScoreBoard.cpp" />
     <ClCompile Include="StartState.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="TextInputBox.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="HealthBarSprite.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="PlayerSprite.h" />
+    <ClInclude Include="ScoreBoard.h" />
     <ClInclude Include="ServerNetworkData.h" />
     <ClInclude Include="StartState.h" />
     <ClInclude Include="State.h" />

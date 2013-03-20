@@ -13,6 +13,8 @@
 #define PROJECTILE_PACKET 6
 #define PROJECTILE_DEATH_PACKET 7
 #define PLAYER_DATA_PACKET 8
+#define SCORE_REQUEST_PACKET 9
+#define SCORE_RESPONSE_PACKET 10
 
 // Packet overloads
 //sf::Packet & operator << (sf::Packet & Packet, sf::Vector2f& inputVector2f);
@@ -88,4 +90,19 @@ class ProjectileDeathPacket : public sf::Packet
 public:
 	ProjectileDeathPacket();
 	void PackData(sf::Uint8 routingTag, sf::Uint32 bulletID, sf::Vector2f deathPosition, sf::Uint32 stateIterator, sf::Packet &packetInstance);
+};
+
+class ScoreRequestPacket : public sf::Packet
+{
+public:
+	ScoreRequestPacket();
+	void PackData(sf::Uint8 routingTag, sf::Packet &packetInstance);
+};
+
+class ScoreResponsePacket : public sf::Packet
+{
+public:
+	ScoreResponsePacket();
+	//ScoreVectorSize should really be 8, or maxPlayers
+	void PackData(sf::Uint8 routingTag, sf::Uint8 scoreVectorSize, std::vector<int> scoreVector, sf::Packet &packetInstance);
 };

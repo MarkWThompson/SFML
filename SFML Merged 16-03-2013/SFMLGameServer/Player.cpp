@@ -36,6 +36,7 @@ Player::Player()
 	shootDelay = 0.2f;
 
 	SetHealth(sharedConstants.GetMaxHealth());
+	score = 0;
 }
 
 Player::~Player()
@@ -78,9 +79,10 @@ void Player::Reset()
 	projectileSpeed.x = 15.0f;
 	projectileSpeed.y = 0;
 
-	shootDelay = 0.2f;
+	shootDelay = 0.35f;
 
 	SetHealth(sharedConstants.GetMaxHealth());
+	score = 0;
 }
 
 bool Player::CanShoot()
@@ -264,4 +266,14 @@ int Player::GetHealth()
 void Player::SetHealth(int health)
 {
 	this->health = health;
+}
+
+void Player::SetScore(int score)
+{
+	this->score = score;
+}
+
+int Player::GetScore()
+{
+	return score;
 }

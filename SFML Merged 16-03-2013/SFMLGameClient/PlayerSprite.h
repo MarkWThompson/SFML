@@ -34,6 +34,7 @@ public:
 	//This draws things like healthbars and nametags and whatever
 	void DrawExtras(sf::RenderWindow &renderWindow);
 	void SetPlayerName(std::string playerName);
+	sf::String GetPlayerName();
 	void UpdateHealthBarHealth(int health);
 
 private:

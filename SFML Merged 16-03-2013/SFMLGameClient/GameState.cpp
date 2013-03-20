@@ -19,6 +19,9 @@ bool GameState::Load()
 {
 	tempCount = 0;
 	workingBulletID = 0;
+	scoreBoardRefreshClock.Reset();
+	scoreBoardRefreshTime = 3;
+
 
 	// Load the player
 	if(playerImage.LoadFromFile(PLAYER_IMAGE))
@@ -126,6 +129,27 @@ void GameState::Update(sf::Event events, bool eventFired, const sf::Input &input
 		stateIterator++;
 	}
 
+	//check if you should display scoreboard
+	if(input.IsKeyDown(sf::Key::Tab))
+	{
+		showScoreBoard = true;
+
+
+		if((shouldGetScores == true) || (scoreBoardRefreshClock.GetElapsedTime() > scoreBoardRefreshTime))
+		{
+			scoreBoardRefreshClock.Reset();
+			shouldGetScores = false;
+			ScoreRequestPacket scoreRequestPacket;
+			scoreRequestPacket.PackData(sharedConstants.GAME_MODULE,scoreRequestPacket);
+			clientTransmitter->SendUDP(sharedConstants.GetClientTransmitPort(), serverNetworkData->serverIP, scoreRequestPacket);
+		}
+	}
+	else
+	{
+		showScoreBoard = false;
+		shouldGetScores = true;
+	}
+
 	CheckTimeout();
 }
 
@@ -168,6 +192,29 @@ void GameState::ReceiveData(sf::Packet receivedPacket, sf::IPAddress connectionA
 	else if(packetType == PROJECTILE_DEATH_PACKET)
 	{
 		UnpackProjectileDeathPacket(receivedPacket);
+	}
+	else if(packetType == SCORE_RESPONSE_PACKET)
+	{
+		sf::Uint8 vectorSize;
+		std::vector<int> scores;
+		receivedPacket >> vectorSize;
+		
+		//unpack player scored into scores vector
+		for(size_t i = 0; i < vectorSize; i++)
+		{
+			int extractedScore;
+			receivedPacket >> extractedScore;
+			scores.push_back(extractedScore);
+		}
+
+		//Get the player names into a nice vector so you can pass em into the scoreboard
+		std::vector<sf::String> playerNames;
+		for(size_t i = 0; i < playerSprites.size(); i++)
+		{
+			playerNames.push_back(playerSprites[i].GetPlayerName());
+		}
+
+		scoreBoard.UpdateScores(scores,playerNames);
 	}
 	else
 	{
@@ -318,6 +365,12 @@ void GameState::Draw(sf::RenderWindow &renderWindow)
 			playerSprites[i].DrawExtras(renderWindow);
 			renderWindow.Draw(playerSprites[i]);
 		}
+	}
+
+	//Scoreboard
+	if(showScoreBoard)
+	{
+		scoreBoard.Render(renderWindow);
 	}
 
 	if(connectionProblem == true)

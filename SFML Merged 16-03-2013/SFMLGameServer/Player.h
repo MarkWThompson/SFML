@@ -71,6 +71,9 @@ public:
 
 	//This is the point on the player the bullets emerge from
 	sf::Vector2f GetShootPosition();
+	
+	int GetScore();
+	void SetScore(int score);
 
 private:
 	/** Sets the facingDirection variable depending on the displacement. */
@@ -102,4 +105,7 @@ private:
 	// Stores the speeds at which the player can move in each axis
 	float xSpeed;
 	float ySpeed;
+
+	//The score!
+	int score;
 };

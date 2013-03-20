@@ -12,6 +12,7 @@
 #include <string>
 #include "Level.h"
 #include "BulletSprite.h"
+#include "ScoreBoard.h"
 
 class GameState : public State
 {
@@ -77,4 +78,11 @@ private:
 
 	/** The clock updates the above stateIterator at the fixed update loop, but can be overwritten by the server, which is authorotative. */
 	sf::Clock timeStepClock;
+
+	//The scoreboard
+	ScoreBoard scoreBoard;
+	bool showScoreBoard;
+	bool shouldGetScores;
+	sf::Clock scoreBoardRefreshClock;
+	float scoreBoardRefreshTime;
 };

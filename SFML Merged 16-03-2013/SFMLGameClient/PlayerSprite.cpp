@@ -66,3 +66,8 @@ void PlayerSprite::SetPlayerName(std::string playerName)
 	this->playerName.SetText(playerName);
 	this->playerName.SetScale(0.5f,0.5f);
 }
+
+sf::String PlayerSprite::GetPlayerName()
+{
+	return playerName;
+}
