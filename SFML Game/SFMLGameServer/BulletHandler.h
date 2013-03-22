@@ -16,11 +16,11 @@ class BulletHandler
 {
 public:
 	BulletHandler(PlayerNetworkData* playerNetworkData);
-	~BulletHandler(void);
+	~BulletHandler();
 
 	PlayerNetworkData* playerNetworkData;
 
-	void SpawnBullet(sf::Vector2f spawnPosition, sf::Vector2f velocity, sf::Uint32 stateIterator);
+	void SpawnBullet(int bulletOwner, sf::Vector2f spawnPosition, sf::Vector2f velocity, sf::Uint32 stateIterator);
 	void Update(ServerTransmitter &serverTransmitter,sf::Uint32 stateIterator, sf::Rect<float> levelBounds, std::vector<Player> &players, std::vector<sf::Rect<float>> &platforms);
 	void SendPendingBullets(ServerTransmitter &serverTransmitter);
 	void SendPendingDeathPackets(ServerTransmitter &serverTransmitter);
@@ -42,4 +42,3 @@ private:
 	//Death messages that need to be send
 	std::vector<ProjectileDeathPacket> deathsToSend;
 };
-

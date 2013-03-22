@@ -62,4 +62,7 @@ sf::Vector2f Object::GetPosition()
 	return position;
 }
 
-\
+Object::Orientation Object::GetFacingDirection()
+{
+	return facingDirection;
+}

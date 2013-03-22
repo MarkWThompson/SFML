@@ -22,12 +22,6 @@ GameLogic::GameLogic(ServerTransmitter* serverTransmitter, PlayerNetworkData* pl
 		playerInputs.push_back(playerInput);
 	}
 
-	//LevelBounds, this is temporary, should be loaded in from editor
-	levelBounds.Left = -3000;
-	levelBounds.Right = 3000;
-	levelBounds.Top = -3000;
-	levelBounds.Bottom = 3000;
-
 	bulletHandler = new BulletHandler(playerNetworkData);
 }
 
@@ -39,13 +33,13 @@ GameLogic::~GameLogic()
 
 void GameLogic::Update()
 {	
-
 	//deal with players that have just spawned
 	for(size_t i = 0; i < playerNetworkData->playersToSetup.size(); i++)
 	{
 		if(playerNetworkData->playersToSetup[i] == true)
 		{
 			playerNetworkData->playersToSetup[i] = false;
+			playerNetworkData->playersActive[i] = true;
 			players[i].SetSpawnPosition(level.GetSpawnPoints()[rand() % level.GetSpawnPoints().size()]);
 			players[i].Reset();
 		}
@@ -67,7 +61,16 @@ void GameLogic::Update()
 			}
 		}
 
-		bulletHandler->Update(*serverTransmitter, stateIterator, levelBounds, players, level.GetCollisionBounds());
+		bulletHandler->Update(*serverTransmitter, stateIterator, level.GetBounds(), players, level.GetCollisionBounds());
+
+		// Execute player main update loop
+		for(int i = 0; i < playerNetworkData->MAX_PLAYERS; i++)
+		{
+			if(playerNetworkData->playersActive[i] == true)
+			{
+				players[i].Update();
+			}
+		}
 
 		// Collision detection
 		std::vector<sf::Rect<float>> collisionBounds = level.GetCollisionBounds();
@@ -79,12 +82,37 @@ void GameLogic::Update()
 				{
 					if(players[i].GetBounds().Intersects(collisionBounds[j]))
 					{
-						players[i].HandleCollision(collisionBounds[j]);
+						if(level.GetCollisionBoundsLethality()[j] == true)
+						{
+							players[i].Die();
+							playerNetworkData->playersActive[i] = false;
+						}
+						else
+						{
+							players[i].HandleCollision(collisionBounds[j]);
+						}
 					}
 				}
 			}
 		}
 		
+		// Check for player death
+		for(size_t i = 0; i < players.size(); i++)
+		{
+			// Check for dead players
+			if((players[i].GetHealth() <= 0) && (players[i].GetIsAlive() == true))
+			{
+				players[i].Die();
+				playerNetworkData->playersActive[i] = false;
+				players[i].IncreaseScore(-1);
+			}
+			// Check if its time to respawn
+			if((players[i].deathTimer.GetElapsedTime() > players[i].deathTime) && (players[i].GetIsAlive() == false))
+			{
+				playerNetworkData->playersToSetup[i] = true;
+			}
+		}
+
 		//*Pack a player positions packet
 		// Create vector of player positions to send in playerPositionsPacket
 		std::vector<sf::Vector2f> playerPositions;
@@ -128,11 +156,10 @@ void GameLogic::Update()
 
 void GameLogic::UpdatePlayer(PlayerInput &playerInput)
 {
-
 	int playerID = playerInput.ID;
 	
-	float xMoved = 0;
-	float yMoved = 0;
+	float xMoved = 0.0f;
+	float yMoved = 0.0f;
 
 	// Make sure playerID is valid
 	if(playerID >= 0)
@@ -140,30 +167,25 @@ void GameLogic::UpdatePlayer(PlayerInput &playerInput)
 		// Set pointer to player instance
 		Player& player = players[playerID];
 
-		// Set speeds
-		float xSpeed = player.GetXSpeed();
-		float ySpeed = player.GetYSpeed();
-
+		// Player jump
 		if(playerInput.wDown)
 		{
-			player.MoveDeltaY(-ySpeed);
-			yMoved -= players[playerID].GetMoveSpeed().y;
+			player.Jump();
 		}
-		if(playerInput.sDown)
-		{
-			player.MoveDeltaY(ySpeed);
-			yMoved += players[playerID].GetMoveSpeed().y;
-		}
+
+		// Player move horizontally
 		if(playerInput.aDown)
 		{
-			player.MoveDeltaX(-xSpeed);
-			xMoved -= players[playerID].GetMoveSpeed().x;
+			player.MoveLeft();
 		}
-		if(playerInput.dDown)
+		else if(playerInput.dDown)
 		{
-			player.MoveDeltaX(xSpeed);
-			xMoved += players[playerID].GetMoveSpeed().x;
+			player.MoveRight();
 		}
+
+		yMoved -= players[playerID].GetYVelocity();
+		xMoved += players[playerID].GetXVelocity();
+
 		players[playerID].SetLastMovementVector(xMoved,yMoved);
 	}
 
@@ -180,13 +202,13 @@ void GameLogic::UpdatePlayer(PlayerInput &playerInput)
 			bulletVelocity.x *= -1;
 		}
 
-		bulletHandler->SpawnBullet(players[playerID].GetShootPosition(), bulletVelocity, stateIterator);
+		bulletHandler->SpawnBullet(playerID, players[playerID].GetShootPosition(), bulletVelocity, stateIterator);
 	}
 
 	//Score test
 	if(playerInput.returnDown)
 	{
-		players[playerID].SetScore(players[playerID].GetScore() + 1);
+		players[playerID].IncreaseScore(1);
 	}
 }
 

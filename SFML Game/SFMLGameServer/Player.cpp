@@ -1,6 +1,7 @@
 #include "Player.h"
 
 Player::Player()
+	: MAX_X_VELOCITY(10.0f), X_DECELERATION(1.0f), MIN_Y_VELOCITY(-20.0f), Y_ACCELERATION(-2.0), X_ACCELERATION(2.0f), JUMP_VELOCITY(25.0f)
 {
 	// Load in player image
 	image = new sf::Image();
@@ -19,24 +20,33 @@ Player::Player()
 		image = NULL;
 	}
 
-	xSpeed = 5;
-	ySpeed = 5;
+	gravityEnabled = true;
+	isOnGround = false;
+	isJumping = false;
 
-	spawnPosition.x = 0;
-	spawnPosition.y = 0;
+	xVelocity = 0.0f;
+	yVelocity = 0.0f;
 
-	lastMovementVector.x = 0;
-	lastMovementVector.y = 0;
+	spawnPosition.x = 0.0f;
+	spawnPosition.y = 0.0f;
+
+	lastMovementVector.x = 0.0f;
+	lastMovementVector.y = 0.0f;
 
 	facingDirection = RIGHT;
 
-	projectileSpeed.x = 15;
-	projectileSpeed.y = 0;
+	projectileSpeed.x = 20.0f;
+	projectileSpeed.y = 0.0f;
 
 	shootDelay = 0.2f;
 
-	SetHealth(sharedConstants.GetMaxHealth());
+	health = sharedConstants.GetMaxHealth();
 	score = 0;
+
+	isAlive = true;
+
+	deathTime = 2.0f;
+	deathTimer.Reset();
 }
 
 Player::~Player()
@@ -45,25 +55,114 @@ Player::~Player()
 
 void Player::Reset()
 {
-	SetPosition(spawnPosition.x, spawnPosition.y);
+	position = spawnPosition;
 
-	bulletSpawnXOffset = 60;
-	bulletSpawnYOffset = 24;
+	bulletSpawnXOffset = 60.0f;
+	bulletSpawnYOffset = 24.0f;
 
-	xSpeed = 5;
-	ySpeed = 5;
+	xVelocity = 0.0f;
+	yVelocity = 0.0f;
 
-	lastMovementVector.x = 0;
-	lastMovementVector.y = 0;
+	gravityEnabled = true;
+	isOnGround = false;
+	isJumping = false;
+
+	lastMovementVector.x = 0.0f;
+	lastMovementVector.y = 0.0f;
 
 	facingDirection = RIGHT;
-	projectileSpeed.x = 15.0f;
+	projectileSpeed.x = 20.0f;
 	projectileSpeed.y = 0;
 
 	shootDelay = 0.2f;
 
-	SetHealth(sharedConstants.GetMaxHealth());
-	score = 0;
+	health = sharedConstants.GetMaxHealth();
+
+	isAlive = true;
+
+	deathTime = 2.0f;
+	deathTimer.Reset();
+}
+
+void Player::Update()
+{
+	if(movingHorizontally)
+	{
+		position.x += xVelocity;
+	}
+	else
+	{
+		Zero(xVelocity, X_DECELERATION);
+	}
+
+	position.y -= yVelocity;
+
+	ApplyGravity();
+
+	movingHorizontally = false;
+	isOnGround = false;
+}
+
+void Player::Zero(float& velocity, const float DECELERATION)
+{
+	if(velocity != 0.0f)
+	{
+		if(velocity > 0.0f) // Positive velocity
+		{
+			velocity -= DECELERATION;
+
+			if(velocity < 0.0f)
+			{
+				velocity = 0.0f;
+			}
+		}
+		else if(velocity < 0.0f) // Negative velocity
+		{
+			velocity += DECELERATION;
+
+			if(velocity > 0.0f)
+			{
+				velocity = 0.0f;
+			}
+		}
+	}
+}
+
+void Player::ApplyGravity()
+{
+	// Enable gravity
+	if((gravityEnabled == false) && (isJumping == false))
+	{
+		gravityEnabled = true;
+		isOnGround = false;
+	}
+
+	// Apply downward force
+	if(gravityEnabled == true)
+	{
+		SetVelocity(yVelocity, Y_ACCELERATION, MIN_Y_VELOCITY, JUMP_VELOCITY);
+	}	
+}
+
+void Player::Jump()
+{
+	if((isJumping == false) && (isOnGround == true))
+	{
+		isJumping = true;
+		yVelocity = JUMP_VELOCITY;
+	}
+}
+
+void Player::MoveLeft()
+{
+	SetVelocity(xVelocity, -X_ACCELERATION, -MAX_X_VELOCITY, MAX_X_VELOCITY);
+	movingHorizontally = true;
+}
+
+void Player::MoveRight()
+{
+	SetVelocity(xVelocity, X_ACCELERATION, -MAX_X_VELOCITY, MAX_X_VELOCITY);
+	movingHorizontally = true;
 }
 
 bool Player::CanShoot()
@@ -133,15 +232,14 @@ void Player::DetermineOrientation()
 	}
 }
 
-
-float Player::GetYSpeed()
+float Player::GetYVelocity()
 {
-	return ySpeed;
+	return yVelocity;
 }
 
-float Player::GetXSpeed()
+float Player::GetXVelocity()
 {
-	return xSpeed;
+	return xVelocity;
 }
 
 sf::Vector2f Player::GetProjectileSpeed()
@@ -152,11 +250,6 @@ sf::Vector2f Player::GetProjectileSpeed()
 sf::Vector2f& Player::GetPositionRef()
 {
 	return position;
-}
-
-sf::Vector2f Player::GetMoveSpeed()
-{
-	return sf::Vector2f(xSpeed, ySpeed);
 }
 
 sf::Vector2f Player::GetSpawnPosition()
@@ -187,19 +280,17 @@ sf::Vector2f Player::GetShootPosition()
 	return shootPosition;
 }
 
-Player::Orientation Player::GetFacingDirection()
+void Player::SetVelocity(float& velocity, float acceleration, float minLimit, float maxLimit)
 {
-	if(facingDirection == LEFT)
+	velocity += acceleration;
+
+	if(velocity > maxLimit)
 	{
-		return LEFT;
+		velocity = maxLimit;
 	}
-	else if(facingDirection == RIGHT)
+	else if(velocity < minLimit)
 	{
-		return RIGHT;
-	}
-	else
-	{
-		return UNDEFINED;
+		velocity = minLimit;
 	}
 }
 
@@ -209,29 +300,33 @@ void Player::HandleCollision(sf::Rect<float> objectBounds)
     bool below = false;
 
     // Above object
-	if((position.y - ySpeed + height) <= objectBounds.Top)
+	if((position.y + yVelocity + height) <= objectBounds.Top)
     {
 		position.y = (objectBounds.Top - height);
         above = true;
+		isJumping = false;
+		isOnGround = true;
+		yVelocity = 0.0f;
     }
 
     // Below object
-	if((position.y + ySpeed) >= objectBounds.Bottom)
+	if((position.y - yVelocity) >= objectBounds.Bottom)
     {
 		position.y = objectBounds.Bottom;
         below = true;
+		isJumping = false;
     }
 
     if(!above && !below)
     {
         // Left of object
-		if(position.x - xSpeed < objectBounds.Left)
+		if(position.x + xVelocity < objectBounds.Left)
         {
 			position.x = (objectBounds.Left - width);
         }
 
         // Right of object
-		if(position.x - xSpeed > objectBounds.Left)
+		if(position.x + xVelocity > objectBounds.Left)
         {
 			position.x = objectBounds.Right;
         }
@@ -248,13 +343,28 @@ void Player::SetHealth(int health)
 	this->health = health;
 }
 
-
-void Player::SetScore(int score)
+void Player::IncreaseScore(int amount)
 {
-	this->score = score;
+	this->score += amount;
 }
 
 int Player::GetScore()
 {
 	return score;
+}
+
+void Player::Die()
+{
+	isAlive = false;
+	deathTimer.Reset();
+}
+
+bool Player::GetIsAlive()
+{
+	return isAlive;
+}
+
+void Player::SetIsAlive(bool isAlive)
+{
+	this->isAlive = isAlive;
 }

@@ -1,7 +1,7 @@
 #include "Projectile.h"
 
 
-Projectile::Projectile(float startX, float startY, sf::Vector2f velocity, sf::Vector2f dimensions, sf::Uint32 bulletID, int maxPlayers)
+Projectile::Projectile(float startX, float startY, sf::Vector2f velocity, sf::Vector2f dimensions, sf::Uint32 bulletID, int bulletOwner)
 {
 	SetBulletID(bulletID);
 
@@ -10,22 +10,16 @@ Projectile::Projectile(float startX, float startY, sf::Vector2f velocity, sf::Ve
 
 	this->velocity.x = velocity.x;
 	this->velocity.y = velocity.y;
-
-	sf::Clock blankClock;
-	for(int i = 0; i < maxPlayers; i++)
-	{
-		blankClock.Reset();
-		lastNetworkSends.push_back(blankClock);
-	}
 	
 	bounds.Left = startX;
 	bounds.Right = startX + dimensions.x;
 	bounds.Top = startY;
 	bounds.Bottom = startY + dimensions.y;
+
+	this->bulletOwner = bulletOwner;
 }
 
-
-Projectile::~Projectile(void)
+Projectile::~Projectile()
 {
 }
 
@@ -70,4 +64,14 @@ sf::Vector2f Projectile::GetPosition()
 sf::Vector2f Projectile::GetVelocity()
 {
 	return velocity;
+}
+
+void Projectile::SetBulletOwner(int bulletOwner)
+{
+	this->bulletOwner = bulletOwner;
+}
+
+int Projectile::GetBulletOwner()
+{
+	return bulletOwner;
 }

@@ -48,8 +48,11 @@ bool Level::Load(std::string levelFilepath)
 		return false;
 	}
 
+	// Entities layer
+	rapidxml::xml_node<> *entitiesLayer = backgroundLayer->next_sibling();
+
 	// Platforms layer
-	rapidxml::xml_node<> *platformLayer = backgroundLayer->next_sibling();
+	rapidxml::xml_node<> *platformLayer = entitiesLayer->next_sibling();
 	rapidxml::xml_node<> *platformItem = platformLayer->first_node()->first_node();
 	if(!LoadLayer(PLATFORMS, platformItem))
 	{

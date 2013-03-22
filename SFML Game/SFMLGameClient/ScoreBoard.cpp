@@ -4,24 +4,21 @@
 //The pair comparatator, uses the second var
 bool sortPairBySecond (const std::pair<sf::String, int>& i, const std::pair<sf::String, int>& j);
 
-
 ScoreBoard::ScoreBoard()
 {
 	frameImage.LoadFromFile(HIGHSCOREFRAME_IMAGE);
 	frameSprite.SetImage(frameImage);
 	frameSprite.SetPosition(scoreBoardPosition);
 
-	playerNamesStartOffset.x = 40;
-	playerNamesStartOffset.y = 42;
+	playerNamesStartOffset.x = 20;
+	playerNamesStartOffset.y = 21;
 
-	playerNamesHorizontalOffset = 76;
+	playerNamesHorizontalOffset = 38;
 
-	horizontalScoreOffset = 335;
-
+	horizontalScoreOffset = 168;
 }
 
-
-ScoreBoard::~ScoreBoard(void)
+ScoreBoard::~ScoreBoard()
 {
 }
 
@@ -39,12 +36,12 @@ void ScoreBoard::UpdateScores(std::vector<sf::Int16> inputPlayerScores, std::vec
 			std::pair<sf::String, int> newPlayerPair;
 			sf::String newPlayerString;
 			newPlayerString.SetText(playerNames[i].GetText());
-			newPlayerString.SetSize(30);
+			newPlayerString.SetSize(15);
 			newPlayerPair.first = newPlayerString;
 			newPlayerPair.second = inputPlayerScores[i];
 			playerStrings.push_back(newPlayerPair);
 
-			//Checks for no name, puts in a placeholder
+			// Checks for no name, puts in a placeholder
 			std::string cowardCheck;
 			cowardCheck = playerNames[i].GetText();
 			if(cowardCheck.size() == 0)
@@ -57,7 +54,7 @@ void ScoreBoard::UpdateScores(std::vector<sf::Int16> inputPlayerScores, std::vec
 			playerStrings[i].first.SetText(playerNames[i].GetText());
 			playerStrings[i].second = inputPlayerScores[i];
 
-			//Checks for no name, puts in a placeholder
+			// Checks for no name, puts in a placeholder
 			std::string cowardCheck;
 			cowardCheck = playerNames[i].GetText();
 			if(cowardCheck.size() == 0)
@@ -67,15 +64,16 @@ void ScoreBoard::UpdateScores(std::vector<sf::Int16> inputPlayerScores, std::vec
 		}
 	}
 
-	//Get the scores
+	// Get the scores
 	for(size_t i = 0; i < inputPlayerScores.size(); i++)
 	{
-		//convert this score to a string
+		// Convert this score to a string
 		std::stringstream ss;
 		ss << inputPlayerScores[i];
 
 		std::pair<sf::String,int> playerScoreString;
 		playerScoreString.first.SetText(ss.str());
+		playerScoreString.first.SetSize(15);
 		playerScoreString.second = inputPlayerScores[i];
 
 		if(scoreStrings.size() <= i)
@@ -90,7 +88,7 @@ void ScoreBoard::UpdateScores(std::vector<sf::Int16> inputPlayerScores, std::vec
 		}
 	}
 
-	//Sort the scores
+	// Sort the scores
 	std::sort(playerStrings.begin(),playerStrings.end(),sortPairBySecond);
 	std::sort(scoreStrings.begin(), scoreStrings.end(),sortPairBySecond);
 }
@@ -115,13 +113,13 @@ void ScoreBoard::Render(sf::RenderWindow &renderWindow)
 {
 	renderWindow.Draw(frameSprite);
 	
-	//Draw the playerStrings
+	// Draw the playerStrings
 	for(size_t i = 0; i < playerStrings.size(); i++)
 	{
 		renderWindow.Draw(playerStrings[i].first);
 	}
 
-	//draw the scoreStrings
+	// Draw the scoreStrings
 	for(size_t i = 0; i < scoreStrings.size(); i++)
 	{
 		renderWindow.Draw(scoreStrings[i].first);
@@ -129,7 +127,7 @@ void ScoreBoard::Render(sf::RenderWindow &renderWindow)
 
 }
 
-//Used as a comparator for sorting a pair by its second element
+// Used as a comparator for sorting a pair by its second element
 bool sortPairBySecond (const std::pair<sf::String, int>& i, const std::pair<sf::String, int>& j)
 { 
 	return (i.second > j.second); 

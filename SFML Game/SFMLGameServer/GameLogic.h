@@ -78,7 +78,4 @@ private:
 
 	/** Stores the player inputs. */
 	std::vector<PlayerInput> playerInputs;
-
-	// Temp- level bounds
-	sf::Rect<float> levelBounds;
 };

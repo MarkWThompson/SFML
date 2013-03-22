@@ -36,6 +36,136 @@
                 <Y>1</Y>
             </ScrollSpeed>
         </Layer>
+        <Layer Name="Entities" Visible="true">
+            <Items>
+                <Item xsi:type="RectangleItem" Name="LevelBounds" Visible="true">
+                    <Position>
+                        <X>-1940</X>
+                        <Y>-900</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="LevelBounds" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>4000</Width>
+                    <Height>2000</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>192</G>
+                        <B>192</B>
+                        <A>32</A>
+                        <PackedValue>549503168</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="SpawnPoint 1" Visible="true">
+                    <Position>
+                        <X>650</X>
+                        <Y>280</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="SpawnPoint" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="Invisible" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>Megaman.png</texture_filename>
+                    <asset_name>Megaman</asset_name>
+                    <Origin>
+                        <X>30</X>
+                        <Y>34</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="SpawnPoint 2" Visible="true">
+                    <Position>
+                        <X>480</X>
+                        <Y>280</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="SpawnPoint" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="Invisible" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>Megaman.png</texture_filename>
+                    <asset_name>Megaman</asset_name>
+                    <Origin>
+                        <X>30</X>
+                        <Y>34</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="SpawnPoint 3" Visible="true">
+                    <Position>
+                        <X>840</X>
+                        <Y>280</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="SpawnPoint" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="Invisible" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>Megaman.png</texture_filename>
+                    <asset_name>Megaman</asset_name>
+                    <Origin>
+                        <X>30</X>
+                        <Y>34</Y>
+                    </Origin>
+                </Item>
+            </Items>
+            <ScrollSpeed>
+                <X>1</X>
+                <Y>1</Y>
+            </ScrollSpeed>
+        </Layer>
         <Layer Name="Platforms" Visible="true">
             <Items>
                 <Item xsi:type="TextureItem" Name="Texture_0002" Visible="true">
@@ -180,110 +310,7 @@
             </ScrollSpeed>
         </Layer>
         <Layer Name="Foreground" Visible="true">
-            <Items>
-                <Item xsi:type="TextureItem" Name="Texture_0009" Visible="true">
-                    <Position>
-                        <X>650</X>
-                        <Y>280</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="SpawnPoint" Type="string" Description="">
-                            <string />
-                        </Property>
-                        <Property Name="Invisible" Type="string" Description="">
-                            <string />
-                        </Property>
-                    </CustomProperties>
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
-                    <texture_filename>Megaman.png</texture_filename>
-                    <asset_name>Megaman</asset_name>
-                    <Origin>
-                        <X>30</X>
-                        <Y>34</Y>
-                    </Origin>
-                </Item>
-                <Item xsi:type="TextureItem" Name="Texture_0010" Visible="true">
-                    <Position>
-                        <X>480</X>
-                        <Y>280</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="SpawnPoint" Type="string" Description="">
-                            <string />
-                        </Property>
-                        <Property Name="Invisible" Type="string" Description="">
-                            <string />
-                        </Property>
-                    </CustomProperties>
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
-                    <texture_filename>Megaman.png</texture_filename>
-                    <asset_name>Megaman</asset_name>
-                    <Origin>
-                        <X>30</X>
-                        <Y>34</Y>
-                    </Origin>
-                </Item>
-                <Item xsi:type="TextureItem" Name="Texture_0011" Visible="true">
-                    <Position>
-                        <X>840</X>
-                        <Y>280</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="SpawnPoint" Type="string" Description="">
-                            <string />
-                        </Property>
-                        <Property Name="Invisible" Type="string" Description="">
-                            <string />
-                        </Property>
-                    </CustomProperties>
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
-                    <texture_filename>Megaman.png</texture_filename>
-                    <asset_name>Megaman</asset_name>
-                    <Origin>
-                        <X>30</X>
-                        <Y>34</Y>
-                    </Origin>
-                </Item>
-            </Items>
+            <Items />
             <ScrollSpeed>
                 <X>1</X>
                 <Y>1</Y>
@@ -312,15 +339,19 @@
                         <X>-2040</X>
                         <Y>-900</Y>
                     </Position>
-                    <CustomProperties />
+                    <CustomProperties>
+                        <Property Name="Lethal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
                     <Width>100</Width>
                     <Height>2000</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
-                        <B>192</B>
+                        <B>0</B>
                         <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
+                        <PackedValue>2445279232</PackedValue>
                     </FillColor>
                 </Item>
                 <Item xsi:type="RectangleItem" Name="Rectangle_0016" Visible="true">
@@ -328,15 +359,19 @@
                         <X>-1940</X>
                         <Y>-1000</Y>
                     </Position>
-                    <CustomProperties />
+                    <CustomProperties>
+                        <Property Name="Lethal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
                     <Width>4000</Width>
                     <Height>100</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
-                        <B>192</B>
+                        <B>0</B>
                         <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
+                        <PackedValue>2445279232</PackedValue>
                     </FillColor>
                 </Item>
                 <Item xsi:type="RectangleItem" Name="Rectangle_0017" Visible="true">
@@ -344,15 +379,19 @@
                         <X>-1940</X>
                         <Y>1100</Y>
                     </Position>
-                    <CustomProperties />
+                    <CustomProperties>
+                        <Property Name="Lethal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
                     <Width>4000</Width>
                     <Height>100</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
-                        <B>192</B>
+                        <B>0</B>
                         <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
+                        <PackedValue>2445279232</PackedValue>
                     </FillColor>
                 </Item>
                 <Item xsi:type="RectangleItem" Name="Rectangle_0018" Visible="true">
@@ -360,15 +399,19 @@
                         <X>2060</X>
                         <Y>-900</Y>
                     </Position>
-                    <CustomProperties />
+                    <CustomProperties>
+                        <Property Name="Lethal" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
                     <Width>100</Width>
                     <Height>2000</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
-                        <B>192</B>
+                        <B>0</B>
                         <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
+                        <PackedValue>2445279232</PackedValue>
                     </FillColor>
                 </Item>
             </Items>
@@ -380,11 +423,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>18</NextItemNumber>
-        <ContentRootFolder>C:\Users\Mark\Desktop\SFML-master\SFML Game\Assets</ContentRootFolder>
+        <NextItemNumber>19</NextItemNumber>
+        <ContentRootFolder>C:\Users\Mark\Desktop\SFML Game\Assets</ContentRootFolder>
         <CameraPosition>
-            <X>491.661835</X>
-            <Y>316.6631</Y>
+            <X>-408.3395</X>
+            <Y>-383.338</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

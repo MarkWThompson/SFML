@@ -19,10 +19,9 @@ public:
 	 */
 	Player(float startX, float startY);
 
-	/** Default destructor. */
 	~Player();
 
-	//Resets all the things
+	/** Resets all variables. */
 	void Reset();
 
 	// Displaces the player position from where it is currently positioned
@@ -39,16 +38,13 @@ public:
 	void SetSpawnPosition(sf::Vector2f spawnPosition);
 
 	/** Returns the y speed variable. */
-	float GetYSpeed();
+	float GetYVelocity();
 
 	/** Returns the x speed variable. */
-	float GetXSpeed();
+	float GetXVelocity();
 
 	/** Returns the position variable by reference. */
 	sf::Vector2f& GetPositionRef();
-
-	/** Returns the xSpeed and ySpeed variables compacted into a sf:Vector2f. */
-	sf::Vector2f GetMoveSpeed();
 
 	/** Returns the spawnPosition variable. */
 	sf::Vector2f GetSpawnPosition();
@@ -59,8 +55,12 @@ public:
 	/** Returns the projectileSpeed variable. */
 	sf::Vector2f GetProjectileSpeed();
 
-	Orientation GetFacingDirection();
+	void Update();
+	void MoveLeft();
+	void MoveRight();
+	void Jump();
 
+	// Health G/S
 	void SetHealth(int health);
 	int GetHealth();
 
@@ -73,10 +73,41 @@ public:
 	//This is the point on the player the bullets emerge from
 	sf::Vector2f GetShootPosition();
 
+	// Score G/S
 	int GetScore();
-	void SetScore(int score);
+	void IncreaseScore(int amount);
+
+	void Die();
+	bool GetIsAlive();
+	void SetIsAlive(bool isAlive);
+	
+	//The death timer
+	sf::Clock deathTimer;
+	float deathTime;
 
 private:
+	// X movement
+	float xVelocity;
+	const float X_ACCELERATION;
+	const float X_DECELERATION;
+	const float MAX_X_VELOCITY;
+	bool movingHorizontally;
+
+	// Y movement
+	const float MIN_Y_VELOCITY;
+	const float JUMP_VELOCITY;
+	const float Y_ACCELERATION;
+	float yVelocity;
+
+	bool isJumping;
+	bool isOnGround;
+	bool gravityEnabled;
+
+	void ApplyGravity();
+	void Zero(float& velocity, const float DECELERATION);
+
+	void SetVelocity(float& velocity, float acceleration, float minLimit, float maxLimit);
+
 	/** Sets the facingDirection variable depending on the displacement. */
 	void DetermineOrientation();
 
@@ -98,15 +129,15 @@ private:
 	float bulletSpawnXOffset;
 	float bulletSpawnYOffset;
 
+	/** Stores the players current health. */
 	int health;
 
 	// Dimensions
 	sf::Image* image;
 
-	// Stores the speeds at which the player can move in each axis
-	float xSpeed;
-	float ySpeed;
-
-	//The score!
+	/** Stores the players current score. */
 	int score;
+
+	//Determines whether a player is alive
+	bool isAlive;
 };
