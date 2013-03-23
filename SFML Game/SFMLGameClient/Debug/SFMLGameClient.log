@@ -1,14 +1,14 @@
-﻿Build started 23/03/2013 05:48:22.
-     1>Project "C:\Users\Elliot\Desktop\SFML-master\SFML-master\SFML Game\SFMLGameClient\SFMLGameClient.vcxproj" on node 2 (build target(s)).
+﻿Build started 23/03/2013 07:36:20.
+     1>Project "C:\Coding\Unity\SFML\SFML Game\SFMLGameClient\SFMLGameClient.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
-         Touching "Debug\SFMLGameClient.unsuccessfulbuild".
+         Creating "Debug\SFMLGameClient.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"..\SFML-1.6\include" /I"..\rapidxml-1.13" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _MBCS /Gm /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Main.cpp
          Main.cpp
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Elliot\Desktop\SFML-master\SFML-master\SFML Game\Debug\SFMLGameClient.exe" /INCREMENTAL /NOLOGO /LIBPATH:"..\SFML-1.6\lib\vc2010" /LIBPATH:"..\rapidxml-1.13" "sfml-system-s-d.lib" "sfml-window-s-d.lib" "sfml-graphics-s-d.lib" "sfml-network-s-d.lib" "sfml-main-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\SFMLGameClient.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Elliot\Desktop\SFML-master\SFML-master\SFML Game\Debug\SFMLGameClient.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Elliot\Desktop\SFML-master\SFML-master\SFML Game\Debug\SFMLGameClient.lib" /MACHINE:X86 Debug\SFMLGameClient.exe.embed.manifest.res
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Coding\Unity\SFML\SFML Game\Debug\SFMLGameClient.exe" /INCREMENTAL /NOLOGO /LIBPATH:"..\SFML-1.6\lib\vc2010" /LIBPATH:"..\rapidxml-1.13" "sfml-system-s-d.lib" "sfml-window-s-d.lib" "sfml-graphics-s-d.lib" "sfml-network-s-d.lib" "sfml-main-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\SFMLGameClient.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Coding\Unity\SFML\SFML Game\Debug\SFMLGameClient.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Coding\Unity\SFML\SFML Game\Debug\SFMLGameClient.lib" /MACHINE:X86 Debug\SFMLGameClient.exe.embed.manifest.res
          Debug\PacketTypes.obj
          Debug\SharedConstants.obj
          Debug\BulletSprite.obj
@@ -29,12 +29,12 @@
          All outputs are up-to-date.
        LinkEmbedManifest:
          All outputs are up-to-date.
-         SFMLGameClient.vcxproj -> C:\Users\Elliot\Desktop\SFML-master\SFML-master\SFML Game\Debug\SFMLGameClient.exe
+         SFMLGameClient.vcxproj -> C:\Coding\Unity\SFML\SFML Game\Debug\SFMLGameClient.exe
        FinalizeBuildStatus:
          Deleting file "Debug\SFMLGameClient.unsuccessfulbuild".
          Touching "Debug\SFMLGameClient.lastbuildstate".
-     1>Done Building Project "C:\Users\Elliot\Desktop\SFML-master\SFML-master\SFML Game\SFMLGameClient\SFMLGameClient.vcxproj" (build target(s)).
+     1>Done Building Project "C:\Coding\Unity\SFML\SFML Game\SFMLGameClient\SFMLGameClient.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:23.96
+Time Elapsed 00:00:01.83

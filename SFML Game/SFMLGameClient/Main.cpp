@@ -14,7 +14,7 @@ int main()
 	bool eventFired = false;
 
     // Create the main window, needs to be passed into drea
-	sf::RenderWindow app(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), "SFML Project" ,sf::Style::Fullscreen);
+	sf::RenderWindow app(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), "SFML Project");
 
     // Get a reference to the input manager associated to our window, and store it for later use
     const sf::Input& input = app.GetInput();
