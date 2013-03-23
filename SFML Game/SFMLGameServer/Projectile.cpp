@@ -19,8 +19,7 @@ Projectile::Projectile(float startX, float startY, sf::Vector2f velocity, sf::Ve
 	this->bulletOwner = bulletOwner;
 }
 
-
-Projectile::~Projectile(void)
+Projectile::~Projectile()
 {
 }
 
@@ -34,7 +33,6 @@ void Projectile::Move(float x, float y)
 	position.x += x;
 	position.y += y;
 	bounds.Offset(x,y);
-	std::cout << bulletOwner << std::endl;
 }
 
 void Projectile::SetBulletID(sf::Uint32 bulletID)

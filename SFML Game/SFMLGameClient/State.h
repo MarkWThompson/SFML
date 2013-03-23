@@ -7,10 +7,8 @@
 class State
 {
 public:
-	/** Constructor intended to set the inital ID. */
 	State(SharedConstants::StateID ID);
 
-	/** Base destructor. */
 	virtual ~State();
 
 	/** Abstract method intended to act as the main loop of the state.*/
@@ -39,10 +37,10 @@ public:
 	bool Switch();
 
 	/** 
-		* Determines if the state is listening for packets.
-		* Returns the current state of the canReceive variable.
-		* This functionality is implemented in the FSM in gameManager::update().
-		*/
+	 * Determines if the state is listening for packets.
+	 * Returns the current state of the canReceive variable.
+	 * This functionality is implemented in the FSM in gameManager::update().
+	 */
 	bool CanReceive();
 
 protected:

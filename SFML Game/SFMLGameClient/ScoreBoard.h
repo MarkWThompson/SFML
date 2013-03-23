@@ -1,4 +1,5 @@
 #pragma once
+
 #include <SFML\Graphics.hpp>
 #include "Assets.h"
 #include <iostream>
@@ -8,13 +9,20 @@ class ScoreBoard
 {
 public:
 	ScoreBoard();
-	~ScoreBoard(void);
+	ScoreBoard(int x, int y);
 
+	~ScoreBoard();
 
 	void Update();
 	void Render(sf::RenderWindow &renderWindow);
 	void UpdateScores(std::vector<sf::Int16> inputPlayerScores, std::vector<sf::String> playerNames);
-	void CalculatePosition(sf::FloatRect viewRect);
+	void SetPosition(float x, float y);
+
+	bool ShouldShow();
+	void SetShouldShow(bool shouldShow);
+
+	sf::Sprite &GetFrameSprite();
+
 private:
 	sf::Image frameImage;
 	sf::Sprite frameSprite;
@@ -26,5 +34,8 @@ private:
 	sf::Vector2f playerNamesStartOffset;
 	float playerNamesHorizontalOffset;
 	float horizontalScoreOffset;
+
+	bool positionsSet;
+	bool shouldShow;
 };
 

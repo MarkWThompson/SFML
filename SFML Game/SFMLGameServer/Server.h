@@ -20,10 +20,8 @@
 class Server
 {
 public:
-	/** Default constructor. */
 	Server();
 
-	/** Default destructor. */
 	~Server();
 
 	/** Main update loop. */

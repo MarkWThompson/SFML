@@ -25,20 +25,23 @@ bool Level::Load(std::string levelFilepath)
 	// Background layer
 	rapidxml::xml_node<> *backgroundLayer = xmlDoc.first_node()->first_node()->first_node();
 	
+	// Entities layer
+	rapidxml::xml_node<> *entitiesLayer = backgroundLayer->next_sibling();
+	rapidxml::xml_node<> *entitiesItem = entitiesLayer->first_node()->first_node();
+
 	// Platforms layer
-	rapidxml::xml_node<> *platformLayer = backgroundLayer->next_sibling();
+	rapidxml::xml_node<> *platformLayer = entitiesLayer->next_sibling();
 
 	// Forground layer
 	rapidxml::xml_node<> *foregroundLayer = platformLayer->next_sibling();
-	rapidxml::xml_node<> *foregroundItem = foregroundLayer->first_node()->first_node();
 
 	// Bounds layer
 	rapidxml::xml_node<> *boundsLayer = foregroundLayer->next_sibling();
 	rapidxml::xml_node<> *boundsItem = boundsLayer->first_node()->first_node();
 
-	if(!ParseForeground(foregroundItem))
+	if(!ParseEntities(entitiesItem))
 	{
-		std::cout << "Level::Load(std::string levelFilepath) error: Failed to parse foreground layer." << std::endl;
+		std::cout << "Level::Load(std::string levelFilepath) error: Failed to parse entities layer." << std::endl;
 		return false;
 	}
 
@@ -58,6 +61,7 @@ bool Level::ParseBounds(rapidxml::xml_node<> *node)
 	{
 		float xPos = 0.0f, yPos = 0.0f; // Top left corner
 		float width = 0.0f, height = 0.0f;
+		bool lethal = false;
 
 		// Grab centre position data
 		xPos = (float)atof(node->first_node("Position")->first_node("X")->value());
@@ -67,69 +71,102 @@ bool Level::ParseBounds(rapidxml::xml_node<> *node)
 		width = (float)atof(node->first_node("Width")->value());
 		height = (float)atof(node->first_node("Height")->value());
 
-		// Create rect structure containing platform data and add to vector
+		// Store a pointer to the properties
+		rapidxml::xml_node<> *properties = node->first_node("CustomProperties")->first_node("Property");
+
+		// Cycle through the properties
+		while(properties != NULL)
+		{
+			// Look for "Lethal" property
+			if((std::string)properties->first_attribute("Name")->value() == "Lethal")
+			{
+				lethal = true;
+			}
+
+			// Get next custom property
+			properties = properties->next_sibling();
+		}
+
+		// Create struct containing platform data and add to vector
 		sf::Rect<float> bounds(xPos, yPos, xPos + width, yPos + height);
 		collisionBounds.push_back(bounds);
+		collisionBoundsLethality.push_back(lethal);
 
-		// Get next bound set
+		// Get next bound
 		node = node->next_sibling();
 	}
 
 	return true;
 }
 
-bool Level::ParseForeground(rapidxml::xml_node<> *node)
+bool Level::ParseEntities(rapidxml::xml_node<> *node)
 {
 	bool spawnDefined = false;
 
-	// Cycle through foreground items
+	// Cycle through items
 	while(node != NULL)
 	{
-		// Check that the foregroud item actually has at least one custome property defined
-		if(node->first_node("CustomProperties")->first_node("Property") != NULL)
+		// Store a pointer to the properties
+		rapidxml::xml_node<> *properties = node->first_node("CustomProperties")->first_node("Property");
+
+		// Cycle through the properties
+		while(properties != NULL)
 		{
-			// Store a pointer to the properties
-			rapidxml::xml_node<> *foregroundProperties = node->first_node("CustomProperties")->first_node("Property");
-
-			// Cycle through the properties
-			while(foregroundProperties != NULL)
+			// Look for "SpawnPoint" property
+			if((std::string)properties->first_attribute("Name")->value() == "SpawnPoint")
 			{
-				// Look for the name "SpawnPoint"
-				if((std::string)foregroundProperties->first_attribute("Name")->value() == "SpawnPoint")
+				float xPos = 0.0f, yPos = 0.0f;
+				float xCentre = 0.0f, yCentre = 0.0f;
+				float xOrigin = 0.0f, yOrigin = 0.0f;
+
+				// Grab origin data
+				xOrigin = (float)atof(node->first_node("Origin")->first_node("X")->value());
+				yOrigin = (float)atof(node->first_node("Origin")->first_node("Y")->value());
+
+				// Grab centre position data
+				xCentre = (float)atof(node->first_node("Position")->first_node("X")->value());
+				yCentre = (float)atof(node->first_node("Position")->first_node("Y")->value());
+
+				// Set actual x/y pos
+				xPos = xCentre - xOrigin;
+				yPos = yCentre - yOrigin;
+
+				// Remove default spawn point since the map defines spawn points
+				if(!spawnDefined)
 				{
-					float xPos = 0.0f, yPos = 0.0f;
-					float xCentre = 0.0f, yCentre = 0.0f;
-					float xOrigin = 0.0f, yOrigin = 0.0f;
-
-					// Grab origin data
-					xOrigin = (float)atof(node->first_node("Origin")->first_node("X")->value());
-					yOrigin = (float)atof(node->first_node("Origin")->first_node("Y")->value());
-
-					// Grab centre position data
-					xCentre = (float)atof(node->first_node("Position")->first_node("X")->value());
-					yCentre = (float)atof(node->first_node("Position")->first_node("Y")->value());
-
-					// Set actual x/y pos
-					xPos = xCentre - xOrigin;
-					yPos = yCentre - yOrigin;
-
-					// Remove default spawn point since the map defines spawn points
-					if(!spawnDefined)
-					{
-						spawnPoints.pop_back(); // Removes default spawnpoint since custom ones are defined
-						spawnDefined = true;
-					}
-
-					// Add spawn point to spawnPoints vector
-					sf::Vector2f spawnPoint = sf::Vector2f(xPos, yPos);
-					spawnPoints.push_back(spawnPoint);
+					spawnPoints.pop_back(); // Removes default spawnpoint since custom ones are defined
+					spawnDefined = true;
 				}
 
-				// Get next custom property
-				foregroundProperties = foregroundProperties->next_sibling();
+				// Add spawn point to spawnPoints vector
+				sf::Vector2f spawnPoint = sf::Vector2f(xPos, yPos);
+				spawnPoints.push_back(spawnPoint);
 			}
-		}
 
+			// Look for "LevelBounds" property
+			if((std::string)properties->first_attribute("Name")->value() == "LevelBounds")
+			{
+				float xPos = 0.0f, yPos = 0.0f; // Top left corner
+				float width = 0.0f, height = 0.0f;
+
+				// Grab centre position data
+				xPos = (float)atof(node->first_node("Position")->first_node("X")->value());
+				yPos = (float)atof(node->first_node("Position")->first_node("Y")->value());
+
+				// Grab dimensions
+				width = (float)atof(node->first_node("Width")->value());
+				height = (float)atof(node->first_node("Height")->value());
+
+				// Create rect structure containing platform data and add to vector
+				sf::Rect<float> bounds(xPos, yPos, xPos + width, yPos + height);
+
+				this->bounds = bounds;
+			}
+
+			// Get next custom property
+			properties = properties->next_sibling();
+		}
+		
 		// Get next foreground item
 		node = node->next_sibling();
 	}
@@ -142,7 +179,17 @@ std::vector<sf::Rect<float>> Level::GetCollisionBounds()
 	return collisionBounds;
 }
 
+std::vector<bool> Level::GetCollisionBoundsLethality()
+{
+	return collisionBoundsLethality;
+}
+
 std::vector<sf::Vector2f> Level::GetSpawnPoints()
 {
 	return spawnPoints;
+}
+
+sf::Rect<float> Level::GetBounds()
+{
+	return bounds;
 }

@@ -19,7 +19,7 @@ BulletHandler::BulletHandler(PlayerNetworkData* playerNetworkData)
 }
 
 
-BulletHandler::~BulletHandler(void)
+BulletHandler::~BulletHandler()
 {
 	playerNetworkData = NULL;
 }
@@ -50,7 +50,7 @@ void BulletHandler::CheckCollision(std::vector<sf::Rect<float>> &platforms, std:
 					//Check if the player is dead so the score can be incremented
 					if(players[k].GetHealth() <= 0)
 					{
-						players[projectileList[i]->GetBulletOwner()].SetScore(players[projectileList[i]->GetBulletOwner()].GetScore() + 1);
+						players[projectileList[i]->GetBulletOwner()].IncreaseScore(1);
 					}
 
 					//THIS ERASE IS SUPER INNEFICIANT AND SHOULD PROBABLY BE DONE WITH A SET TO NULL WITH SMARTER BULLET SPAWNING

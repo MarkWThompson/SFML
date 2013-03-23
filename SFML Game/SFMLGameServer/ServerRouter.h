@@ -7,10 +7,8 @@
 class ServerRouter
 {
 public:
-	/** Constructor - module initialiser. */
 	ServerRouter(ConnectionHandler* connectionHandler, GameLogic* gameLogic);
 	
-	/** Default destructor. */
 	~ServerRouter();
 
 	/** Sends packet to target module based on routingTag. */

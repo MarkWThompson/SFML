@@ -13,13 +13,8 @@
 class GameManager
 {
 public:
-	/** 
-	 * Default constructor.
-	 * @param renderWindow The applications window.
-	 */
 	GameManager(sf::RenderWindow* renderWindow);
 
-	/** Default destructor. */
 	~GameManager();
 
 	// States

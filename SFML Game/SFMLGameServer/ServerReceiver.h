@@ -5,10 +5,8 @@
 class ServerReceiver
 {
 public:
-	/** Constructor - initialise socket. */
 	ServerReceiver(ServerRouter* serverRouter);
 
-	/** Default destructor. */
 	~ServerReceiver();
 
 	/** Listens for and receives packets. If valid, will route the packet to target module. */

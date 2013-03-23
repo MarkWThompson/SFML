@@ -17,10 +17,8 @@
 class GameState : public State
 {
 public:
-	/** Constructor initialiser. */
 	GameState(ClientTransmitter* clientTransmitter, ServerNetworkData* serverNetworkData);
 
-	/** Default destructor. */
 	~GameState();
 
 	/** 
@@ -44,6 +42,7 @@ private:
 	/** Checks if the connection to the server has been lost. */
 	void CheckTimeout();
 
+	// Packet unpacking methods
 	void UnpackPlayerPositionsPacket(sf::Packet &receivedPacket, std::vector<bool> &playersActive, std::vector<PlayerSprite> &playerSprites, sf::Uint32 &stateIterator);
 	void UnpackProjectilePacket(sf::Packet &receivedPacket);
 	void UnpackProjectileDeathPacket(sf::Packet &receivedPacket);
@@ -75,16 +74,13 @@ private:
 
 	Level level;
 
+	//Scoreboards
+	std::vector<ScoreBoard*> scoreBoards;
+
 	/** The loop counter for the whole fixed update loop, server is authoratative. */
 	sf::Uint32 stateIterator;
 
 	/** The clock updates the above stateIterator at the fixed update loop, but can be overwritten by the server, which is authorotative. */
 	sf::Clock timeStepClock;
 
-	//The scoreboard
-	ScoreBoard scoreBoard;
-	bool showScoreBoard;
-	bool shouldGetScores;
-	sf::Clock scoreBoardRefreshClock;
-	float scoreBoardRefreshTime;
 };

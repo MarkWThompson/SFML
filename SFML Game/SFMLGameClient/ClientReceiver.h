@@ -7,10 +7,8 @@
 class ClientReceiver
 {
 public:
-	/** Constructor - intialise socket. */
 	ClientReceiver();
 
-	/** Default destructor. */
 	~ClientReceiver();
 
 	/** 
@@ -20,7 +18,6 @@ public:
 	void ReceiveUDP(State* curState);
 
 private:
-
 	/** The socket used to listen for packets. */
 	sf::SocketUDP receiver;
 

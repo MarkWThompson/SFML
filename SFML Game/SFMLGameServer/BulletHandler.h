@@ -16,7 +16,7 @@ class BulletHandler
 {
 public:
 	BulletHandler(PlayerNetworkData* playerNetworkData);
-	~BulletHandler(void);
+	~BulletHandler();
 
 	PlayerNetworkData* playerNetworkData;
 
@@ -42,4 +42,3 @@ private:
 	//Death messages that need to be send
 	std::vector<ProjectileDeathPacket> deathsToSend;
 };
-

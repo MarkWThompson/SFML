@@ -22,7 +22,6 @@ public:
 	 */
 	StartState(ClientTransmitter* clientTransmitter, std::string ipFontPath, float fontSize, int boxWidth, ServerNetworkData* serverNetworkData);
 
-	/** Default destructor. */
 	~StartState();
 
 	/** 

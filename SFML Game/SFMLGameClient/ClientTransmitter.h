@@ -6,10 +6,8 @@
 class ClientTransmitter
 {
 public:
-	/** Default constructor. */
 	ClientTransmitter();
 
-	/** Default destructor. */
 	~ClientTransmitter();
 	
 	/** 
@@ -21,5 +19,6 @@ public:
 	void SendUDP(unsigned short port, sf::IPAddress targetAddress, sf::Packet sendPacket);
 
 private:
+	/** The socket used to transmit packets. */
 	sf::SocketUDP sender;
 };

@@ -21,7 +21,6 @@ void GameState::SetView(sf::RenderWindow* renderWindow)
 
 	// Make the renderWindow use the view
 	renderWindow->SetView(view);
-
 }
 
 GameState::~GameState()
@@ -34,9 +33,6 @@ bool GameState::Load()
 {
 	tempCount = 0;
 	workingBulletID = 0;
-	scoreBoardRefreshClock.Reset();
-	scoreBoardRefreshTime = 3;
-
 
 	// Load the player
 	if(playerImage.LoadFromFile(PLAYER_IMAGE))
@@ -65,7 +61,6 @@ bool GameState::Load()
 	if(interuptImage.LoadFromFile(INTERUPT_IMAGE))
 	{
 		interuptSprite.SetImage(interuptImage); 
-		interuptSprite.SetPosition(1200.0f, 30.0f); // Top left of the screen
 	}
 	else
 	{
@@ -80,6 +75,12 @@ bool GameState::Load()
 	{
 		std::cout << "bool GameState::Load() error: failed to load level." << std::endl;
 		return false;
+	}
+
+	for(int i = 0; i < level.GetScoreBoards().size(); i++)
+	{
+		scoreBoards.push_back(new ScoreBoard(level.GetScoreBoards()[i].x,level.GetScoreBoards()[i].y));
+		//scoreBoards[i]->SetPosition(level.GetScoreBoards()[i].x,level.GetScoreBoards()[i].y);
 	}
 
 	return true;
@@ -135,15 +136,7 @@ void GameState::Update(sf::Event events, bool eventFired, const sf::Input &input
 		timeStepClock.Reset();
 		stateIterator++;
 	}
-	//check if you should display scoreboard
-	if(input.IsKeyDown(sf::Key::Tab))
-	{
-		showScoreBoard = true;
-	}
-	else
-	{
-		showScoreBoard = false;
-	}
+
 
 	CheckTimeout();
 }
@@ -188,7 +181,10 @@ void GameState::ReceiveData(sf::Packet receivedPacket, sf::IPAddress connectionA
 			playerNames.push_back(playerSprites[i].GetPlayerName());
 		}
 		//give the scoreBoard the scores
-		scoreBoard.UpdateScores(playerScores,playerNames);
+		for(int i = 0; i < scoreBoards.size(); i++)
+		{
+			scoreBoards[i]->UpdateScores(playerScores,playerNames);
+		}
 
 		//unpack player healths
 		for(int i = 0; i < vectorSize; i++)
@@ -229,6 +225,7 @@ void GameState::UnpackPlayerPositionsPacket(sf::Packet &receivedPacket, std::vec
 	// Set vars
 	sf::Vector2f prevPos;
 	sf::Vector2f newPos;
+	sf::Vector2f moveVector;
 
 	// Grab coords
 	for(int i = 0; i < numPlayers; i++)
@@ -243,10 +240,10 @@ void GameState::UnpackPlayerPositionsPacket(sf::Packet &receivedPacket, std::vec
 		playerSprites[i].SetPosition(newPos);
 		
 		// Calculate displacement vector
-		float movementVectorX = playerSprites[i].GetPosition().x - prevPos.x;
-		float movementVectorY = playerSprites[i].GetPosition().y - prevPos.y;
+		moveVector.x = playerSprites[i].GetPosition().x - prevPos.x;
+		moveVector.y = playerSprites[i].GetPosition().y - prevPos.y;
 
-		playerSprites[i].SetLastMovementVector(movementVectorX, movementVectorY);
+		playerSprites[i].SetLastMovementVector(moveVector);
 	}
 
 	// Update camera
@@ -341,6 +338,18 @@ void GameState::Draw(sf::RenderWindow* renderWindow)
 {	
 	level.Draw(Level::BACKGROUND, renderWindow);
 
+	//Draw the scoreboards
+	for(size_t i = 0; i < scoreBoards.size(); i++)
+	{
+		if(IsOnScreen(renderWindow,scoreBoards[i]->GetFrameSprite()))
+		{
+			if(scoreBoards[i]->ShouldShow())
+			{
+				scoreBoards[i]->Render(*renderWindow);
+			}
+		}
+	}
+
 	// Render the bullets
 	for(size_t i = 0; i < projectileList.size(); i++)
 	{
@@ -360,23 +369,18 @@ void GameState::Draw(sf::RenderWindow* renderWindow)
 	{
 		if(playersActive[i] == true)
 		{
-			playerSprites[i].DrawExtras(*renderWindow);
-			renderWindow->Draw(playerSprites[i]);
+			playerSprites[i].Draw(renderWindow);
 		}
 	}
 
 	level.Draw(Level::FOREGROUND, renderWindow);
 
-	//Scoreboard
-	//Work out scoreboard position based on view rect
-	if(showScoreBoard)
-	{
-		scoreBoard.CalculatePosition(view.GetRect());
-		scoreBoard.Render(*renderWindow);
-	}
 
 	if(connectionProblem == true)
 	{
+		// Update icon position
+		const sf::FloatRect spritePos = view.GetRect();
+		interuptSprite.SetPosition(spritePos.Right - 80.0f, spritePos.Top + 30.0f); // Top right of the screen
 		renderWindow->Draw(interuptSprite);
 	}
 }
@@ -385,9 +389,9 @@ bool GameState::IsOnScreen(sf::RenderWindow* renderWindow, sf::Sprite &sprite)
 {
 	const sf::FloatRect screenRect = renderWindow->GetView().GetRect();
 
-	if((sprite.GetPosition().x > screenRect.Left) && (sprite.GetPosition().x < screenRect.Right))
+	if(((sprite.GetPosition().x + sprite.GetSize().x) > screenRect.Left) && (sprite.GetPosition().x < screenRect.Right))
 	{
-		if((sprite.GetPosition().y > screenRect.Top) && (sprite.GetPosition().y < screenRect.Bottom))
+		if(((sprite.GetPosition().y + sprite.GetSize().y) > screenRect.Top) && (sprite.GetPosition().y < screenRect.Bottom))
 		{
 			return true;
 		}

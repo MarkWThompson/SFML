@@ -1,4 +1,5 @@
 #pragma once
+
 #include <SFML\Graphics.hpp>
 #include <string>
 #include <iostream>
@@ -8,14 +9,16 @@
 #include "ServerNetworkData.h"
 #include "Assets.h"
 
+
 class Level
 {
 public:
-	/** Default constructor. */
 	Level();
-	
-	/** Default destructor. */
+
 	~Level();
+
+	/** Parses through the foreground layer for interactive objects. */
+	bool ParseEntities(rapidxml::xml_node<> *node);
 
 	/** Layer IDs for accessing the vector arrays. */
 	enum Layer { BACKGROUND, PLATFORMS, FOREGROUND };
@@ -30,6 +33,9 @@ public:
 	 * view the readme.txt which can be found in '../Levels/'. 
 	 */
 	bool Load(std::string levelFilepath);
+
+	/** Returns the scoreBoards variable. */
+	std::vector<sf::Vector2f> GetScoreBoards();
 
 private:
 	/** Defines the number of layers the level is expected to load. */
@@ -48,4 +54,7 @@ private:
 	std::vector<sf::Sprite>* sprites;		///< Stores the level objects for rendering
 	std::vector<std::string>* textures;		///< Stores a list of the textures
 	std::vector<sf::Image*>* images;		///< Stores the textures as images for rendering
+
+	//Stores the scoreboard positions on the level
+	std::vector<sf::Vector2f> scoreBoards;
 };

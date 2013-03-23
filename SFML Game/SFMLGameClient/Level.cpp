@@ -4,6 +4,10 @@ const int Level::NUM_LAYERS = 3;
 
 Level::Level()
 {
+
+
+	//levelFilepath = "";
+
 	// Dynamically allocate memory for vector arrays
 	sprites = new std::vector<sf::Sprite>[NUM_LAYERS];
 	textures = new std::vector<std::string>[NUM_LAYERS];
@@ -48,8 +52,12 @@ bool Level::Load(std::string levelFilepath)
 		return false;
 	}
 
+	// Entities layer
+	rapidxml::xml_node<> *entitiesLayer = backgroundLayer->next_sibling();
+	rapidxml::xml_node<> *entitiesItem = entitiesLayer->first_node()->first_node();
+
 	// Platforms layer
-	rapidxml::xml_node<> *platformLayer = backgroundLayer->next_sibling();
+	rapidxml::xml_node<> *platformLayer = entitiesLayer->next_sibling();
 	rapidxml::xml_node<> *platformItem = platformLayer->first_node()->first_node();
 	if(!LoadLayer(PLATFORMS, platformItem))
 	{
@@ -66,7 +74,67 @@ bool Level::Load(std::string levelFilepath)
 		return false;
 	}
 
+	
+	if(!ParseEntities(entitiesItem))
+	{
+		std::cout << "Level::Load(std::string levelFilepath) error: Failed to parse entities layer." << std::endl;
+		return false;
+	}
+	
+
 	return true;
+}
+
+bool Level::ParseEntities(rapidxml::xml_node<> *node)
+{
+
+	// Cycle through items
+	while(node != NULL)
+	{
+		// Store a pointer to the properties
+		rapidxml::xml_node<> *properties = node->first_node("CustomProperties")->first_node("Property");
+
+		// Cycle through the properties
+		while(properties != NULL)
+		{
+			// Look for "ScoreBoard" property
+			if((std::string)properties->first_attribute("Name")->value() == "ScoreBoard")
+			{
+				float xPos = 0.0f, yPos = 0.0f;
+				float xCentre = 0.0f, yCentre = 0.0f;
+				float xOrigin = 0.0f, yOrigin = 0.0f;
+
+				// Grab origin position data
+				xOrigin = (float)atof(node->first_node("Origin")->first_node("X")->value());
+				yOrigin = (float)atof(node->first_node("Origin")->first_node("Y")->value());
+
+				// Grab centre position data
+				xCentre = (float)atof(node->first_node("Position")->first_node("X")->value());
+				yCentre = (float)atof(node->first_node("Position")->first_node("Y")->value());
+
+				// Set actual x/y pos
+				xPos = xCentre - xOrigin;
+				yPos = yCentre - yOrigin;
+
+				//Add scoreBoard point to scoreBoards vector
+				sf::Vector2f scoreBoard = sf::Vector2f(xPos, yPos);
+				scoreBoards.push_back(scoreBoard);
+			}
+
+			// Get next custom property
+			properties = properties->next_sibling();
+		}
+		
+		// Get next entities layer item
+		node = node->next_sibling();
+	}
+
+	return true;
+}
+
+std::vector<sf::Vector2f> Level::GetScoreBoards()
+{
+	return scoreBoards;
 }
 
 bool Level::LoadLayer(Layer layer, rapidxml::xml_node<> *layerItem)

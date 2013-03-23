@@ -10,21 +10,24 @@ View the 'Default.xml' level file for an example of a correctly formatted and st
 
 LAYERS
 ------
-Layers must be named and in the order Background > Platforms > Foreground > Bounds.
-All layers should only contain textures, except the Bounds layer which should only contain rectangular primitives.
+Layers must be named and in the order Background > Entities > Platforms > Foreground > Bounds.
+All layers should only contain textures, except the Bounds layer which should only contain rectangular primitives. Special case: Entities layer - LevelBounds object can be defined with a primitive.
 
 Background 		- 	Rendered behind all game objects.
+Entities		- 	Contains spawnpoints and levelbounds.
 Platforms 		- 	Rendered behind some game objects.
-Foreground 		- 	Used for decals and interactive objects. Rendered in front of game objects.
-Bounds 			- 	Defines the of the collision bounds used for server collision detection. Not rendered.
+Foreground 		- 	Rendered in front of all game objects.
+Bounds 			- 	Defines the collision bounds used for server collision detection. Not rendered.
 				
 				
 				
 PROPERTIES
 ----------
-SpawnPoint: To create a spawn point, drag the desired texture onto the Foreground layer then give it a custom property named "SpawnPoint" of type "Free text".
-Visiblity: To make a texture invisible you must add a custom property to it named "Invisible" of type "Free text".
-Scale: You can scale an image within the editor without having to modify the original image by changing the Scale parameter.
+Lethal: Can only be used in the Bounds layer. Any players that collide with and object with this property defined will die. Custom property named "Lethal" of type "Free text".
+LevelBounds: Can only be used in the Entities layer. This should only be defined on one primitive which defines the level bounds. This area defines the movement space of players. Custom property named "LevelBounds" of type "Free text".
+SpawnPoint: Can only be used in the Entities layer. Defines player spawn locations within the map. Custom property named "SpawnPoint" of type "Free text".
+Invisible: Prevents texture from being rendering in game. Custom property named "Invisible" of type "Free text".
+Scale: Images can be scaled within the editor without having to modifiy the original image by altering the Scale property.
 
 
 

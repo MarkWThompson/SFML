@@ -5,7 +5,7 @@ BulletSprite::BulletSprite(sf::Uint32 ID)
 {
 	this->ID = ID;
 	activeTime.Reset();
-	active = true;
+	isActive = true;
 }
 
 BulletSprite::~BulletSprite()
@@ -19,7 +19,7 @@ sf::Uint32 BulletSprite::GetID()
 
 bool BulletSprite::IsActive()
 {
-	return active;
+	return isActive;
 }
 
 void BulletSprite::Update()
@@ -28,7 +28,7 @@ void BulletSprite::Update()
 
 	if(activeTime.GetElapsedTime() > INACTIVE_TIME)
 	{
-		active = false;
+		isActive = false;
 	}
 }
 

@@ -1,4 +1,5 @@
 #pragma once
+
 #include "SFML\Graphics.hpp"
 #include <iostream>
 
@@ -8,27 +9,24 @@ public:
 	BulletSprite(sf::Uint32 ID);
 	~BulletSprite();
 
-	
-
+	// Setters
 	void SetVelocity(float x, float y);
-	sf::Vector2f GetVelocity();
-
-
 	void SetLastMovement(float x, float y);
+
+	// Getters
+	sf::Uint32 GetID();
+	sf::Vector2f GetVelocity();
 	sf::Vector2f GetLastMovement();
+	bool IsActive();
 
 	/** Main update loop - called every frame. */
 	void Update();
-
-	/** Returns the active variable. */
-	bool IsActive();
-
-	sf::Uint32 GetID();
 	
 private:
+	/** Stores the bullets unique ID. */
 	sf::Uint32 ID;
 
-
+	/** Stores the difference between current position and previous position. */
 	sf::Vector2f lastMovement;
 
 	/** Stores the x/y velocity components of the bullet. */
@@ -41,5 +39,6 @@ private:
 	const float INACTIVE_TIME;
 
 	/** If set to false, the bullet will no longer be updated and be removed from the application. */
-	bool active;
+	bool isActive;
+
 };

@@ -1,13 +1,12 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 
 class Object
 {
 public:
-	/** Default constructor. */
 	Object();
 
-	/** Default destructor. */
 	~Object();
 
 	/** Enumerated type which determines the orientation of the object. */

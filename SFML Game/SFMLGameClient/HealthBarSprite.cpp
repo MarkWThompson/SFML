@@ -36,15 +36,15 @@ void HealthBarSprite::UpdateHealth(int health)
 	}
 }
 
-void HealthBarSprite::Draw(sf::RenderWindow &renderWindow, float xPos, float yPos)
+void HealthBarSprite::Draw(sf::RenderWindow* renderWindow, float xPos, float yPos)
 {
 	frameSprite.SetPosition(xPos + BAR_X_OFFSET, yPos + BAR_Y_OFFSET);
 	fillSprite.SetPosition(xPos + BAR_X_OFFSET + X_FILL_OFFSET, yPos + BAR_Y_OFFSET + Y_FILL_OFFSET);
 	
 	if(showFill == true)
 	{
-		renderWindow.Draw(fillSprite);
+		renderWindow->Draw(fillSprite);
 	}
 
-	renderWindow.Draw(frameSprite);
+	renderWindow->Draw(frameSprite);
 }

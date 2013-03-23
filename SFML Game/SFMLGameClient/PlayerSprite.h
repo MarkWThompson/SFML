@@ -1,25 +1,24 @@
 #pragma once
+
 #include "SFML\Graphics.hpp"
 #include <iostream>
 #include "HealthBarSprite.h"
-#include "../SharedConstants.h"
+#include "SharedConstants.h"
 
 class PlayerSprite : public sf::Sprite
 {
 public:
-	/** Default constructor. */
 	PlayerSprite();
 
-	/** Default destructor. */
 	~PlayerSprite();
 
-	/** Sets the lastMovementVector variable with the specified components. */
+	// Setters
 	void SetLastMovementVector(float x, float y);
-
-	/** Sets the lastMovementVector variable with a sf::Vector2f. */
 	void SetLastMovementVector(sf::Vector2f lastMovementVector);
+	void SetPlayerName(std::string playerName);
 
-	/** Returns the lastMovementVector variable. */
+	// Getters
+	sf::String GetPlayerName();
 	sf::Vector2f GetLastMovementVector();
 
 	/** Enumerated type which determines the orientation of the player sprite. */
@@ -31,15 +30,22 @@ public:
 	/** Handles the flipping of the player sprite based on its displacement. */
 	void HandleOrientation();
 
-	//This draws things like healthbars and nametags and whatever
-	void DrawExtras(sf::RenderWindow &renderWindow);
-	void SetPlayerName(std::string playerName);
-	sf::String GetPlayerName();
+	/** Handles the rendering of the player sprite and extra components like nametags and healthbars etc.*/
+	void Draw(sf::RenderWindow* renderWindow);
+	
+	/** Scales the health bar based on the given health parameter. */
 	void UpdateHealthBarHealth(int health);
 
 private:
 	/** Stores the difference between current position and previous position. */
 	sf::Vector2f lastMovementVector;
-	sf::String playerName;
+
+	/** Stores the player name. */
+	sf::String name;
+
+	/** Stores the player name offset for rendering position. */
+	sf::Vector2f nameOffset;
+
+	/** Stores the health bar of the player. */
 	HealthBarSprite *healthBarSprite;
 };

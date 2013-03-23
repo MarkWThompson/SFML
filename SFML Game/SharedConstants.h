@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 
 // Macro for quickly grabbing the singleton instance
@@ -68,6 +69,6 @@ private:
 	// The time before displaying a error icon during game state when not receiving packets from server
 	static const float TIMEOUT_INDICATION_TIME;
 
+	// The maximum health value of a player
 	static const int MAX_HEALTH;
-
 };

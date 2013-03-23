@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 
 // Assets folder (relative to project folders)
