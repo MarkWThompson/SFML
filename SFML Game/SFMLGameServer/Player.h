@@ -53,7 +53,7 @@ public:
 	sf::Vector2f GetLastMovementVector();
 
 	/** Returns the projectileSpeed variable. */
-	sf::Vector2f GetProjectileSpeed();
+	float GetProjectileSpeed();
 
 	void Update();
 	void MoveLeft();
@@ -69,9 +69,6 @@ public:
 
 	/** Handles collision with specified object. */
 	void HandleCollision(sf::Rect<float> objectBounds);
-
-	//This is the point on the player the bullets emerge from
-	sf::Vector2f GetShootPosition();
 
 	// Score G/S
 	int GetScore();
@@ -108,14 +105,11 @@ private:
 
 	void SetVelocity(float& velocity, float acceleration, float minLimit, float maxLimit);
 
-	/** Sets the facingDirection variable depending on the displacement. */
-	void DetermineOrientation();
-
 	/** Stores the point at which the player will spawn. */
 	sf::Vector2f spawnPosition;
 
 	/** Stores the speed at which player projectiles travel at. */
-	sf::Vector2f projectileSpeed;
+	float projectileSpeed;
 
 	/** Stores the time since the last projectile was fired. */
 	sf::Clock shootDelayClock;
@@ -138,6 +132,6 @@ private:
 	/** Stores the players current score. */
 	int score;
 
-	//Determines whether a player is alive
+	// Determines whether a player is alive
 	bool isAlive;
 };

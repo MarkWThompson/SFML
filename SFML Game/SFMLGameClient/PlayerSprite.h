@@ -22,13 +22,13 @@ public:
 	sf::Vector2f GetLastMovementVector();
 
 	/** Enumerated type which determines the orientation of the player sprite. */
-	enum Orientation {LEFT, RIGHT};
+	enum Orientation { UP, DOWN, LEFT, RIGHT, UNDEFINED };
 
 	/** Determines which way the player sprite is facing. */
 	Orientation facingDirection;
 
-	/** Handles the flipping of the player sprite based on its displacement. */
-	void HandleOrientation();
+	/** Sets the sprite face direction and flips accordingly. */
+	void SetFacingDirection(Orientation direction);
 
 	/** Handles the rendering of the player sprite and extra components like nametags and healthbars etc.*/
 	void Draw(sf::RenderWindow* renderWindow);

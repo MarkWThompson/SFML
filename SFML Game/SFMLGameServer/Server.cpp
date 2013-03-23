@@ -45,6 +45,12 @@ void Server::Run()
 
 	// Wait until the threads have finished execution
 	WaitForMultipleObjects(NUM_THREADS, hThreads, TRUE, INFINITE);
+
+	// Cleanup
+	for(int i = 0; i < NUM_THREADS; i++)
+	{
+		CloseHandle(hThreads[i]);
+	}
 }
 
 unsigned __stdcall Server::Update()

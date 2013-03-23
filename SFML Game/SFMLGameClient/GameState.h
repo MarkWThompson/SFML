@@ -39,11 +39,13 @@ public:
 	void SetView(sf::RenderWindow* renderWindow);
 
 private:
+	bool renderCrosshair;
+
 	/** Checks if the connection to the server has been lost. */
 	void CheckTimeout();
 
 	// Packet unpacking methods
-	void UnpackPlayerPositionsPacket(sf::Packet &receivedPacket, std::vector<bool> &playersActive, std::vector<PlayerSprite> &playerSprites, sf::Uint32 &stateIterator);
+	void UnpackPlayerPositionsPacket(sf::Packet &receivedPacket, std::vector<bool> &playersActive, std::vector<PlayerSprite> &playerSprites, std::vector<int> &playerDirections, sf::Uint32 &stateIterator);
 	void UnpackProjectilePacket(sf::Packet &receivedPacket);
 	void UnpackProjectileDeathPacket(sf::Packet &receivedPacket);
 
@@ -51,7 +53,7 @@ private:
 	bool connectionProblem;
 
 	// Checks if an object is on the screen
-	bool IsOnScreen(sf::RenderWindow* renderWindow, sf::Sprite &sprite);
+	bool IsOnScreen(sf::Sprite sprite);
 
 	/** Used to transmit packets from this state to the server. */
 	ClientTransmitter* clientTransmitter;
@@ -61,6 +63,7 @@ private:
 	sf::Image playerImage;
 	std::vector<PlayerSprite> playerSprites;
 	std::vector<bool> playersActive;
+	std::vector<int> playerDirections;
 
 	// Bullets
 	int tempCount;
@@ -71,6 +74,10 @@ private:
 	// Connection interrupted
 	sf::Image interuptImage;
 	sf::Sprite interuptSprite;
+
+	// Crosshair
+	sf::Image crosshairImage;
+	sf::Sprite crosshairSprite;
 
 	Level level;
 

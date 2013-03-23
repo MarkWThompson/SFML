@@ -11,6 +11,7 @@
 #include "Assets.h"
 #include "Level.h"
 #include "BulletHandler.h"
+#include <cmath>
 
 class GameLogic
 {

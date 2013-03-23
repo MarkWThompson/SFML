@@ -44,17 +44,17 @@ void PlayerSprite::UpdateHealthBarHealth(int health)
 	}
 }
 
-void PlayerSprite::HandleOrientation()
+void PlayerSprite::SetFacingDirection(Orientation direction)
 {
-	if((facingDirection == LEFT) && (lastMovementVector.x > 0))
+	facingDirection = direction;
+
+	if(facingDirection == LEFT)
 	{
-		facingDirection = RIGHT;
-		FlipX(false);
-	}
-	else if((facingDirection == RIGHT) && (lastMovementVector.x < 0))
-	{
-		facingDirection = LEFT;
 		FlipX(true);
+	}
+	else if(facingDirection == RIGHT)
+	{
+		FlipX(false);
 	}
 }
 

@@ -33,7 +33,7 @@ GameLogic::~GameLogic()
 
 void GameLogic::Update()
 {	
-	//deal with players that have just spawned
+	// Deal with players that have just spawned
 	for(size_t i = 0; i < playerNetworkData->playersToSetup.size(); i++)
 	{
 		if(playerNetworkData->playersToSetup[i] == true)
@@ -120,8 +120,13 @@ void GameLogic::Update()
 		{
 			playerPositions.push_back(players[i].GetPosition());
 		}
+		std::vector<int> playerDirections;
+		for(size_t i = 0; i < players.size(); i++)
+		{
+			playerDirections.push_back((int)players[i].GetFacingDirection());
+		}
 		PlayerPositionsPacket playerPositionsPacket;
-		playerPositionsPacket.PackData(sharedConstants.GAME_STATE, playerNetworkData->MAX_PLAYERS, playerNetworkData->playersActive, playerPositions, stateIterator, playerPositionsPacket);
+		playerPositionsPacket.PackData(sharedConstants.GAME_STATE, playerNetworkData->MAX_PLAYERS, playerNetworkData->playersActive, playerPositions, playerDirections, stateIterator, playerPositionsPacket);
 		///
 
 		//*Pack a player Data Packet
@@ -156,15 +161,11 @@ void GameLogic::Update()
 
 void GameLogic::UpdatePlayer(PlayerInput &playerInput)
 {
-	int playerID = playerInput.ID;
-	
-	float xMoved = 0.0f;
-	float yMoved = 0.0f;
+	int playerID =  playerInput.ID;
 
 	// Make sure playerID is valid
 	if(playerID >= 0)
 	{
-		// Set pointer to player instance
 		Player& player = players[playerID];
 
 		// Player jump
@@ -183,32 +184,55 @@ void GameLogic::UpdatePlayer(PlayerInput &playerInput)
 			player.MoveRight();
 		}
 
-		yMoved -= players[playerID].GetYVelocity();
-		xMoved += players[playerID].GetXVelocity();
-
-		players[playerID].SetLastMovementVector(xMoved,yMoved);
-	}
-
-	//Shooting
-	if((playerInput.spaceDown) && (players[playerID].CanShoot()))
-	{
-		sf::Vector2f bulletVelocity;
-
-		bulletVelocity.x = players[playerID].GetProjectileSpeed().x;
-		bulletVelocity.y = players[playerID].GetProjectileSpeed().y;
-
-		if(players[playerID].GetFacingDirection() == Player::LEFT)
+		// Last movement vector
+		float yMoved = -player.GetYVelocity();
+		float xMoved = player.GetXVelocity();
+		player.SetLastMovementVector(xMoved, yMoved);
+	
+		// Direction 
+		if(playerInput.mouseX > player.GetPosition().x)
 		{
-			bulletVelocity.x *= -1;
+			player.SetFacingDirection(Object::RIGHT);
+		}
+		else if(playerInput.mouseX < player.GetPosition().x)
+		{
+			player.SetFacingDirection(Object::LEFT);
 		}
 
-		bulletHandler->SpawnBullet(playerID, players[playerID].GetShootPosition(), bulletVelocity, stateIterator);
-	}
+		// Shooting
+		if((playerInput.lBtnDown) && (player.CanShoot()))
+		{
+			sf::Vector2f bulletVelocity;
 
-	//Score test
-	if(playerInput.returnDown)
-	{
-		players[playerID].IncreaseScore(1);
+			sf::Vector2f playerCentre;
+			playerCentre.x = player.GetPosition().x + (player.GetWidth() / 2);
+			playerCentre.y = player.GetPosition().y + (player.GetHeight() / 2);
+
+			float x2 = playerInput.mouseX;
+			float x1 = playerCentre.x;
+			float y2 = playerInput.mouseY;
+			float y1 = playerCentre.y;
+			float hyp = player.GetProjectileSpeed();
+
+			float theta = atan2((y2-y1), (x2-x1));
+			float y = sin(theta) * hyp;
+			float x = cos(theta) * hyp;
+
+			bulletVelocity.x = x;
+			bulletVelocity.y = y;
+
+			sf::Vector2f shootPosition;
+			shootPosition.x = playerCentre.x + (x * 3.25f); // 3.25f represents barel length
+			shootPosition.y = playerCentre.y + (y * 3.25f);
+
+			bulletHandler->SpawnBullet(playerID, shootPosition, bulletVelocity, stateIterator);
+		}
+
+		// Score test
+		if(playerInput.returnDown)
+		{
+			player.IncreaseScore(1);
+		}
 	}
 }
 

@@ -33,6 +33,9 @@ public:
 	/** Sets the objects position. */
 	void SetPosition(float x, float y);
 
+	/** Sets the facingDirection variable. */
+	void SetFacingDirection(Orientation direction);
+
 protected:
 	/** Stores the current position of the object. */
 	sf::Vector2f position;

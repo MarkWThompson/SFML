@@ -70,25 +70,25 @@ PlayerPositionsPacket::PlayerPositionsPacket()
 {
 }
 // playerNum MUST be the size of the array, the array size should really be the amount of players there are.
-void PlayerPositionsPacket::PackData(sf::Uint8 routingTag, sf::Uint8 playerPosVectorSize, std::vector<bool> playersActive, std::vector<sf::Vector2f> playerPositions,sf::Uint32 stateIteration, sf::Packet &packetInstance)
+void PlayerPositionsPacket::PackData(sf::Uint8 routingTag, sf::Uint8 vectorSize, std::vector<bool> playersActive, std::vector<sf::Vector2f> playerPositions, std::vector<int> playerDirections, sf::Uint32 stateIteration, sf::Packet &packetInstance)
 {
-	packetInstance << routingTag << static_cast<sf::Uint8>(PLAYER_POSITIONS_PACKET);
-	// It really is important that playerPosVector size is the same size as playersActive and playerPositions, this will tell you if its not
-	if((playerPosVectorSize != playersActive.size()) || (playerPosVectorSize != playerPositions.size()))
-	{
-		std::cout << "playerPosVectorSize in PlayerPositionsPacket isn't the correct size!! THIS WILL FUCK SHIZ UP" << std::endl;
-	}
-	packetInstance << playerPosVectorSize;
+	packetInstance << routingTag << static_cast<sf::Uint8>(PLAYER_POSITIONS_PACKET) << vectorSize;
 
-	for(size_t i = 0; i < playersActive.size(); i++)
+	for(size_t i = 0; i < vectorSize; i++)
 	{
 		packetInstance << playersActive[i];
 	}
 
-	for(size_t i = 0; i < playerPositions.size(); i++)
+	for(size_t i = 0; i < vectorSize; i++)
 	{
 		packetInstance << playerPositions[i];
 	}
+
+	for(size_t i = 0; i < vectorSize; i++)
+	{
+		packetInstance << playerDirections[i];
+	}
+
 	packetInstance << stateIteration;
 }
 

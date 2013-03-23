@@ -35,8 +35,7 @@ Player::Player()
 
 	facingDirection = RIGHT;
 
-	projectileSpeed.x = 20.0f;
-	projectileSpeed.y = 0.0f;
+	projectileSpeed = 20.0f;
 
 	shootDelay = 0.2f;
 
@@ -71,8 +70,8 @@ void Player::Reset()
 	lastMovementVector.y = 0.0f;
 
 	facingDirection = RIGHT;
-	projectileSpeed.x = 20.0f;
-	projectileSpeed.y = 0;
+	
+	projectileSpeed = 20.0f;
 
 	shootDelay = 0.2f;
 
@@ -178,122 +177,6 @@ bool Player::CanShoot()
 	}
 }
 
-void Player::Move(float deltaX, float deltaY)
-{
-	position.x += deltaX;
-	position.y += deltaY;
-}
-
-void Player::MoveDeltaX(float deltaX)
-{
-	position.x += deltaX;
-}
-
-void Player::MoveDeltaY(float deltaY)
-{
-	position.y += deltaY;
-}
-
-void Player::SetSpawnPosition(float x, float y)
-{
-	spawnPosition.x = x;
-	spawnPosition.y = y;
-}
-
-void Player::SetSpawnPosition(sf::Vector2f spawnPosition)
-{
-	this->spawnPosition = spawnPosition;
-}
-
-void Player::SetLastMovementVector(float x, float y)
-{
-	lastMovementVector.x = x;
-	lastMovementVector.y = y;
-
-	DetermineOrientation();
-}
-
-void Player::SetLastMovementVector(sf::Vector2f lastMovementVector)
-{
-	this->lastMovementVector = lastMovementVector;
-
-	DetermineOrientation();
-}
-
-void Player::DetermineOrientation()
-{
-	if(lastMovementVector.x > 0)
-	{
-		facingDirection = RIGHT;
-	}
-	else if(lastMovementVector.x < 0)
-	{
-		facingDirection = LEFT;
-	}
-}
-
-float Player::GetYVelocity()
-{
-	return yVelocity;
-}
-
-float Player::GetXVelocity()
-{
-	return xVelocity;
-}
-
-sf::Vector2f Player::GetProjectileSpeed()
-{
-	return projectileSpeed;
-}
-
-sf::Vector2f& Player::GetPositionRef()
-{
-	return position;
-}
-
-sf::Vector2f Player::GetSpawnPosition()
-{
-	return spawnPosition;
-}
-
-sf::Vector2f Player::GetLastMovementVector()
-{
-	return lastMovementVector;
-}
-
-sf::Vector2f Player::GetShootPosition()
-{
-	sf::Vector2f shootPosition;
-	
-	if(facingDirection == RIGHT)
-	{
-		shootPosition.x = position.x + bulletSpawnXOffset;
-	}
-	else if(facingDirection == LEFT)
-	{
-		shootPosition.x = (position.x + (width/3)) - bulletSpawnXOffset;
-	}
-
-	shootPosition.y = position.y + bulletSpawnYOffset;
-
-	return shootPosition;
-}
-
-void Player::SetVelocity(float& velocity, float acceleration, float minLimit, float maxLimit)
-{
-	velocity += acceleration;
-
-	if(velocity > maxLimit)
-	{
-		velocity = maxLimit;
-	}
-	else if(velocity < minLimit)
-	{
-		velocity = minLimit;
-	}
-}
-
 void Player::HandleCollision(sf::Rect<float> objectBounds)
 {
 	bool above = false;
@@ -331,6 +214,88 @@ void Player::HandleCollision(sf::Rect<float> objectBounds)
 			position.x = objectBounds.Right;
         }
     }
+}
+
+void Player::Move(float deltaX, float deltaY)
+{
+	position.x += deltaX;
+	position.y += deltaY;
+}
+
+void Player::MoveDeltaX(float deltaX)
+{
+	position.x += deltaX;
+}
+
+void Player::MoveDeltaY(float deltaY)
+{
+	position.y += deltaY;
+}
+
+void Player::SetVelocity(float& velocity, float acceleration, float minLimit, float maxLimit)
+{
+	velocity += acceleration;
+
+	if(velocity > maxLimit)
+	{
+		velocity = maxLimit;
+	}
+	else if(velocity < minLimit)
+	{
+		velocity = minLimit;
+	}
+}
+
+void Player::SetSpawnPosition(float x, float y)
+{
+	spawnPosition.x = x;
+	spawnPosition.y = y;
+}
+
+void Player::SetSpawnPosition(sf::Vector2f spawnPosition)
+{
+	this->spawnPosition = spawnPosition;
+}
+
+void Player::SetLastMovementVector(float x, float y)
+{
+	lastMovementVector.x = x;
+	lastMovementVector.y = y;
+}
+
+void Player::SetLastMovementVector(sf::Vector2f lastMovementVector)
+{
+	this->lastMovementVector = lastMovementVector;
+}
+
+float Player::GetYVelocity()
+{
+	return yVelocity;
+}
+
+float Player::GetXVelocity()
+{
+	return xVelocity;
+}
+
+float Player::GetProjectileSpeed()
+{
+	return projectileSpeed;
+}
+
+sf::Vector2f& Player::GetPositionRef()
+{
+	return position;
+}
+
+sf::Vector2f Player::GetSpawnPosition()
+{
+	return spawnPosition;
+}
+
+sf::Vector2f Player::GetLastMovementVector()
+{
+	return lastMovementVector;
 }
 
 int Player::GetHealth()

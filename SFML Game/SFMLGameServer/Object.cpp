@@ -66,3 +66,8 @@ Object::Orientation Object::GetFacingDirection()
 {
 	return facingDirection;
 }
+
+void Object::SetFacingDirection(Orientation direction)
+{
+	facingDirection = direction;
+}

@@ -55,8 +55,7 @@ class PlayerPositionsPacket : public sf::Packet
 {
 public:
 	PlayerPositionsPacket();
-	// playerNum MUST be the size of the array, the array size should really be the amount of players there are.
-	void PackData(sf::Uint8 routingTag, sf::Uint8 playerPosVectorSize, std::vector<bool> playersActive, std::vector<sf::Vector2f> playerPositions, sf::Uint32 stateIterator, sf::Packet &packetInstance);
+	void PackData(sf::Uint8 routingTag, sf::Uint8 vectorSize, std::vector<bool> playersActive, std::vector<sf::Vector2f> playerPositions, std::vector<int> playerDirections, sf::Uint32 stateIterator, sf::Packet &packetInstance);
 };
 
 class PlayerInputPacket : public sf::Packet

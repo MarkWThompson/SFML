@@ -22,8 +22,6 @@ StartState::StartState(ClientTransmitter* clientTransmitter, std::string ipFontP
 
 	// Connection request iterator set to above the connection attempts so it doesn't just keep trying to connect immediately
 	connectionRequestIterator = CONNECTION_ATTMEPTS + 1;
-
-	
 }
 
 void StartState::SetView(sf::RenderWindow* renderWindow)
@@ -31,6 +29,7 @@ void StartState::SetView(sf::RenderWindow* renderWindow)
 	// Use the default view for the renderWindow
 	sf::View& defaultView = renderWindow->GetDefaultView();
 	renderWindow->SetView(defaultView);
+	renderWindow->ShowMouseCursor(true);
 }
 
 
