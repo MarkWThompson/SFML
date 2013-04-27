@@ -5,8 +5,6 @@
 
 BulletHandler::BulletHandler(PlayerNetworkData* playerNetworkData)
 {
-
-
 	this->playerNetworkData = playerNetworkData;
 	//set the waiting for vector to be the length of the number of players, the structure is a 2d array with the bullets that need to be received being stored for each player
 	std::vector<sf::Uint32> emptyVector;
@@ -37,25 +35,28 @@ void BulletHandler::CheckCollision(std::vector<sf::Rect<float>> &platforms, std:
 			{
 				if(players[k].GetBounds().Intersects(projectileList[i]->GetBounds()))
 				{
-					ProjectileDeathPacket deathPacket;
-					deathPacket.PackData(sharedConstants.GAME_STATE, projectileList[i]->GetBulletID(), projectileList[i]->GetPosition(), stateIterator, deathPacket);
-
-					if(projectileList[i] != NULL)
+					if(projectileList[i]->GetBulletOwner() != k)
 					{
-						deathsToSend.push_back(deathPacket);
-					}
+						ProjectileDeathPacket deathPacket;
+						deathPacket.PackData(sharedConstants.GAME_STATE, projectileList[i]->GetBulletID(), projectileList[i]->GetPosition(), stateIterator, deathPacket);
 
-					playerHasCollided = true;
-					players[k].SetHealth(players[k].GetHealth() - 10);
-					//Check if the player is dead so the score can be incremented
-					if(players[k].GetHealth() <= 0)
-					{
-						players[projectileList[i]->GetBulletOwner()].IncreaseScore(1);
-					}
+						if(projectileList[i] != NULL)
+						{
+							deathsToSend.push_back(deathPacket);
+						}
 
-					//THIS ERASE IS SUPER INNEFICIANT AND SHOULD PROBABLY BE DONE WITH A SET TO NULL WITH SMARTER BULLET SPAWNING
-					projectileList.erase(projectileList.begin() + i);
-					break;
+						playerHasCollided = true;
+						players[k].SetHealth(players[k].GetHealth() - 10);
+						//Check if the player is dead so the score can be incremented
+						if(players[k].GetHealth() <= 0)
+						{
+							players[projectileList[i]->GetBulletOwner()].IncreaseScore(1);
+						}
+
+						//THIS ERASE IS SUPER INNEFICIANT AND SHOULD PROBABLY BE DONE WITH A SET TO NULL WITH SMARTER BULLET SPAWNING
+						projectileList.erase(projectileList.begin() + i);
+						break;
+					}
 				}
 			}
 		}
@@ -106,7 +107,6 @@ void BulletHandler::CheckCollision(std::vector<sf::Rect<float>> &platforms, std:
 
 void BulletHandler::SpawnBullet(int bulletOwner,sf::Vector2f spawnPosition, sf::Vector2f velocity, sf::Uint32 stateIterator)
 {
-
 	// Create the bullet on the server
 	projectileList.push_back(new Projectile(spawnPosition.x , spawnPosition.y ,velocity, bulletDimensions, bulletIDCounter,bulletOwner));
 

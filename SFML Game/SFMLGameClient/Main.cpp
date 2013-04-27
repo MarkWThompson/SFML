@@ -4,6 +4,7 @@
 #include <SFML/Network.hpp>
 #include <iostream>
 #include "GameManager.h"
+#include "Assets.h"
 
 int main()
 {
@@ -13,8 +14,13 @@ int main()
 
 	bool eventFired = false;
 
-    // Create the main window, needs to be passed into drea
-	sf::RenderWindow app(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), "SFML Project");
+    // Create the main window
+	sf::RenderWindow app(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), "Networking Project");
+
+	// Set window icon
+	sf::Image icon;
+	icon.LoadFromFile(ICON_IMAGE);
+	app.SetIcon(icon.GetWidth(), icon.GetHeight(), icon.GetPixelsPtr());
 
     // Get a reference to the input manager associated to our window, and store it for later use
     const sf::Input& input = app.GetInput();

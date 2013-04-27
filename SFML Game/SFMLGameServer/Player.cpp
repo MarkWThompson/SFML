@@ -1,7 +1,7 @@
 #include "Player.h"
 
 Player::Player()
-	: MAX_X_VELOCITY(10.0f), X_DECELERATION(1.0f), MIN_Y_VELOCITY(-20.0f), Y_ACCELERATION(-2.0), X_ACCELERATION(2.0f), JUMP_VELOCITY(25.0f)
+	: MAX_X_VELOCITY(10.0f), X_DECELERATION(10.0f), MIN_Y_VELOCITY(-60.0f), Y_ACCELERATION(-2.0), X_ACCELERATION(10.0f), JUMP_VELOCITY(50.0f)
 {
 	// Load in player image
 	image = new sf::Image();
@@ -193,9 +193,10 @@ void Player::HandleCollision(sf::Rect<float> objectBounds)
     }
 
     // Below object
-	if((position.y - yVelocity) >= objectBounds.Bottom)
+	if((position.y + yVelocity) >= objectBounds.Bottom)
     {
 		position.y = objectBounds.Bottom;
+		yVelocity = 0.0f;
         below = true;
 		isJumping = false;
     }

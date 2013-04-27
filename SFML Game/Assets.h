@@ -16,3 +16,4 @@ static const std::string ASSETS_PREFIX = "../Assets/";
 #define HEALTHBARFILL_IMAGE		(ASSETS_PREFIX + "HealthBarFill.png")
 #define HIGHSCOREFRAME_IMAGE	(ASSETS_PREFIX + "ScoreBoardFrame.png")
 #define CROSSHAIR_IMAGE			(ASSETS_PREFIX + "Crosshair.png")
+#define ICON_IMAGE				(ASSETS_PREFIX + "Icon.png")

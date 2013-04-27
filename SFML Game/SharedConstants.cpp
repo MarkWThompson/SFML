@@ -12,7 +12,7 @@ const unsigned short SharedConstants::CLIENT_RECEIVE_PORT = 3242;
 const unsigned short SharedConstants::CLIENT_TRANSMIT_PORT = 4567;
 
 // Define the fixed time step
-const float SharedConstants::TIME_STEP = 33.3f / 1000.0f; //this is 33.2 seconds / 1000, or 33.2ms, or 30fps. Far too high to be honest. This is the amount of time the gameLogic update function waits before executing again.
+const float SharedConstants::TIME_STEP = 1.0f / 30.0f; // This = (1 second / numFrames). Far too high to be honest. This is the amount of time the gameLogic update function waits before executing again.
 
 // Define the timeout duration
 const float SharedConstants::TIMEOUT = 6.0f;
