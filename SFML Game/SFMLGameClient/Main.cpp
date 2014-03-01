@@ -13,9 +13,11 @@ int main()
 	const int WINDOW_HEIGHT = 720;
 
 	bool eventFired = false;
+	
+	sf::Randomizer::SetSeed((unsigned int)time(NULL));
 
     // Create the main window
-	sf::RenderWindow app(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), "Networking Project");
+	sf::RenderWindow app(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32), "M3");
 
 	// Set window icon
 	sf::Image icon;
@@ -23,7 +25,7 @@ int main()
 	app.SetIcon(icon.GetWidth(), icon.GetHeight(), icon.GetPixelsPtr());
 
     // Get a reference to the input manager associated to our window, and store it for later use
-    const sf::Input& input = app.GetInput();
+    const sf::Input& INPUT = app.GetInput();
 
 	GameManager* gameManager = new GameManager(&app);
 
@@ -41,18 +43,11 @@ int main()
                 app.Close();
 			}
 
-            // Escape key : exit
-            if((events.Type == sf::Event::KeyPressed) && (events.Key.Code == sf::Key::Escape))
-			{
-				gameManager->SendDisconnectMessage();
-                app.Close();
-			}
-
 			eventFired = true;
         }
 
 		// Update fsm with events and input
-		gameManager->Update(events, eventFired, input);
+		gameManager->Update(events, eventFired, INPUT);
 
 		// Clear the screen
         app.Clear();

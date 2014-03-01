@@ -1,19 +1,19 @@
 #include "HealthBarSprite.h"
 
 
-HealthBarSprite::HealthBarSprite(float startX, float startY, const int X_OFFSET, const int Y_OFFSET, const int MAX_HEALTH)
-	: MAX_HEALTH(MAX_HEALTH), X_FILL_OFFSET(3), Y_FILL_OFFSET(2), BAR_X_OFFSET(X_OFFSET), BAR_Y_OFFSET(Y_OFFSET)
+HealthBarSprite::HealthBarSprite(float playerCentreX, float playerCentreY, const int MAX_HEALTH)
+	: MAX_HEALTH(MAX_HEALTH)
 {
-	frameImage.LoadFromFile(HEALTHBARFRAME_IMAGE);
-	fillImage.LoadFromFile(HEALTHBARFILL_IMAGE);
+	backingImage.LoadFromFile(HEALTH_BAR_BACKING_IMAGE);
+	fillImage.LoadFromFile(HEALTH_BAR_FILL_IMAGE);
 
-	frameSprite.SetImage(frameImage);
+	backingSprite.SetImage(backingImage);
 	fillSprite.SetImage(fillImage);
 
 	showFill = true;
 
-	frameSprite.SetPosition(startX + BAR_X_OFFSET, startY + BAR_Y_OFFSET);
-	fillSprite.SetPosition(startX + BAR_X_OFFSET + X_FILL_OFFSET, startY + BAR_Y_OFFSET + Y_FILL_OFFSET);
+	backingSprite.SetPosition(playerCentreX - 35, playerCentreY);
+	fillSprite.SetPosition(playerCentreX - 35, playerCentreY);
 }
 
 
@@ -38,13 +38,13 @@ void HealthBarSprite::UpdateHealth(int health)
 
 void HealthBarSprite::Draw(sf::RenderWindow* renderWindow, float xPos, float yPos)
 {
-	frameSprite.SetPosition(xPos + BAR_X_OFFSET, yPos + BAR_Y_OFFSET);
-	fillSprite.SetPosition(xPos + BAR_X_OFFSET + X_FILL_OFFSET, yPos + BAR_Y_OFFSET + Y_FILL_OFFSET);
+	backingSprite.SetPosition(xPos - 35, yPos);
+	fillSprite.SetPosition(xPos - 35, yPos);
 	
+	renderWindow->Draw(backingSprite);
+
 	if(showFill == true)
 	{
 		renderWindow->Draw(fillSprite);
 	}
-
-	renderWindow->Draw(frameSprite);
 }

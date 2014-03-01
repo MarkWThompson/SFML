@@ -1,28 +1,23 @@
 #include "GameManager.h"
+#include "NotificationBox.h"
 
 GameManager::GameManager(sf::RenderWindow* renderWindow)
 {
 	this->renderWindow = renderWindow;
 	curState = NULL;
 
-	// PIPES
 	clientTransmitter = new ClientTransmitter();
 	clientReceiver = new ClientReceiver();
 
 	// Network data
 	serverNetworkData = new ServerNetworkData();
 	
-	SwitchState(SharedConstants::START_STATE);
+	// Initial state
+	SwitchState(SharedConstants::SPLASH_STATE);
 }
 
 GameManager::~GameManager()
 {
-	// States
-	delete startState;
-	delete gameState;
-	startState = NULL;
-	gameState = NULL;
-
 	// PIPES
 	delete clientTransmitter;
 	delete clientReceiver;
@@ -30,21 +25,23 @@ GameManager::~GameManager()
 	clientReceiver = NULL;
 }
 
-void GameManager::Update(sf::Event events, bool eventFired, const sf::Input &input)
+void GameManager::Update(sf::Event events, bool eventFired, const sf::Input &INPUT)
 {
 	if(curState != NULL)
 	{
 		// Switch the state if a signal has been given from the current state
 		if(curState->Switch())
 		{
-			SwitchState(curState->GetTarget());
+			SwitchState(curState->GetTargetState());
 		}
 
-		curState->Update(events, eventFired, input);
+		curState->Update(events, eventFired, INPUT);
+
+		notificationBox.Update(INPUT);
 	}
 
 	// Will receive data if the state allows it
-	if(curState->CanReceive())
+	if(curState->IsListening())
 	{
 		clientReceiver->ReceiveUDP(curState);
 	}
@@ -63,17 +60,39 @@ void GameManager::SwitchState(SharedConstants::StateID stateID)
 
 	switch(stateID)
 	{
-		case SharedConstants::START_STATE:
-			std::cout << "START_STATE." << std::endl;
-			curState = new StartState(clientTransmitter, ARIAL_FONT_FILE, 50.0f, 470, serverNetworkData);
+		case SharedConstants::SPLASH_STATE:
+			std::cout << "Splash state." << std::endl;
+			curState = new SplashState();
+			break;
+		
+		case SharedConstants::LOBBY_STATE:
+			std::cout << "Lobby state." << std::endl;
+			curState = new LobbyState(clientTransmitter, serverNetworkData);
+			break;
+			
+		case SharedConstants::OPTIONS_STATE:
+			std::cout << "Options state." << std::endl;
+			curState = new OptionsState();
+			break;
+		
+		case SharedConstants::HELP_STATE:
+			std::cout << "Help state." << std::endl;
+			curState = new HelpState();
 			break;
 
+		case SharedConstants::CREDITS_STATE:
+			std::cout << "Credits state." << std::endl;
+			curState = new CreditsState();
+			break;
+		
+
 		case SharedConstants::GAME_STATE:
-			std::cout << "GAME_STATE." << std::endl;
+			std::cout << "Game state." << std::endl;
 			curState = new GameState(clientTransmitter, serverNetworkData);
 			break;
 	}
 
+	// When a state fails to load, this handles it
 	if(curState->Load() == false)
 	{
 		std::cout << "Failed to load state with ID : " << stateID << std::endl;
@@ -83,7 +102,7 @@ void GameManager::SwitchState(SharedConstants::StateID stateID)
 		curState = NULL;
 
 		// Boots back to main menu if failed to load
-		SwitchState(sharedConstants.START_STATE);
+		SwitchState(SharedConstants::SPLASH_STATE);
 	}
 	else
 	{
@@ -96,6 +115,7 @@ void GameManager::Draw()
 	if(curState != NULL)
 	{
 		curState->Draw(renderWindow);
+		notificationBox.Render(renderWindow);
 	}
 }
 

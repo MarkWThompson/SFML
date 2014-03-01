@@ -3,16 +3,11 @@
 State::State(SharedConstants::StateID ID)
 {
 	this->ID = targetID = ID;
-	canReceive = false;
+	listening = false;
 }
 
 State::~State()
 {
-}
-
-SharedConstants::StateID State::GetTarget()
-{
-	return targetID;
 }
 
 bool State::Switch()
@@ -27,7 +22,32 @@ bool State::Switch()
 	}
 }
 
-bool State::CanReceive()
+void State::SwitchState(SharedConstants::StateID targetID)
 {
-	return canReceive;
+	this->targetID = targetID;
+}
+
+SharedConstants::StateID State::GetTargetState()
+{
+	return targetID;
+}
+
+SharedConstants::StateID State::GetID()
+{
+	return ID;
+}
+
+void State::StartListening()
+{
+	listening = true;
+}
+
+void State::StopListening()
+{
+	listening = false;
+}
+
+bool State::IsListening()
+{
+	return listening;
 }

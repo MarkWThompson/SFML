@@ -23,8 +23,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>Stars.png</texture_filename>
-                    <asset_name>Stars</asset_name>
+                    <texture_filename>Backgrounds/Stars.png</texture_filename>
+                    <asset_name>Backgrounds/Stars</asset_name>
                     <Origin>
                         <X>960</X>
                         <Y>512</Y>
@@ -60,8 +60,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="SpawnPoint 1" Visible="true">
                     <Position>
-                        <X>650</X>
-                        <Y>280</Y>
+                        <X>0</X>
+                        <Y>0</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="SpawnPoint" Type="string" Description="">
@@ -85,8 +85,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>Megaman.png</texture_filename>
-                    <asset_name>Megaman</asset_name>
+                    <texture_filename>Spawn.png</texture_filename>
+                    <asset_name>Spawn</asset_name>
                     <Origin>
                         <X>30</X>
                         <Y>34</Y>
@@ -94,8 +94,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="SpawnPoint 2" Visible="true">
                     <Position>
-                        <X>480</X>
-                        <Y>280</Y>
+                        <X>-240</X>
+                        <Y>0</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="SpawnPoint" Type="string" Description="">
@@ -119,8 +119,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>Megaman.png</texture_filename>
-                    <asset_name>Megaman</asset_name>
+                    <texture_filename>Spawn.png</texture_filename>
+                    <asset_name>Spawn</asset_name>
                     <Origin>
                         <X>30</X>
                         <Y>34</Y>
@@ -128,8 +128,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="SpawnPoint 3" Visible="true">
                     <Position>
-                        <X>840</X>
-                        <Y>280</Y>
+                        <X>230</X>
+                        <Y>0</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="SpawnPoint" Type="string" Description="">
@@ -153,8 +153,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>Megaman.png</texture_filename>
-                    <asset_name>Megaman</asset_name>
+                    <texture_filename>Spawn.png</texture_filename>
+                    <asset_name>Spawn</asset_name>
                     <Origin>
                         <X>30</X>
                         <Y>34</Y>
@@ -168,10 +168,10 @@
         </Layer>
         <Layer Name="Platforms" Visible="true">
             <Items>
-                <Item xsi:type="TextureItem" Name="Texture_0002" Visible="true">
+                <Item xsi:type="TextureItem" Name="Texture_0020" Visible="true">
                     <Position>
-                        <X>660</X>
-                        <Y>370</Y>
+                        <X>20</X>
+                        <Y>110</Y>
                     </Position>
                     <CustomProperties />
                     <Rotation>0</Rotation>
@@ -188,119 +188,11 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>CentreTile.png</texture_filename>
-                    <asset_name>CentreTile</asset_name>
+                    <texture_filename>FloatingPlatform2.png</texture_filename>
+                    <asset_name>FloatingPlatform2</asset_name>
                     <Origin>
-                        <X>50</X>
-                        <Y>50</Y>
-                    </Origin>
-                </Item>
-                <Item xsi:type="TextureItem" Name="Texture_0003" Visible="true">
-                    <Position>
-                        <X>460</X>
-                        <Y>370</Y>
-                    </Position>
-                    <CustomProperties />
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
-                    <texture_filename>LeftTile.png</texture_filename>
-                    <asset_name>LeftTile</asset_name>
-                    <Origin>
-                        <X>50</X>
-                        <Y>50</Y>
-                    </Origin>
-                </Item>
-                <Item xsi:type="TextureItem" Name="Texture_0004" Visible="true">
-                    <Position>
-                        <X>860</X>
-                        <Y>370</Y>
-                    </Position>
-                    <CustomProperties />
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
-                    <texture_filename>RightTile.png</texture_filename>
-                    <asset_name>RightTile</asset_name>
-                    <Origin>
-                        <X>50</X>
-                        <Y>50</Y>
-                    </Origin>
-                </Item>
-                <Item xsi:type="TextureItem" Name="Texture_0006" Visible="true">
-                    <Position>
-                        <X>760</X>
-                        <Y>370</Y>
-                    </Position>
-                    <CustomProperties />
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
-                    <texture_filename>CentreTile.png</texture_filename>
-                    <asset_name>CentreTile</asset_name>
-                    <Origin>
-                        <X>50</X>
-                        <Y>50</Y>
-                    </Origin>
-                </Item>
-                <Item xsi:type="TextureItem" Name="Texture_0007" Visible="true">
-                    <Position>
-                        <X>560</X>
-                        <Y>370</Y>
-                    </Position>
-                    <CustomProperties />
-                    <Rotation>0</Rotation>
-                    <Scale>
-                        <X>1</X>
-                        <Y>1</Y>
-                    </Scale>
-                    <TintColor>
-                        <R>255</R>
-                        <G>255</G>
-                        <B>255</B>
-                        <A>255</A>
-                        <PackedValue>4294967295</PackedValue>
-                    </TintColor>
-                    <FlipHorizontally>false</FlipHorizontally>
-                    <FlipVertically>false</FlipVertically>
-                    <texture_filename>CentreTile.png</texture_filename>
-                    <asset_name>CentreTile</asset_name>
-                    <Origin>
-                        <X>50</X>
-                        <Y>50</Y>
+                        <X>300</X>
+                        <Y>65</Y>
                     </Origin>
                 </Item>
             </Items>
@@ -320,12 +212,12 @@
             <Items>
                 <Item xsi:type="RectangleItem" Name="Rectangle_0013" Visible="true">
                     <Position>
-                        <X>410</X>
-                        <Y>320</Y>
+                        <X>-270</X>
+                        <Y>50</Y>
                     </Position>
                     <CustomProperties />
-                    <Width>500</Width>
-                    <Height>100</Height>
+                    <Width>580</Width>
+                    <Height>120</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -423,11 +315,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>19</NextItemNumber>
-        <ContentRootFolder>C:\Users\Mark\Documents\GitHub\SFML\SFML Game\Assets</ContentRootFolder>
+        <NextItemNumber>22</NextItemNumber>
+        <ContentRootFolder>C:\Users\Mark\Documents\GitHub\SFML\SFML Game\Assets\Levels</ContentRootFolder>
         <CameraPosition>
-            <X>-408.3395</X>
-            <Y>-383.338</Y>
+            <X>449.995117</X>
+            <Y>99.9961243</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

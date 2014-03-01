@@ -127,7 +127,7 @@ void ConnectionHandler::SendApprovalMessage(sf::IPAddress &connectionAddress, in
 {
 	// Send approval response
 	ConnectionResponsePacket responsePacket;
-	responsePacket.PackData(sharedConstants.START_STATE, sharedConstants.GetAcceptMessage(), playerAdded, playerNetworkData->MAX_PLAYERS, levelFilepath, 0, responsePacket);
+	responsePacket.PackData(sharedConstants.LOBBY_STATE, sharedConstants.GetAcceptMessage(), playerAdded, playerNetworkData->MAX_PLAYERS, levelFilepath, 0, responsePacket);
 	sf::Sleep(0.1f);
 
 	if(shouldResetTimer == true)
@@ -148,7 +148,7 @@ void ConnectionHandler::SendDenialMessage(sf::IPAddress &connectionAddress)
 {
 	// Send deinal message
 	ConnectionResponsePacket responsePacket;
-	responsePacket.PackData(sharedConstants.START_STATE, sharedConstants.GetRejectMessage(), -1, 1, "", 0, responsePacket);
+	responsePacket.PackData(sharedConstants.LOBBY_STATE, sharedConstants.GetRejectMessage(), -1, 1, "", 0, responsePacket);
 
 	sf::Sleep(0.1f);
 	serverTransmitter->SendUDP(sharedConstants.GetServerTransmitPort(), connectionAddress, responsePacket);

@@ -70,7 +70,7 @@ PlayerPositionsPacket::PlayerPositionsPacket()
 {
 }
 // playerNum MUST be the size of the array, the array size should really be the amount of players there are.
-void PlayerPositionsPacket::PackData(sf::Uint8 routingTag, sf::Uint8 vectorSize, std::vector<bool> playersActive, std::vector<sf::Vector2f> playerPositions, std::vector<int> playerDirections, sf::Uint32 stateIteration, sf::Packet &packetInstance)
+void PlayerPositionsPacket::PackData(sf::Uint8 routingTag, sf::Uint8 vectorSize, std::vector<bool> playersActive, std::vector<sf::Vector2f> playerPositions, std::vector<int> playerDirections, std::vector<sf::Vector2f> playerViewPoints, sf::Uint32 stateIteration, sf::Packet &packetInstance)
 {
 	packetInstance << routingTag << static_cast<sf::Uint8>(PLAYER_POSITIONS_PACKET) << vectorSize;
 
@@ -87,6 +87,11 @@ void PlayerPositionsPacket::PackData(sf::Uint8 routingTag, sf::Uint8 vectorSize,
 	for(size_t i = 0; i < vectorSize; i++)
 	{
 		packetInstance << playerDirections[i];
+	}
+
+	for(size_t i = 0; i < vectorSize; i++)
+	{
+		packetInstance << playerViewPoints[i];
 	}
 
 	packetInstance << stateIteration;

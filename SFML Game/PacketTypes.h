@@ -55,7 +55,7 @@ class PlayerPositionsPacket : public sf::Packet
 {
 public:
 	PlayerPositionsPacket();
-	void PackData(sf::Uint8 routingTag, sf::Uint8 vectorSize, std::vector<bool> playersActive, std::vector<sf::Vector2f> playerPositions, std::vector<int> playerDirections, sf::Uint32 stateIterator, sf::Packet &packetInstance);
+	void PackData(sf::Uint8 routingTag, sf::Uint8 vectorSize, std::vector<bool> playersActive, std::vector<sf::Vector2f> playerPositions, std::vector<int> playerDirections, std::vector<sf::Vector2f> playerViewPoints, sf::Uint32 stateIterator, sf::Packet &packetInstance);
 };
 
 class PlayerInputPacket : public sf::Packet

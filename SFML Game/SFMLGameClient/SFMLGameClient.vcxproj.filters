@@ -39,6 +39,12 @@
     <Filter Include="Header Files\Objects">
       <UniqueIdentifier>{a54c7e0f-ab88-40cb-8c3b-a6a612f236a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SimplePersistence">
+      <UniqueIdentifier>{8e9ccf71-2dc2-4427-90a5-ca1f8918a472}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SimplePersistence">
+      <UniqueIdentifier>{7c12f7d8-cf54-48bc-ac4c-c4b76b938265}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameManager.cpp">
@@ -56,9 +62,6 @@
     <ClCompile Include="State.cpp">
       <Filter>Source Files\Display</Filter>
     </ClCompile>
-    <ClCompile Include="StartState.cpp">
-      <Filter>Source Files\States</Filter>
-    </ClCompile>
     <ClCompile Include="GameState.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
@@ -67,9 +70,6 @@
     </ClCompile>
     <ClCompile Include="..\SharedConstants.cpp">
       <Filter>Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="TextInputBox.cpp">
-      <Filter>Source Files\Objects</Filter>
     </ClCompile>
     <ClCompile Include="PlayerSprite.cpp">
       <Filter>Source Files\Objects</Filter>
@@ -86,6 +86,48 @@
     <ClCompile Include="ScoreBoard.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="SplashState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="CreditsState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbyState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionsState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuState.cpp">
+      <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteSheet.cpp">
+      <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="HelpState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="InputBox.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="NotificationBox.cpp">
+      <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="Starfield.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SimplePersistence-1.0\PugiXML\pugixml.cpp">
+      <Filter>Source Files\SimplePersistence</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SimplePersistence-1.0\SimplePersistence.cpp">
+      <Filter>Source Files\SimplePersistence</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -100,9 +142,6 @@
     <ClInclude Include="State.h">
       <Filter>Header Files\Display</Filter>
     </ClInclude>
-    <ClInclude Include="StartState.h">
-      <Filter>Header Files\States</Filter>
-    </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>Header Files\States</Filter>
     </ClInclude>
@@ -114,9 +153,6 @@
     </ClInclude>
     <ClInclude Include="..\PacketTypes.h">
       <Filter>Header Files\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="TextInputBox.h">
-      <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="PlayerSprite.h">
       <Filter>Header Files\Objects</Filter>
@@ -135,6 +171,51 @@
     </ClInclude>
     <ClInclude Include="ScoreBoard.h">
       <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="SplashState.h">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CreditsState.h">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionsState.h">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbyState.h">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuState.h">
+      <Filter>Header Files\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header Files\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteSheet.h">
+      <Filter>Header Files\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="HelpState.h">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="InputBox.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="NotificationBox.h">
+      <Filter>Header Files\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="Starfield.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SimplePersistence-1.0\PugiXML\pugiconfig.hpp">
+      <Filter>Header Files\SimplePersistence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SimplePersistence-1.0\PugiXML\pugixml.hpp">
+      <Filter>Header Files\SimplePersistence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SimplePersistence-1.0\SimplePersistence.h">
+      <Filter>Header Files\SimplePersistence</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

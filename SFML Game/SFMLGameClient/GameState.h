@@ -12,6 +12,7 @@
 #include <string>
 #include "Level.h"
 #include "BulletSprite.h"
+#include "Button.h"
 #include "ScoreBoard.h"
 
 class GameState : public State
@@ -28,7 +29,7 @@ public:
 	bool Load();
 
 	/** Main loop. */
-	void Update(sf::Event events, bool eventFired, const sf::Input &input);
+	void Update(sf::Event events, bool eventFired, const sf::Input &INPUT);
 
 	/** Renders all of the applicable state content. */
 	void Draw(sf::RenderWindow* renderWindow);
@@ -39,13 +40,19 @@ public:
 	void SetView(sf::RenderWindow* renderWindow);
 
 private:
+	/** Sends a disconnection message to the server. */
+	void SendDisconnectMessage();
+
+	bool isPaused;
+	bool canPause;
+
 	bool renderCrosshair;
 
 	/** Checks if the connection to the server has been lost. */
 	void CheckTimeout();
 
 	// Packet unpacking methods
-	void UnpackPlayerPositionsPacket(sf::Packet &receivedPacket, std::vector<bool> &playersActive, std::vector<PlayerSprite> &playerSprites, std::vector<int> &playerDirections, sf::Uint32 &stateIterator);
+	void UnpackPlayerPositionsPacket(sf::Packet &receivedPacket, std::vector<bool> &playersActive, std::vector<PlayerSprite> &playerSprites, std::vector<int> &playerDirections, std::vector<sf::Vector2f> &playerViewPoints, sf::Uint32 &stateIterator);
 	void UnpackProjectilePacket(sf::Packet &receivedPacket);
 	void UnpackProjectileDeathPacket(sf::Packet &receivedPacket);
 
@@ -60,10 +67,11 @@ private:
 	ServerNetworkData* serverNetworkData;
 
 	// Player containers
-	sf::Image playerImage;
 	std::vector<PlayerSprite> playerSprites;
 	std::vector<bool> playersActive;
 	std::vector<int> playerDirections;
+	std::vector<sf::Vector2f> playerViewPoints;
+	std::vector<int> playersHealth;
 
 	// Bullets
 	int tempCount;
@@ -93,4 +101,24 @@ private:
 	bool shouldGetScores;
 	sf::Clock scoreBoardRefreshClock;
 	float scoreBoardRefreshTime;
+
+	// Pause menu
+	sf::Image pauseBackingImage;
+	sf::Sprite pauseBackingSprite;
+
+	// Button images
+	sf::Image menuButtonImage;
+	sf::Image returnButtonImage;
+
+	// Buttons
+	Button menuButton;
+	Button returnButton;
+
+	// Victory condition
+	//sf::Clock winTimer;
+	//bool winner;
+	std::vector<sf::Int16> playerScores;
+	std::vector<std::string> playerNames;
+	//sf::Font moireFont;
+	//sf::String winnerText;
 };

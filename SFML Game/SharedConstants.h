@@ -38,11 +38,15 @@ public:
 	/** Gets Player Max Health */
 	const int GetMaxHealth();
 
-	/** Contains all of the modules for the routers - could be split into server / client if need be. */
+	const int GetWinningScore();
+
+	const float GetGracePeriod();
+
+	/** Contains all of the modules for the routers. */
 	enum ModuleID { CONNECT_MODULE, GAME_MODULE, CHAT_MODULE };
 
-	/** Contains all of the client game states - might be useful for server to know. */
-	enum StateID { UNDEFINED_STATE, START_STATE, GAME_STATE };
+	/** Contains all of the client game states. */
+	enum StateID { UNDEFINED_STATE, SPLASH_STATE, GAME_STATE, LOBBY_STATE, CREDITS_STATE, OPTIONS_STATE, HELP_STATE };
 
 private:
 	SharedConstants();
@@ -71,4 +75,8 @@ private:
 
 	// The maximum health value of a player
 	static const int MAX_HEALTH;
+
+	static const int WINNING_SCORE;
+
+	static const float GRACE_PERIOD;
 };

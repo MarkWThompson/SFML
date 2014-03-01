@@ -82,7 +82,7 @@ bool Level::LoadLayer(Layer layer, rapidxml::xml_node<> *layerItem)
 			float xCentre = 0.0f, yCentre = 0.0f;
 			float xOrigin = 0.0f, yOrigin = 0.0f;
 			float xScale = 0.0f, yScale = 0.0f;
-			std::string textureFilename = ASSETS_PREFIX;
+			std::string textureFilename = LEVELS_PREFIX;
 			sf::Image* textureImage = new sf::Image();
 			std::stringstream buffer;
 

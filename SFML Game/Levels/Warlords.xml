@@ -23,8 +23,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>Stars.png</texture_filename>
-                    <asset_name>Stars</asset_name>
+                    <texture_filename>Backgrounds/Stars.png</texture_filename>
+                    <asset_name>Backgrounds/Stars</asset_name>
                     <Origin>
                         <X>960</X>
                         <Y>512</Y>
@@ -50,8 +50,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>BaseBackground.png</texture_filename>
-                    <asset_name>BaseBackground</asset_name>
+                    <texture_filename>Warlords/BaseBackground.png</texture_filename>
+                    <asset_name>Warlords/BaseBackground</asset_name>
                     <Origin>
                         <X>650</X>
                         <Y>600</Y>
@@ -109,8 +109,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>Megaman.png</texture_filename>
-                    <asset_name>Megaman</asset_name>
+                    <texture_filename>Spawn.png</texture_filename>
+                    <asset_name>Spawn</asset_name>
                     <Origin>
                         <X>30</X>
                         <Y>34</Y>
@@ -140,8 +140,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>Megaman.png</texture_filename>
-                    <asset_name>Megaman</asset_name>
+                    <texture_filename>Spawn.png</texture_filename>
+                    <asset_name>Spawn</asset_name>
                     <Origin>
                         <X>30</X>
                         <Y>34</Y>
@@ -229,8 +229,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>BaseForeground.png</texture_filename>
-                    <asset_name>BaseForeground</asset_name>
+                    <texture_filename>Warlords/BaseForeground.png</texture_filename>
+                    <asset_name>Warlords/BaseForeground</asset_name>
                     <Origin>
                         <X>650</X>
                         <Y>600</Y>
@@ -505,7 +505,7 @@
     <CustomProperties />
     <EditorRelated>
         <NextItemNumber>63</NextItemNumber>
-        <ContentRootFolder>C:\Users\Mark\Documents\GitHub\SFML\SFML Game\Assets</ContentRootFolder>
+        <ContentRootFolder>C:\Users\Mark\Documents\GitHub\SFML\SFML Game\Assets\Levels</ContentRootFolder>
         <CameraPosition>
             <X>160.4249</X>
             <Y>21.5184345</Y>

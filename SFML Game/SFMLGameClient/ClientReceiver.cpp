@@ -1,10 +1,12 @@
 #include "ClientReceiver.h"
+#include "NotificationBox.h"
 
 ClientReceiver::ClientReceiver()
 {
 	if(!receiver.Bind(sharedConstants.GetClientReceivePort()))
 	{
 		std::cout << "ClientReceiver() error: failed to bind socket to specified port." << std::endl;
+		notificationBox.AddNotification("Fatal error: Failed to setup client receiver.", true);
 	}
 
 	receiver.SetBlocking(false);
@@ -26,14 +28,14 @@ void ClientReceiver::ReceiveUDP(State* curState)
 
 			// Unpack what type of data it is
 			receivedPacket >> routingTag;
-
+			
 			//std::cout << "Packet routing tag: " << (int)routingTag << std::endl;
 
 			/* This is validation, checks that the packet is right for the state, just in case.
 			 * Probably will be useful in some other capacity.
 			 * The reason the routingTag is still in is basically so packets can be reused both ways, although this validation is nice too.
 			 */
-			if(routingTag == curState->GetTarget())
+			if(routingTag == curState->GetID())
 			{
 				curState->ReceiveData(receivedPacket, receiveAddress, receivePort);
 			}

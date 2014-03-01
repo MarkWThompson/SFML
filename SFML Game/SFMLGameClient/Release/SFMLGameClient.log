@@ -1,20 +1,5 @@
-﻿  PacketTypes.cpp
-  SharedConstants.cpp
-  BulletSprite.cpp
-  ClientReceiver.cpp
-  ClientTransmitter.cpp
-  GameManager.cpp
-  GameState.cpp
-  HealthBarSprite.cpp
-  Level.cpp
-  Main.cpp
-  PlayerSprite.cpp
-PlayerSprite.cpp(67): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-  ScoreBoard.cpp
-  StartState.cpp
-  State.cpp
-  TextInputBox.cpp
-LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+﻿LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
+c:\users\mark\documents\github\sfml\sfml game\sfmlgameclient\menustate.cpp(68): warning C4715: 'MenuState::Load' : not all control paths return a value
   Finished generating code
   SFMLGameClient.vcxproj -> C:\Users\Mark\Documents\GitHub\SFML\SFML Game\Release\SFMLGameClient.exe

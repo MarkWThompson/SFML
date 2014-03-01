@@ -1,5 +1,6 @@
 #include "ClientTransmitter.h"
 #include "SharedConstants.h"
+#include "NotificationBox.h"
 
 ClientTransmitter::ClientTransmitter()
 {
@@ -18,6 +19,7 @@ void ClientTransmitter::SendUDP(unsigned short port, sf::IPAddress targetAddress
 		if(sender.Send(sendPacket, targetAddress, port) != sf::Socket::Done)
 		{
 			std::cout << "ClientTransmitter::SendUDP() error: failed to send packet to target." << std::endl;
+			notificationBox.AddNotification("Fatal error: Failed to send packet.", true);
 			return;
 		}
 

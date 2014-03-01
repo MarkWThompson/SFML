@@ -113,7 +113,7 @@ void GameLogic::Update()
 			}
 		}
 
-		//*Pack a player positions packet
+		//* PACK PLAYER POSITIONS PACKET
 		// Create vector of player positions to send in playerPositionsPacket
 		std::vector<sf::Vector2f> playerPositions;
 		for(size_t i = 0; i < players.size(); i++)
@@ -125,11 +125,19 @@ void GameLogic::Update()
 		{
 			playerDirections.push_back((int)players[i].GetFacingDirection());
 		}
+
+		std::vector<sf::Vector2f> playerViewPoints;
+		for(size_t i = 0; i < players.size(); i++)
+		{
+			sf::Vector2f viewPoint((float)playerInputs[i].mouseX, (float)playerInputs[i].mouseY);
+			playerViewPoints.push_back(viewPoint);
+		}
+
 		PlayerPositionsPacket playerPositionsPacket;
-		playerPositionsPacket.PackData(sharedConstants.GAME_STATE, playerNetworkData->MAX_PLAYERS, playerNetworkData->playersActive, playerPositions, playerDirections, stateIterator, playerPositionsPacket);
+		playerPositionsPacket.PackData(sharedConstants.GAME_STATE, playerNetworkData->MAX_PLAYERS, playerNetworkData->playersActive, playerPositions, playerDirections, playerViewPoints, stateIterator, playerPositionsPacket);
 		///
 
-		//*Pack a player Data Packet
+		//* PACK PLAYER DATA PACKET
 		PlayerDataPacket playerDataPacket;
 		//Get the player healths
 		std::vector<sf::Int16> playerHealths;
@@ -226,12 +234,6 @@ void GameLogic::UpdatePlayer(PlayerInput &playerInput)
 			shootPosition.y = playerCentre.y + (y * 3.25f);
 
 			bulletHandler->SpawnBullet(playerID, shootPosition, bulletVelocity, stateIterator);
-		}
-
-		// Score test
-		if(playerInput.returnDown)
-		{
-			player.IncreaseScore(1);
 		}
 	}
 }

@@ -1,7 +1,12 @@
 #pragma once
 
-#include "StartState.h"
 #include "GameState.h"
+#include "SplashState.h"
+#include "LobbyState.h"
+#include "OptionsState.h"
+#include "CreditsState.h"
+#include "HelpState.h"
+
 #include "ClientTransmitter.h"
 #include "ClientReceiver.h"
 #include "State.h"
@@ -17,10 +22,6 @@ public:
 
 	~GameManager();
 
-	// States
-	StartState* startState;
-	GameState* gameState;
-
 	/** 
 	 * Switches the curState to the specified target state.
 	 * @param stateID The ID of the target state.
@@ -28,7 +29,7 @@ public:
 	void SwitchState(SharedConstants::StateID stateID);
 
 	/** Main loop which updates the current state. */
-	void Update(sf::Event events, bool eventFired, const sf::Input &input);
+	void Update(sf::Event events, bool eventFired, const sf::Input &INPUT);
 
 	/** Draws the current state. */
 	void Draw();

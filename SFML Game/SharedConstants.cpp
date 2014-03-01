@@ -21,7 +21,9 @@ const float SharedConstants::TIMEOUT_INDICATION_TIME = 5.0f;
 
 const int SharedConstants::MAX_HEALTH = 100;
 
+const int SharedConstants::WINNING_SCORE = 10;
 
+const float SharedConstants::GRACE_PERIOD = 5.0f;
 
 SharedConstants::SharedConstants()
 {
@@ -32,6 +34,11 @@ SharedConstants& SharedConstants::GetInstance()
 	// Instantiated on first use, reference passed thereafter
 	static SharedConstants instance;
 	return instance;
+}
+
+const float SharedConstants::GetGracePeriod()
+{
+	return GRACE_PERIOD;
 }
 
 const unsigned short SharedConstants::GetServerReceivePort()
@@ -57,6 +64,11 @@ const unsigned short SharedConstants::GetClientTransmitPort()
 const std::string SharedConstants::GetRequestMessage()
 {
 	return REQUEST_MESSAGE;
+}
+
+const int SharedConstants::GetWinningScore()
+{
+	return WINNING_SCORE;
 }
 
 const std::string SharedConstants::GetAcceptMessage()

@@ -1,13 +1,37 @@
 #include "GameState.h"
+#include "NotificationBox.h"
+#include "AudioManager.h"
+#include "Stringify.h"
 
 GameState::GameState(ClientTransmitter* clientTransmitter, ServerNetworkData* serverNetworkData) 
-	: State(SharedConstants::GAME_STATE)
+	: State(SharedConstants::GAME_STATE),
+	returnButton(1200, 40, 240, 40),
+	menuButton(1200, 40, 240, 40)
 {
 	this->clientTransmitter = clientTransmitter;
 	this->serverNetworkData = serverNetworkData;
+
 	stateIterator = 0;
 	connectionProblem = false;
 	renderCrosshair = true;
+	isPaused = false;
+	canPause = true;
+	//winner = false;
+
+	audioManager.menuMusic.Stop();
+	audioManager.gameMusic.Play();
+
+	// Init player scores
+	for(size_t i = 0; i < serverNetworkData->maxPlayers; i++)
+	{
+		playerScores.push_back(0);
+	}
+
+	// Init player names
+	for(size_t i = 0; i < serverNetworkData->maxPlayers; i++)
+	{
+		playerNames.push_back("");
+	}
 }
 
 void GameState::SetView(sf::RenderWindow* renderWindow)
@@ -39,21 +63,19 @@ bool GameState::Load()
 	scoreBoardRefreshClock.Reset();
 	scoreBoardRefreshTime = 3;
 
-	// Load the player
-	if(playerImage.LoadFromFile(PLAYER_IMAGE))
+	// Load the players
+	for(int i = 0; i < serverNetworkData->maxPlayers; i++)
 	{
-		for(int i = 0; i < serverNetworkData->maxPlayers; i++)
-		{
-			PlayerSprite player;
-			playerSprites.push_back(player);	//Create an empty vector of 8 sprites
-			playerSprites[i].SetImage(playerImage);
-			// Set no players to be active at the start
-			playersActive.push_back(false);
-		}
+		PlayerSprite player;
+		playerSprites.push_back(player);	// Create an empty vector of 8 sprites
+		// Set no players to be active at the start
+		playersActive.push_back(false);
 	}
-	else
+
+	// Populate player health array
+	for(int i = 0; i < serverNetworkData->maxPlayers; i++)
 	{
-		return false;
+		playersHealth.push_back(0);
 	}
 
 	// Load the projectile Image
@@ -61,11 +83,49 @@ bool GameState::Load()
 	{
 		return false;
 	}
+	/*
+	if(!moireFont.LoadFromFile(MOIRE_FONT_FILE))
+	{
+		return false; 
+	}
+	else
+	{
+		winnerText.SetColor(sf::Color::White);
+		winnerText.SetSize(30.0f);
+	}*/
 
 	// Load the crosshair
 	if(crosshairImage.LoadFromFile(CROSSHAIR_IMAGE))
 	{
 		crosshairSprite.SetImage(crosshairImage); 
+	}
+	else
+	{
+		return false;
+	}
+
+	// Load pause menu UI
+	if(pauseBackingImage.LoadFromFile(PAUSE_BACKING_IMAGE))
+	{
+		pauseBackingSprite.SetImage(pauseBackingImage); 
+	}
+	else
+	{
+		return false;
+	}
+
+	if(returnButtonImage.LoadFromFile(RETURN_BUTTON_IMAGE))
+	{
+		returnButton.SetImage(returnButtonImage);
+	}
+	else
+	{
+		return false;
+	}
+
+	if(menuButtonImage.LoadFromFile(MENU_BUTTON_IMAGE))
+	{
+		menuButton.SetImage(menuButtonImage);
 	}
 	else
 	{
@@ -82,21 +142,58 @@ bool GameState::Load()
 		return false;
 	}
 
-	// Will now listen for and receive packets
-	canReceive = true;
-
 	// Attempt to load level
 	if(!level.Load(serverNetworkData->serverLevel))
 	{
 		std::cout << "bool GameState::Load() error: failed to load level." << std::endl;
+		notificationBox.AddNotification("Fatal error: Failed to load level.", true);
 		return false;
 	}
+
+	// Will now listen for and receive packets
+	StartListening();
 
 	return true;
 }
 
-void GameState::Update(sf::Event events, bool eventFired, const sf::Input &input)
+void GameState::Update(sf::Event events, bool eventFired, const sf::Input &INPUT)
 {
+	// Pause menu toggle
+	if(INPUT.IsKeyDown(sf::Key::Escape))
+	{
+		if(canPause)
+		{
+			canPause = false;
+			isPaused = !isPaused;
+		}
+	}
+	else
+	{
+		if(canPause == false)
+		{
+			canPause = true;
+		}
+	}
+
+	if(isPaused)
+	{
+		sf::Vector2f viewOrigin(view.GetRect().Left, view.GetRect().Top);
+
+		if(menuButton.Pressed(sf::Mouse::Left, INPUT, viewOrigin))
+		{
+			SendDisconnectMessage();
+			SwitchState(SharedConstants::LOBBY_STATE);
+		}
+
+		if(returnButton.Pressed(sf::Mouse::Left, INPUT, viewOrigin))
+		{
+			isPaused = false;
+		}
+
+		menuButton.Update(sf::Mouse::Left, INPUT, viewOrigin);
+		returnButton.Update(sf::Mouse::Left, INPUT, viewOrigin);
+	}
+
 	if(eventFired == true)
 	{
 		// sf::Event::MouseEntered seems to have no effect for whatever reason
@@ -110,6 +207,8 @@ void GameState::Update(sf::Event events, bool eventFired, const sf::Input &input
 		{
 			renderCrosshair = false;
 		}
+
+		
 	}
 
 	if(serverNetworkData->serverIP != NULL_IP)
@@ -118,20 +217,20 @@ void GameState::Update(sf::Event events, bool eventFired, const sf::Input &input
 		PlayerInputPacket inputPacket;
 
 		// Grab state of input
-		bool wDown = input.IsKeyDown(sf::Key::W);
-		bool aDown = input.IsKeyDown(sf::Key::A);
-		bool sDown = input.IsKeyDown(sf::Key::S);
-		bool dDown = input.IsKeyDown(sf::Key::D);
-		bool spaceDown = input.IsKeyDown(sf::Key::Space);
-		bool escDown = input.IsKeyDown(sf::Key::Escape);
-		bool returnDown = input.IsKeyDown(sf::Key::Return);
-		bool lBtnDown = input.IsMouseButtonDown(sf::Mouse::Left);
-		bool rBtnDown = input.IsMouseButtonDown(sf::Mouse::Right);
+		bool wDown = INPUT.IsKeyDown(sf::Key::W);
+		bool aDown = INPUT.IsKeyDown(sf::Key::A);
+		bool sDown = INPUT.IsKeyDown(sf::Key::S);
+		bool dDown = INPUT.IsKeyDown(sf::Key::D);
+		bool spaceDown = INPUT.IsKeyDown(sf::Key::Space);
+		bool escDown = INPUT.IsKeyDown(sf::Key::Escape);
+		bool returnDown = INPUT.IsKeyDown(sf::Key::Return);
+		bool lBtnDown = INPUT.IsMouseButtonDown(sf::Mouse::Left);
+		bool rBtnDown = INPUT.IsMouseButtonDown(sf::Mouse::Right);
 		
 		// Get the cursor position relative to view
 		const sf::FloatRect viewRect = view.GetRect();
-		sf::Int16 mouseX = sf::Int16(viewRect.Left + input.GetMouseX());
-		sf::Int16 mouseY = sf::Int16(viewRect.Top + input.GetMouseY());
+		sf::Int16 mouseX = sf::Int16(viewRect.Left + INPUT.GetMouseX());
+		sf::Int16 mouseY = sf::Int16(viewRect.Top + INPUT.GetMouseY());
 
 		// Update crosshair position
 		float crosshairX = (float)mouseX - (crosshairImage.GetWidth() / 2);
@@ -158,13 +257,28 @@ void GameState::Update(sf::Event events, bool eventFired, const sf::Input &input
 				continue;
 			}
 		}
+		
+		// Update player sprites
+		for(size_t i = 0; i < playerSprites.size(); i++)
+		{
+			playerSprites[i].Update(playersHealth[i]);
+		}
+		/*
+		if(winner)
+		{
+			if(winTimer.GetElapsedTime() >= sharedConstants.GetGracePeriod())
+			{
+				winner = false;
+				winTimer.Reset();
+			}
+		}*/
 
 		timeStepClock.Reset();
 		stateIterator++;
 	}
 
-	// Check if you should display scoreboard
-	if(input.IsKeyDown(sf::Key::Tab))
+	// Check if the scoreboard should be displayed
+	if(INPUT.IsKeyDown(sf::Key::Tab))
 	{
 		showScoreBoard = true;
 	}
@@ -187,27 +301,42 @@ void GameState::ReceiveData(sf::Packet receivedPacket, sf::IPAddress connectionA
 
 	if(packetType == PLAYER_POSITIONS_PACKET)
 	{
-		UnpackPlayerPositionsPacket(receivedPacket, playersActive, playerSprites, playerDirections, stateIterator);
+		UnpackPlayerPositionsPacket(receivedPacket, playersActive, playerSprites, playerDirections, playerViewPoints, stateIterator);
 	}
 	else if(packetType == PLAYER_DATA_PACKET)
 	{
 		sf::Uint8 vectorSize;
 		receivedPacket >> vectorSize;
+
 		// Unpack player name
 		for(int i = 0; i < vectorSize; i++)
 		{
 			std::string playerName;
 			receivedPacket >> playerName;
 			playerSprites[i].SetPlayerName(playerName);
+			playerNames[i] = playerName;
 		}
+
 		// Unpack player scores
-		std::vector<sf::Int16> playerScores;
-		for(int i = 0; i < vectorSize; i++)
-		{
-			sf::Int16 playerScore;
-			receivedPacket >> playerScore;
-			playerScores.push_back(playerScore);
-		}
+		//if(!winner)
+		//{
+			for(int i = 0; i < vectorSize; i++)
+			{
+				sf::Int16 playerScore;
+				receivedPacket >> playerScore;
+				playerScores[i] = playerScore;
+			}
+			/*
+			for(size_t i = 0; i < playerScores.size(); i++)
+			{
+				if(playerScores[i] == sharedConstants.GetWinningScore())
+				{
+					winTimer.Reset();
+					winner = true;
+					winnerText.SetText(playerNames[i] + " won!");
+				}
+			}*/
+		//}
 
 		// Get the player names into a nice vector so you can pass em into the scoreboard
 		std::vector<sf::String> playerNames;
@@ -215,15 +344,16 @@ void GameState::ReceiveData(sf::Packet receivedPacket, sf::IPAddress connectionA
 		{
 			playerNames.push_back(playerSprites[i].GetPlayerName());
 		}
+
 		// Give the scoreBoard the scores
-		scoreBoard.UpdateScores(playerScores,playerNames);
+		scoreBoard.UpdateScores(playerScores, playerNames);
 
 		// Unpack player healths
 		for(int i = 0; i < vectorSize; i++)
 		{
 			sf::Int16 playerHealth = 0;
 			receivedPacket >> playerHealth;
-			playerSprites[i].UpdateHealthBarHealth(playerHealth);
+			playersHealth[i] = (int)playerHealth;
 		}
 	}
 	else if(packetType == PROJECTILE_PACKET)
@@ -240,7 +370,7 @@ void GameState::ReceiveData(sf::Packet receivedPacket, sf::IPAddress connectionA
 	}
 }
 
-void GameState::UnpackPlayerPositionsPacket(sf::Packet &receivedPacket, std::vector<bool> &playersActive, std::vector<PlayerSprite> &playerSprites, std::vector<int> &playerDirections, sf::Uint32 &stateIterator)
+void GameState::UnpackPlayerPositionsPacket(sf::Packet &receivedPacket, std::vector<bool> &playersActive, std::vector<PlayerSprite> &playerSprites, std::vector<int> &playerDirections, std::vector<sf::Vector2f> &playerViewPoints, sf::Uint32 &stateIterator)
 {
 	// Get the size of the playerSprites vector size and store as the number of players
 	sf::Uint8 numPlayers;
@@ -284,6 +414,14 @@ void GameState::UnpackPlayerPositionsPacket(sf::Packet &receivedPacket, std::vec
 		int facingDirection;
 		receivedPacket >> facingDirection;
 		playerSprites[i].SetFacingDirection((PlayerSprite::Orientation)facingDirection);
+	}
+
+	// Grab view points
+	for(int i = 0; i < numPlayers; i++)
+	{
+		sf::Vector2f viewPoint;
+		receivedPacket >> viewPoint;
+		playerSprites[i].SetViewPoint(viewPoint);
 	}
 
 	// Update camera
@@ -370,7 +508,7 @@ void GameState::CheckTimeout()
 		std::cout << "Lost connetion to the server, now disconnecting..." << std::endl;
 
 		// Go back to start state
-		targetID = sharedConstants.START_STATE;
+		SwitchState(SharedConstants::SPLASH_STATE);
 	}
 }
 
@@ -403,18 +541,31 @@ void GameState::Draw(sf::RenderWindow* renderWindow)
 
 	level.Draw(Level::FOREGROUND, renderWindow);
 
-	// Crosshair
-	if(renderCrosshair == true)
-	{
-		renderWindow->Draw(crosshairSprite);
-	}
-
 	// Scoreboard
 	// Work out scoreboard position based on view rect
 	if(showScoreBoard)
 	{
 		scoreBoard.CalculatePosition(view.GetRect());
 		scoreBoard.Render(*renderWindow);
+	}
+
+	if(isPaused)
+	{
+		const sf::FloatRect viewPos = view.GetRect();
+		pauseBackingSprite.SetPosition(viewPos.Left, viewPos.Bottom - pauseBackingSprite.GetSize().y);
+		renderWindow->Draw(pauseBackingSprite);
+
+		menuButton.SetPosition(viewPos.Left + 20.0f, viewPos.Top + 660.0f);
+		returnButton.SetPosition(viewPos.Left + 280.0f, viewPos.Top + 660.0f);
+
+		renderWindow->Draw(returnButton);
+		renderWindow->Draw(menuButton);
+	}
+
+	// Crosshair
+	if(renderCrosshair == true)
+	{
+		renderWindow->Draw(crosshairSprite);
 	}
 
 	if(connectionProblem == true)
@@ -424,6 +575,12 @@ void GameState::Draw(sf::RenderWindow* renderWindow)
 		interuptSprite.SetPosition(spritePos.Right - 80.0f, spritePos.Top + 30.0f); // Top right of the screen
 		renderWindow->Draw(interuptSprite);
 	}
+
+	/*
+	if(winner)
+	{
+		renderWindow->Draw(winnerText);
+	}*/
 }
 
 bool GameState::IsOnScreen(sf::Sprite sprite)
@@ -438,4 +595,11 @@ bool GameState::IsOnScreen(sf::Sprite sprite)
 		}
 	}
 	return false;
+}
+
+void GameState::SendDisconnectMessage()
+{
+	DisconnectionPacket disconnectionPacket;
+	disconnectionPacket.PackData(SharedConstants::CONNECT_MODULE, serverNetworkData->playerID, disconnectionPacket);
+	clientTransmitter->SendUDP(sharedConstants.GetClientTransmitPort(), serverNetworkData->serverIP, disconnectionPacket);
 }

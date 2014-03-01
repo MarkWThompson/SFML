@@ -9,13 +9,11 @@ class HealthBarSprite
 public:
 	/**
 	 * Constructor for initialising the class' properties.
-	 * @param startX The initial x position of the bar
-	 * @param startY The initial y position of the bar
-	 * @param X_OFFSET The x offset from the initial x.
-	 * @param Y_OFFSET The y offset from the intial y.
+	 * @param playerCentreX The centre x position of the player
+	 * @param playerTopY The topmost y position of the player
 	 * @param MAX_HEALTH The maximum health value for use with scaling.
 	 */
-	HealthBarSprite(float startX, float startY, const int X_OFFSET, const int Y_OFFSET, const int MAX_HEALTH);
+	HealthBarSprite(float playerCentreX, float playerTopY, const int MAX_HEALTH);
 
 	~HealthBarSprite();
 
@@ -26,18 +24,11 @@ public:
 	void UpdateHealth(int health);
 
 private:
-	sf::Sprite frameSprite;
+	sf::Sprite backingSprite;
 	sf::Sprite fillSprite;
-	sf::Image frameImage;
+
+	sf::Image backingImage;
 	sf::Image fillImage;
-
-	// Stores fillSprite specific offsets for rendering
-	const int X_FILL_OFFSET;
-	const int Y_FILL_OFFSET;
-
-	// Stores the bar offsets for rendering
-	const int BAR_X_OFFSET;
-	const int BAR_Y_OFFSET;
 
 	/** Stores the maximum possible health value of the player. */
 	const int MAX_HEALTH;
